@@ -3,6 +3,7 @@
 #include <lib.h>
 #include <moduleLoader.h>
 #include <idt_loader.h>
+#include <screen_driver.h>
 
 extern uint8_t text;
 extern uint8_t rodata;
@@ -13,8 +14,7 @@ extern uint8_t endOfKernel;
 
 static const uint64_t PageSize = 0x1000;
 
-static void * const sampleCodeModuleAddress = (void*)0x400000;
-static void * const sampleDataModuleAddress = (void*)0x500000;
+static void * const mainAppAddress = (void*)0x400000;
 
 typedef int (*EntryPoint)();
 
@@ -33,8 +33,7 @@ void * getStackBase(){
 
 void * initializeKernelBinary(){
 	void * moduleAddresses[] = {
-		sampleCodeModuleAddress,
-		sampleDataModuleAddress
+		mainAppAddress,
 	};
 
 	loadModules(&endOfKernelBinary, moduleAddresses);
@@ -49,7 +48,7 @@ int main()
 
 	load_idt();
 
-	((EntryPoint) sampleCodeModuleAddress)();
+	((EntryPoint) mainAppAddress)();
 
 	for(int x=0; x<720; x++)
 		draw(x, 300, 0xFF0000);
