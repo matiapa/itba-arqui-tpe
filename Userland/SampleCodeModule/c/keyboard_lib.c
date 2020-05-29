@@ -14,15 +14,8 @@ char shifted_keyboard_map[64] = {
     'c','v','b','n','m','<','>','?',0,0,0,' '
 };
 
+
 int read();
-
-// int read(){
-// 	__asm__(
-// 		" movl $2,  %eax \n\t"
-// 		" int $0x80       \n\t"
-// 	);
-// }
-
 
 int shift=0;
 int caps=0;

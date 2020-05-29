@@ -50,6 +50,9 @@ int main()
 	load_idt();
 
 	((EntryPoint) sampleCodeModuleAddress)();
+
+	for(int x=0; x<720; x++)
+		draw(x, 300, 0xFF0000);
 		
 	return 0;
 }

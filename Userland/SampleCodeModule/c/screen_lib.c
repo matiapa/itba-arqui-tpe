@@ -14,12 +14,7 @@ const int WIDTH = 780;
                                             VIDEO METHODS
 -------------------------------------------------------------------------------------------------------------------------- */
 
-void draw(int cx, int cy, int rgb){
-	__asm__(
-		" movl $1,  %eax \n\t"
-		" int $0x80       \n\t"
-	);
-}
+void draw(int cx, int cy, int rgb);
 
 
 void drawPoint(int x, int y, int size, int rgb){
