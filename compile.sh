@@ -1,4 +1,4 @@
 #!/bin/bash
-cd /home/matiapa/x64barebones
+cd /home
 make clean -s
 make all -s
