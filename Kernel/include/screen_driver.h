@@ -1,0 +1,1 @@
+void draw(int x, int y, int rgb);
