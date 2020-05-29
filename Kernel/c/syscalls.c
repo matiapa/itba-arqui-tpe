@@ -1,5 +1,5 @@
 #include <screen_driver.h>
-// #include <keyboard_driver.h>
+#include <keyboard_driver.h>
 
 void syscallDraw(int cx, int cy, int rgb){
 
@@ -10,7 +10,7 @@ void syscallDraw(int cx, int cy, int rgb){
 
 int syscallRead(char *str, int fd){
 
-    //return read();
+    return read();
     return 1;
 
 }
