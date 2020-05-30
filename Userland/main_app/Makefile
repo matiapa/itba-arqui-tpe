@@ -6,7 +6,7 @@ SOURCES_ASM=$(wildcard asm/*.s)
 
 all: $(MODULE)
 
-$(MODULE): $(SOURCES_C)
+$(MODULE): $(SOURCES_C) $(SOURCES_ASM)
 	$(GCC) $(GCCFLAGS) -I./include -T main_app.ld _loader.c $(SOURCES_ASM) $(SOURCES_C) -o ../$(MODULE)
 
 clean:

@@ -14,7 +14,7 @@ OBJECTS_ASM=$(SOURCES_ASM:.asm=.o)	# Maps .asm to .o
 # This folder has been created for own assemblys, since for some reason Pure64 executes files on the asm folder during load
 
 SOURCES_ASM_OWN=$(wildcard asm_own/*.asm)	# Grabs all .asm files
-OBJECTS_ASM_OWN=$(SOURCES_ASM_OWN:.asm=.o)	# Maps .asm to .o s
+OBJECTS_ASM_OWN=$(SOURCES_ASM_OWN:.asm=.o)	# Maps .asm to .o
 
 KERNEL=kernel.bin
 
