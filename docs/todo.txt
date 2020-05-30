@@ -1,0 +1,37 @@
+--------
+ KERNEL
+--------
+
+Syscalls:
+- write
+- read
+- draw
+- getres
+- regdump
+- memdump
+- gettime
+- cpuinfo
+- cputemp
+
+Exceptions:
+- Div zero
+- Invalid opcode
+
+------------
+ USERSPACE
+------------
+
+Stdlib:
+- putChar
+- printf
+- getChar
+- scanf
+
+Apps:
+- Window A
+- Window B
+  - inforeg
+  - printmem
+  - gettime
+  - cpuinfo
+  - cputemp
