@@ -1,26 +1,27 @@
+.global _cli
+.global _sti
+.global picMasterMask
+.global picSlaveMask
+.global haltcpu
+.global _hlt
 
-GLOBAL _cli
-GLOBAL _sti
-GLOBAL picMasterMask
-GLOBAL picSlaveMask
-GLOBAL haltcpu
-GLOBAL _hlt
+.global _irq00Handler
+.global _irq01Handler
+.global _irq02Handler
+.global _irq03Handler
+.global _irq04Handler
+.global _irq05Handler
 
-GLOBAL _irq00Handler
-GLOBAL _irq01Handler
-GLOBAL _irq02Handler
-GLOBAL _irq03Handler
-GLOBAL _irq04Handler
-GLOBAL _irq05Handler
+.global _exception0Handler
 
-GLOBAL _exception0Handler
+.extern irqDispatcher
+.extern exceptionDispatcher
 
-EXTERN irqDispatcher
-EXTERN exceptionDispatcher
+.intel_syntax noprefix
 
-SECTION .text
+.section .text
 
-%macro pushState 0
+.macro pushState
 	push rax
 	push rbx
 	push rcx
@@ -36,9 +37,9 @@ SECTION .text
 	push r13
 	push r14
 	push r15
-%endmacro
+.endm
 
-%macro popState 0
+.macro popState
 	pop r15
 	pop r14
 	pop r13
@@ -54,33 +55,33 @@ SECTION .text
 	pop rcx
 	pop rbx
 	pop rax
-%endmacro
+.endm
 
-%macro irqHandlerMaster 1
+.macro irqHandlerMaster irq
 	pushState
 
-	mov rdi, %1 ; pasaje de parametro
+	mov rdi, \irq # pasaje de parametro
 	call irqDispatcher
 
-	; signal pic EOI (End of Interrupt)
-	mov al, 20h
-	out 20h, al
+	# signal pic EOI (End of Interrupt)
+	mov al, 0x20
+	out 0x20, al
 
 	popState
 	iretq
-%endmacro
+.endm
 
 
 
-%macro exceptionHandler 1
+.macro exceptionHandler exception
 	pushState
 
-	mov rdi, %1 ; pasaje de parametro
+	mov rdi, \exception # pasaje de parametro
 	call exceptionDispatcher
 
 	popState
 	iretq
-%endmacro
+.endm
 
 
 _hlt:
@@ -101,45 +102,45 @@ picMasterMask:
 	push rbp
     mov rbp, rsp
     mov ax, di
-    out	21h,al
+    out	0x21,al
     pop rbp
-    retn
+    ret
 
 picSlaveMask:
 	push    rbp
     mov     rbp, rsp
-    mov     ax, di  ; ax = mascara de 16 bits
-    out	0A1h,al
+    mov     ax, di  # ax = mascara de 16 bits
+    out	0xA1,al
     pop     rbp
-    retn
+    ret
 
 
-;8254 Timer (Timer Tick)
+#8254 Timer (Timer Tick)
 _irq00Handler:
 	irqHandlerMaster 0
 
-;Keyboard
+#Keyboard
 _irq01Handler:
 	irqHandlerMaster 1
 
-;Cascade pic never called
+#Cascade pic never called
 _irq02Handler:
 	irqHandlerMaster 2
 
-;Serial Port 2 and 4
+#Serial Port 2 and 4
 _irq03Handler:
 	irqHandlerMaster 3
 
-;Serial Port 1 and 3
+#Serial Port 1 and 3
 _irq04Handler:
 	irqHandlerMaster 4
 
-;USB
+#USB
 _irq05Handler:
 	irqHandlerMaster 5
 
 
-;Zero Division Exception
+#Zero Division Exception
 _exception0Handler:
 	exceptionHandler 0
 
@@ -147,8 +148,3 @@ haltcpu:
 	cli
 	hlt
 	ret
-
-
-
-SECTION .bss
-	aux resq 1

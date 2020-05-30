@@ -1,7 +1,8 @@
-GLOBAL cpuVendor
+.global cpuVendor
+.intel_syntax noprefix
 
-section .text
-	
+.section .text
+
 cpuVendor:
 	push rbp
 	mov rbp, rsp
@@ -16,7 +17,7 @@ cpuVendor:
 	mov [rdi + 4], edx
 	mov [rdi + 8], ecx
 
-	mov byte [rdi+13], 0
+	movb [rdi+13], 0
 
 	mov rax, rdi
 

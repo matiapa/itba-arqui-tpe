@@ -1,6 +1,9 @@
-GLOBAL _syscallHandler
-EXTERN syscallDraw
-EXTERN syscallRead
+.globl _syscallHandler
+.extern syscallDraw
+.extern syscallRead
+.intel_syntax noprefix
+
+.section .text
 
 _syscallHandler:
     cmp rax, 1
