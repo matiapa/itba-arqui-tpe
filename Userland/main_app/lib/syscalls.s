@@ -1,13 +1,18 @@
-.globl draw
-.globl read
 .intel_syntax noprefix
 
-draw:
-    mov eax, 1
+.macro syscall name, code
+.global \name
+\name:
+    mov eax, \code
     int 0x80
     ret
+.endm
 
-read:
-    mov eax, 2
-    int 0x80
-    ret
+syscall draw, 1
+syscall read, 2
+syscall getRes, 3
+syscall regDump, 4
+syscall memDump, 5
+syscall getTime, 6
+syscall cpuInfo, 7
+syscall cpuTemp, 8

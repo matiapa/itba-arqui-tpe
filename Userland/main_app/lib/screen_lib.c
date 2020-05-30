@@ -1,11 +1,11 @@
 #include <font.h>
 
-// struct ScreenRes{
-//     int height;
-//     int width;
-// }
+struct ScreenRes{
+    int height;
+    int width;
+};
 
-// struct ScreenRes * getRes();
+struct ScreenRes * getRes();
 
 const int HEIGHT = 1920;
 const int WIDTH = 780;
@@ -64,8 +64,8 @@ void setColor(int newColor){
 
 void clearScreen(){
 
-    for(int x=0; x<WIDTH; x++){
-        for(int y=0; y<HEIGHT; y++){
+    for(int x=0; x<(getRes()->width); x++){
+        for(int y=0; y<(getRes()->height); y++){
             draw(x, y, 0);
         }
     }
@@ -79,12 +79,12 @@ void forwardCursor(){
 
     textX += fontWidth*fontSize+charSpacing;
 
-    if(textX > WIDTH){
+    if(textX > (getRes()->width)){
         textX = 0;
         textY += fontHeight*fontSize+lineSpacing;
     }
 
-    if(textY > HEIGHT){
+    if(textY > (getRes()->height)){
         textY = 0;
         clearScreen();
     }

@@ -66,3 +66,11 @@ void draw(int x, int y, int rgb){
     pos[2] = (rgb & 0xFF0000) >> 16;
 
 }
+
+int getResWidth(){
+	return *WIDTH;
+}
+
+int getResHeight(){
+	return *HEIGHT;
+}

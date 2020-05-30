@@ -1,6 +1,7 @@
 .globl _syscallHandler
 .extern syscallDraw
 .extern syscallRead
+.extern syscallGetRes
 .intel_syntax noprefix
 
 .section .text
@@ -12,6 +13,9 @@ _syscallHandler:
     cmp rax, 2
     je _read
 
+    cmp rax, 3
+    je _getRes
+
     iretq
 
 _draw:
@@ -20,4 +24,8 @@ _draw:
 
 _read:
     call syscallRead
+    iretq
+
+_getRes:
+    call syscallGetRes
     iretq

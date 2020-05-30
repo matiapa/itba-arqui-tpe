@@ -5,7 +5,9 @@
 int main(){
 
 	while(1){
+
 		printChar(getChar());
+
 	}
 	
 	return 1;

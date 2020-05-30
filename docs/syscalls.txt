@@ -1,12 +1,12 @@
 NAME        RAX     RBX                RCX                      R8             DESCRIPTION
 DRAW        1       uint8_t xcord      uint8_t ycord            uint8 rgb      Draws a pixel at (x,y) with rgb color (in hex), returns void.
 READ        2                                                                  Waits for a keystroke and returns its code.
-GETRES      4       ScreenRes * res                                            Load screen resolution into res, returns void.
-REGDUMP     5       RegDump * dump                                             Loads current value of registers into dump, returns void.
-MEMDUMP     6       void * src         void * dest                             Loads 32 bytes of memory from src to dest, returns void.
-GETTIME     7       Time * time                                                Loads system time into time, returns void.
-CPUINFO     8       CpuInfo * info                                             Loads cpu information into info, returns void.
-CPUTEMP     9                                                                  Returns the temperature of the CPU in Celsius
+GETRES      3       ScreenRes * res                                            Load screen resolution into res, returns void.
+REGDUMP     4       RegDump * dump                                             Loads current value of registers into dump, returns void.
+MEMDUMP     5       void * src         void * dest                             Loads 32 bytes of memory from src to dest, returns void.
+GETTIME     6       Time * time                                                Loads system time into time, returns void.
+CPUINFO     7       CpuInfo * info                                             Loads cpu information into info, returns void.
+CPUTEMP     8                                                                  Returns the temperature of the CPU in Celsius
 
 
 STRUCTURES:
