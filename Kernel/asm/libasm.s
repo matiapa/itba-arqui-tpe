@@ -17,7 +17,7 @@ cpuVendor:
 	mov [rdi + 4], edx
 	mov [rdi + 8], ecx
 
-	movb [rdi+13], 0
+	movb [rdi+13], 0		# mov byte [rdi+13], 0
 
 	mov rax, rdi
 
