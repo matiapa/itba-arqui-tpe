@@ -18,3 +18,15 @@ void testMemDump(){
         while(1);
 
 }
+
+
+void testGetTime(){
+
+    Time * time = malloc(sizeof(Time));
+	getTime(time);
+
+	printLine(itoa(time->hours));
+	printLine(itoa(time->minutes));
+	printLine(itoa(time->seconds));
+
+}

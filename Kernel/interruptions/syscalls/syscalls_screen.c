@@ -1,11 +1,6 @@
 #include <screen_driver.h>
 #include <lib.h>
 
-typedef struct ScreenRes{
-    int height;
-    int width;
-} ScreenRes;
-
 
 void sysDraw(int cx, int cy, int rgb){
 
@@ -13,16 +8,17 @@ void sysDraw(int cx, int cy, int rgb){
 
 }
 
+// ---------------------------------------------------------------------------------------------------------------------------
 
-ScreenRes * res = 0;
+typedef struct ScreenRes{
+    int height;
+    int width;
+} ScreenRes;
 
-ScreenRes * sysGetRes(){
 
-    res = res==0 ? malloc(8) : res;    
+void sysGetRes(ScreenRes * res){
     
     res->height = getResHeight();
     res->width = getResWidth();
-
-    return res;
 
 }

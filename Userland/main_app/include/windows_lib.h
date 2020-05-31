@@ -1,7 +1,3 @@
-#include <syscalls.h>
-
-struct ScreenRes * getRes();
-
 typedef struct Cursor{
     int x, y;
 

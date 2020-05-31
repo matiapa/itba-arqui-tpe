@@ -3,6 +3,7 @@
 #include <malloc.h>
 #include <userlib.h>
 #include <windows.h>
+#include <syscalls.h>
 
 #define cursor w2->cursors[w2->activeCursor]
 
@@ -12,8 +13,11 @@ static void createWindow(){
 
 	w2 = (Window *) malloc(sizeof(Window));
 
-	w2->xi = getRes()->width/2; w2->xf = getRes()->width;
-    w2->yi = 0; w2->yf = getRes()->height;
+	ScreenRes * res = (ScreenRes *) malloc(sizeof(ScreenRes));
+	getRes(res);
+
+	w2->xi = res->width/2; w2->xf = res->width;
+    w2->yi = 0; w2->yf = res->height;
 
 	w2->cursors[titleCursor].x=titleX;	w2->cursors[titleCursor].y=titleY;
 	w2->cursors[titleCursor].fontColor=titleColor;	w2->cursors[titleCursor].fontSize=titleSize;

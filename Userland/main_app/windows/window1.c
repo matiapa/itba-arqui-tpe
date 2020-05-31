@@ -3,6 +3,7 @@
 #include <malloc.h>
 #include <windows.h>
 #include <userlib.h>
+#include <syscalls.h>
 
 #define NULL ((void *) 0)
 #define titleCursor 0
@@ -16,8 +17,11 @@ static void createWindow(){
 
 	w1 = (Window *) malloc(sizeof(Window));
 
-	w1->xi = 0; w1->xf = getRes()->width/2;
-    w1->yi = 0; w1->yf = getRes()->height;
+	ScreenRes * res = (ScreenRes *) malloc(sizeof(ScreenRes));
+	getRes(res);
+
+	w1->xi = 0; w1->xf = res->width/2;
+    w1->yi = 0; w1->yf = res->height;
 
 	w1->cursors[titleCursor].x=titleX;	w1->cursors[titleCursor].y=titleY;
 	w1->cursors[titleCursor].fontColor=titleColor;	w1->cursors[titleCursor].fontSize=titleSize;
@@ -56,8 +60,6 @@ void window1(){
 	drawIndicator(indicatorColor);
 
 	w1->activeCursor = bodyCursor;
-
-	printLine(itoa(2));
 
 	while(1){
 
