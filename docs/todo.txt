@@ -3,14 +3,13 @@
 --------
 
 Syscalls:
-- write
-- read
-- draw
-- getres
-- regdump
-- memdump
-- gettime
-- cpuinfo
+✓ read
+✓ draw
+✓ getRes
+- regDump
+✓ memDump
+✓ getTime
+✓ cpuInfo
 - cputemp
 
 Exceptions:
