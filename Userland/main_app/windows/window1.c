@@ -2,6 +2,7 @@
 #include <keyboard_lib.h>
 #include <malloc.h>
 #include <windows.h>
+#include <userlib.h>
 
 #define NULL ((void *) 0)
 #define titleCursor 0
@@ -55,6 +56,8 @@ void window1(){
 	drawIndicator(indicatorColor);
 
 	w1->activeCursor = bodyCursor;
+
+	printLine(itoa(2));
 
 	while(1){
 

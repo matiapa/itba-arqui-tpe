@@ -1,11 +1,14 @@
 #include <keyboard_lib.h>
 #include <windows_lib.h>
+#include <malloc.h>
+
+#define ITOA_MAX_LEN 10
 
 /* --------------------------------------------------------------------------- 
                             STRING FUNCTIONS
  --------------------------------------------------------------------------- */
 
-void reverseStr(char str[], int length) { 
+void reverseStr(char * str, int length) { 
     int start = 0; 
     int end = length -1; 
     while (start < end) { 
@@ -18,14 +21,17 @@ void reverseStr(char str[], int length) {
 }
 
 
-void itoa(int num, char *str) { 
+char * itoa(int num) {
+
+    char * str = (char *) malloc(ITOA_MAX_LEN);
+
     int i = 0; 
     int isNegative = 0; 
   
     if (num == 0) { 
         str[i++] = '0'; 
         str[i] = '\0'; 
-        return;
+        return str;
     } 
   
     if (num<0) { 
@@ -46,6 +52,8 @@ void itoa(int num, char *str) {
   
     reverseStr(str, i); 
 
+    return str;
+
 }
 
 
@@ -56,11 +64,8 @@ void itoa(int num, char *str) {
 void printKeyStrokes(){
 
 	int pos = read();
-	
-	char str[10];
-	itoa(pos, str);
 	print("Got key: ");
-	printLine(str);
+	printLine(itoa(pos));
 	printLine("");
 
 }

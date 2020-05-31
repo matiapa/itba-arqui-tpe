@@ -1,7 +1,5 @@
 void reverseStr(char str[], int length);
 
-
-void itoa(int num, char *str);
-
+char * itoa(int num);
 
 void printKeyStrokes();
