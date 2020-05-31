@@ -4,6 +4,7 @@
 .extern sysGetRes
 .extern sysMemDump
 .extern sysGetTime
+.extern sysCpuInfo
 .intel_syntax noprefix
 
 .section .text
@@ -23,6 +24,9 @@ _syscallHandler:
 
     cmp rax, 6
     je _getTime
+
+    cmp rax, 7
+    je _cpuInfo
 
     iretq
 
@@ -44,4 +48,8 @@ _memDump:
 
 _getTime:
     call sysGetTime
+    iretq
+
+_cpuInfo:
+    call sysCpuInfo
     iretq

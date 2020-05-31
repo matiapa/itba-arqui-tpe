@@ -26,3 +26,11 @@ typedef struct Time{
 } Time;
 
 void getTime(Time * time);
+
+// ------------------------------------------------ CPUINFO (7) -------------------------------------------------------------
+
+typedef struct CPUInfo{
+    char *brandName, *brandDesc;
+} CPUInfo;
+
+void cpuInfo(CPUInfo * info);

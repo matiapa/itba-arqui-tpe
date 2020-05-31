@@ -10,8 +10,6 @@ void tests();
 
 int main(){
 
-	testMemDump();
-
 	initWindow1();
 	initWindow2();
 
