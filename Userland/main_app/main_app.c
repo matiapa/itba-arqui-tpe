@@ -1,14 +1,18 @@
-/* sampleCodeModule.c */
-#include <screen_lib.h>
-#include <keyboard_lib.h>
+void window1();
+void window2();
+void initWindow1();
+void initWindow2();
 
 int main(){
 
+	initWindow1();
+	initWindow2();
+
 	while(1){
-
-		printChar(getChar());
-
+		window1();
+		window2();
 	}
 	
 	return 1;
+
 }

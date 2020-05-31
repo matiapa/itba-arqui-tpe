@@ -1,4 +1,5 @@
-// Backspace: 14, Tab: 15, Enter: 28, Ctrl: 29, LShift: 42/170, RShift: 54/182, Alt: 56, Space: 57, Cmd: 91
+// Backspace: 14, Tab: 15, Enter: 28, Ctrl: 29, LShift: 42/170, RShift: 54/182, Alt: 56, Space: 57, F1-F10: 59-68
+// Cmd: 91, LA: 224/75, RA: 224/77
 
 char keyboard_map[64] = {
     0,27,'1','2','3','4','5','6','7','8','9','0','-','=',8,9,
@@ -14,6 +15,9 @@ char shifted_keyboard_map[64] = {
     'c','v','b','n','m','<','>','?',0,0,0,' '
 };
 
+
+int f1Code = 1;
+int f2Code = 2;
 
 int read();
 
@@ -43,9 +47,16 @@ char getChar(){
         return 14;
     }
 
-    // Release code
+    if(keyCode == 59)
+        return f1Code;
+
+    if(keyCode == 60)
+        return f2Code;
+
+
+    // Unused key, wait for another one
     if(keyCode >= 129){
-        return 0;
+        return getChar();
     }
     
     // If it is a letter check for shift/caps
