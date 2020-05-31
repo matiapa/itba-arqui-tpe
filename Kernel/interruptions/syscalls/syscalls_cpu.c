@@ -1,10 +1,6 @@
 #include <cpu_info.h>
 #include <lib.h>
 
-typedef struct CPUInfo{
-    char *brandName, *brandDesc;
-} CPUInfo;
-
 
 char brandDescs[22][70] = {
     "This processor does not support the brand identification feature",
@@ -36,5 +32,15 @@ void sysCpuInfo(CPUInfo * info){
     getBrandName(info->brandName);
     
     memcpy(info->brandDesc, brandDescs[getBrandIndex()], 70);
+
+}
+
+
+// ---------------------------------------------------------------------------------------------------------------------------
+
+
+void sysRegDump(RegDump *dump){
+
+    getRegisters(dump);
 
 }

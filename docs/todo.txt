@@ -6,7 +6,7 @@ Syscalls:
 ✓ read
 ✓ draw
 ✓ getRes
-- regDump
+✓ regDump
 ✓ memDump
 ✓ getTime
 ✓ cpuInfo

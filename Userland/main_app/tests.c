@@ -40,3 +40,13 @@
 // 	printLine(info->brandDesc);
 
 // }
+
+
+// void testRegDump(){
+//     RegDump * dump = malloc(sizeof(RegDump));
+// 	regDump(dump);
+	
+// 	printLine(itoa(dump->rax));
+// 	printLine(itoa(dump->rbx));
+// 	printLine(itoa(dump->rcx));
+// }

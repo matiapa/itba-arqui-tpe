@@ -4,6 +4,7 @@
 #include <windows.h>
 #include <userlib.h>
 #include <syscalls.h>
+#include <stdint.h>
 
 #define NULL ((void *) 0)
 #define titleCursor 0
