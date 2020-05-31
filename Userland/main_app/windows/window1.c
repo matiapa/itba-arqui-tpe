@@ -55,6 +55,7 @@ void window1(){
 	drawIndicator(indicatorColor);
 
 	w1->activeCursor = bodyCursor;
+
 	while(1){
 
 		char c = getChar();

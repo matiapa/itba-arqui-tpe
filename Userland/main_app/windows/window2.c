@@ -4,6 +4,7 @@
 #include <userlib.h>
 #include <windows.h>
 
+#define cursor w2->cursors[w2->activeCursor]
 
 Window *w2;
 

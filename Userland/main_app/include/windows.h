@@ -2,7 +2,6 @@
 // -------------------------- SHORTCUTS ---------------------
 
 #define NULL ((void *) 0)
-#define cursor w2->cursors[w2->activeCursor]
 
 // -------------------------- CURSORS ---------------------
 

@@ -1,10 +1,6 @@
-struct ScreenRes{
-    int height;
-    int width;
-};
+#include <syscalls.h>
 
 struct ScreenRes * getRes();
-
 
 typedef struct Cursor{
     int x, y;
@@ -24,8 +20,6 @@ typedef struct Window{
 
 void setWindow(Window *window);
 
-
-void draw(int x, int y, int rgb);
 
 void drawPoint(int x, int y, int size, int rgb);
 

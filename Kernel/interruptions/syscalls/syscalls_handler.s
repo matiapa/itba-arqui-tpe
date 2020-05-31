@@ -1,7 +1,8 @@
 .globl _syscallHandler
-.extern syscallDraw
-.extern syscallRead
-.extern syscallGetRes
+.extern sysDraw
+.extern sysRead
+.extern sysGetRes
+.extern sysMemDump
 .intel_syntax noprefix
 
 .section .text
@@ -16,16 +17,23 @@ _syscallHandler:
     cmp rax, 3
     je _getRes
 
+    cmp rax, 5
+    je _memDump
+
     iretq
 
 _draw:
-    call syscallDraw
+    call sysDraw
     iretq
 
 _read:
-    call syscallRead
+    call sysRead
     iretq
 
 _getRes:
-    call syscallGetRes
+    call sysGetRes
+    iretq
+
+_memDump:
+    call sysMemDump
     iretq
