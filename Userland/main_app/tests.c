@@ -50,3 +50,8 @@
 // 	printLine(itoa(dump->rbx));
 // 	printLine(itoa(dump->rcx));
 // }
+
+
+// void testCPUTemp(){
+//     printLine(itoa(cpuTemp()));
+// }

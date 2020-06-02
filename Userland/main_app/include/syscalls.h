@@ -44,3 +44,7 @@ typedef struct CPUInfo{
 } CPUInfo;
 
 void cpuInfo(CPUInfo * info);
+
+// ------------------------------------------------ CPUTEMP (8) -------------------------------------------------------------
+
+int cpuTemp();

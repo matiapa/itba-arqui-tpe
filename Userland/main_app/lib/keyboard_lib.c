@@ -18,6 +18,7 @@ char shifted_keyboard_map[64] = {
 
 int f1Code = 1;
 int f2Code = 2;
+int suprCode = 3;
 
 int read();
 

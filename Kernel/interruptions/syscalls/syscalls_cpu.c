@@ -44,3 +44,10 @@ void sysRegDump(RegDump *dump){
     getRegisters(dump);
 
 }
+
+
+int sysCPUTemp(){
+
+    return getTemperature();
+
+}

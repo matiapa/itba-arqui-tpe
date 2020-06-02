@@ -1,6 +1,7 @@
 .global getBrandName
 .global getBrandIndex
 .global getRegisters
+.global getTemperature
 .intel_syntax noprefix
 
 .section .text
@@ -54,4 +55,15 @@ getRegisters:
     mov [rdi+120], r14
     mov [rdi+128], r15
     #mov [rdi+136], eflags
+    ret
+
+# MSR information taken from https://courses.cs.washington.edu/courses/cse451/18sp/readings/ia32-4.pdf, page 27 and 263
+# Based on Kaby Lake architecture
+
+getTemperature:
+    mov rdx, 0
+    mov rcx, 0x19
+    rdmsr
+    and rax, 0xCF0000
+    shr rax, 16
     ret

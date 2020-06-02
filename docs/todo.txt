@@ -2,6 +2,8 @@
  KERNEL
 --------
 
+- Check rip and eflags registers on dump
+
 Syscalls:
 ✓ read
 ✓ draw
@@ -10,7 +12,7 @@ Syscalls:
 ✓ memDump
 ✓ getTime
 ✓ cpuInfo
-- cputemp
+✓ cputemp
 
 Exceptions:
 - Div zero
@@ -27,8 +29,9 @@ Stdlib:
 - scanf
 
 Apps:
-- Window A
-- Window B
+✓ Windows Manager
+- Calculator
+- Shell
   - inforeg
   - printmem
   - gettime

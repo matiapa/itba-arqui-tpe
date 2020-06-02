@@ -14,3 +14,6 @@ typedef struct RegDump{
 } RegDump;
 
 void getRegisters(RegDump *dump);
+
+
+int getTemperature();
