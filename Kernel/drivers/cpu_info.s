@@ -62,8 +62,17 @@ getRegisters:
 
 getTemperature:
     mov rdx, 0
-    mov rcx, 0x19
+    mov rcx, 0x19   # IA32_THERMAL_STATUS
     rdmsr
-    and rax, 0xCF0000
+    and rax, 0xCF0000   # Get bytes 16-23
     shr rax, 16
+    mov rbx, rax
+
+    mov rcx, 0x1A2  # MSR_TEMPERATURE_TARGET
+    rdmsr
+    and rax, 0xCF0000   # Get bytes 16-23
+    shr rax, 16
+
+    add rbx, rax   # Add target+offset and return
+    mov rax, rbx
     ret

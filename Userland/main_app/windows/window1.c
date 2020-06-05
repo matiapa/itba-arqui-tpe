@@ -62,6 +62,8 @@ void window1(){
 
 	w1->activeCursor = bodyCursor;
 
+	printLine(itoa(cpuTemp()));
+
 	while(1){
 
 		char c = getChar();
