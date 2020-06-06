@@ -31,6 +31,7 @@ Apps:
 - Calculator
 - Shell
   - inforeg
+  - storedreg
   - printmem
   - gettime
   - cpuinfo
@@ -39,7 +40,6 @@ Apps:
   - invalidOpcodeException
 
 
-- Fix RAX on regdump
 - Fix temperature
 - Improve documentation
 - Check weird cases

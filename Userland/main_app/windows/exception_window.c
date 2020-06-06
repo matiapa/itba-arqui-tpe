@@ -43,13 +43,12 @@ void exception(LastException lastException){
             break;
     }
 
-    RegDump dump;
-    regDump(&dump);
+    RegBkp bkp;
+    getRegBkp(&bkp);
 
     printf("\\nFeed this information to the poor developer's souls", 0);
-    printf("\\nRAX: %x - RBX: %x - RCX: %x - RDX: %x", 4, dump.rax, dump.rbx, dump.rcx, dump.rcx);
-    printf("\\nRSP: %x - RBP: %x - RSI: %x - RDI: %x", 4, dump.rsp, dump.rbp, dump.rsi, dump.rdi);
-    printf("\\nRIP: %x", 1, lastException.eip);
+    printf("\\nRAX: %x - RBX: %x - RCX: %x - RDX: %x", 4, bkp.rax, bkp.rbx, bkp.rcx, bkp.rcx);
+    printf("\\nRIP: %x - RBP: %x - RSI: %x - RDI: %x", 4, lastException.eip, bkp.rbp, bkp.rsi, bkp.rdi);
 
     while(1){
         if(getChar()==13){

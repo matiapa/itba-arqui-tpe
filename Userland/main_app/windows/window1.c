@@ -70,10 +70,6 @@ void window1(){
 
 	w.activeCursor = bodyCursor;
 
-	// RegBkp bkp;
-	// getRegBkp(&bkp);
-
-
 	while(1){
 
 		char c = getChar();
@@ -84,7 +80,7 @@ void window1(){
 		}
 
 		if(c==suprCode){
-			
+
 		}
 
 		printChar(c);
