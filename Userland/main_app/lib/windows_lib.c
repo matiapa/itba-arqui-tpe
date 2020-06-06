@@ -223,35 +223,28 @@ void printRegdump() {
     regDump(reg);
     char * s = malloc(bufferNumber);
 
-    printLine("Register's values:");
-    printLine(itoa(reg->rax,s,10));
-    printLine(itoa(reg->rbx,s,10));
-
-    /*
     printf("\nRegister's values:");
     printf("\n --- --- --- --- --- --- --- --- --- --- --- --- ---");
-    printf("\n - rax - %d", reg->rax);
-    printf("\n - rbx - %d", reg->rbx);
-    printf("\n - rcx - %d", reg->rcx);
-    printf("\n - rdx - %d", reg->rdx);
-    printf("\n - rsi - %d", reg->rsi);
-    printf("\n - rdi - %d", reg->rdi);
-    printf("\n - rbp - %d", reg->rbp);
-    printf("\n - rsp - %d", reg->rsp);
+    printf("\n - rax - %x", reg->rax);
+    printf("\n - rbx - %x", reg->rbx);
+    printf("\n - rcx - %x", reg->rcx);
+    printf("\n - rdx - %x", reg->rdx);
+    printf("\n - rsi - %x", reg->rsi);
+    printf("\n - rdi - %x", reg->rdi);
+    printf("\n - rbp - %x", reg->rbp);
+    printf("\n - rsp - %x", reg->rsp);
 
     printf("\n --- --- --- --- --- --- --- --- --- --- --- --- ---");
-    printf("\n - r8 - %d", reg->r8);
-    printf("\n - r9 - %d", reg->r9);
-    printf("\n - r10 - %d", reg->r10);
-    printf("\n - r11 - %d", reg->r11);
-    printf("\n - r12 - %d", reg->r12);
-    printf("\n - r13 - %d", reg->r13);
-    printf("\n - r14 - %d", reg->r14);
-    printf("\n - r15 - %d", reg->r15);
+    printf("\n - r8 - %x", reg->r8);
+    printf("\n - r9 - %x", reg->r9);
+    printf("\n - r10 - %x", reg->r10);
+    printf("\n - r11 - %x", reg->r11);
+    printf("\n - r12 - %x", reg->r12);
+    printf("\n - r13 - %x", reg->r13);
+    printf("\n - r14 - %x", reg->r14);
+    printf("\n - r15 - %x", reg->r15);
 
     printf("\n --- --- --- --- --- --- --- --- --- --- --- --- ---\n");
-    printf("\n - eflags - %d\n\n", reg->eflags);
-    */
 }
 
 void printMemdump(int start) {

@@ -77,17 +77,18 @@ void window2(){
 
 		if (c == NEWLINE) {
 			int start = 0;
-			switch(MPDATA) {
+			command currentCommand = REGDUMP;
+			switch(currentCommand) {
 				case CPUTEMP:
 					printCPUtemp();
 				break;
 				case HELP:
 					help();
 				break;
-				case MEMDUMP:
+				case MEMDUMP:	//fix
 					printMemdump(start);
 				break;
-				case MPDATA:
+				case MPDATA:	//fix
 					printMPinfo();
 				break;
 				case REGDUMP:

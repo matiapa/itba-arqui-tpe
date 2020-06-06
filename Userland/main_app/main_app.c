@@ -9,8 +9,6 @@ void initWindow2();
 
 int main(){
 
-	test();
-
 	initWindow1();
 	initWindow2();
 
