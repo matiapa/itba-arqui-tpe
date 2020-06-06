@@ -6,7 +6,7 @@
 .extern sysGetTime
 .extern sysCpuInfo
 .extern sysCPUTemp
-.extern getLatestException
+.extern getLastException
 .intel_syntax noprefix
 
 .section .text
@@ -34,7 +34,7 @@ _syscallDispatcher:
     je _cpuTemp
 
     cmp rax, 8
-    je _getLatestException
+    je _getLastException
 
     iretq
 
@@ -66,6 +66,6 @@ _cpuTemp:
     call sysCPUTemp
     iretq
 
-_getLatestException:
-    call getLatestException
+_getLastException:
+    call getLastException
     iretq

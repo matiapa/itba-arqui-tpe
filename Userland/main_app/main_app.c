@@ -5,13 +5,14 @@ void window1();
 void window2();
 void initWindow1();
 void initWindow2();
-void exception(int id);
+void exception(LastException LastException);
 
 int main(){
 
-	int latestException = getLatestException();
+	LastException lastException;
+	getLastException(&lastException);
 
-	if(latestException == -1){
+	if(lastException.handled == 1){
 
 		initWindow1();
 		initWindow2();
@@ -23,7 +24,7 @@ int main(){
 
 	}else{
 
-		exception(0);
+		exception(lastException);
 
 	}
 	

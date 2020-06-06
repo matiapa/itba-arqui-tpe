@@ -23,7 +23,7 @@ static void createWindow(){
 
 void main();
 
-void exception(int id){
+void exception(LastException lastException){
 
     createWindow();
 	w.activeCursor = bodyCursor;
@@ -34,7 +34,7 @@ void exception(int id){
         }
     }
 
-    if(id==0){
+    if(lastException.id==0){
             printf("Division by zero detected! Return to elementary school and press enter to continue\\n", 0);
     }
 
@@ -43,7 +43,7 @@ void exception(int id){
 
     printf("\\nRAX: %x - RBX: %x - RCX: %x - RDX: %x", 4, dump.rax, dump.rbx, dump.rcx, dump.rcx);
     printf("\\nRSP: %x - RBP: %x - RSI: %x - RDI: %x", 4, dump.rsp, dump.rbp, dump.rsi, dump.rdi);
-    printf("\\nRIP: %x", 1, dump.rip);
+    printf("\\nRIP: %x", 1, lastException.eip);
 
     while(1){
         if(getChar()==13){

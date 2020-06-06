@@ -74,12 +74,13 @@
 
 
 .macro exceptionHandler exception
-	pushState
+	#pushState
 
-	mov rdi, \exception # pasaje de parametro
+	mov rdi, \exception # Exception code
+	mov rsi, [rsp]	# EIP at exception generation
 	call exceptionDispatcher
 
-	popState
+	#popState
 	iretq
 .endm
 

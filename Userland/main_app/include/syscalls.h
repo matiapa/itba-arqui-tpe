@@ -43,4 +43,10 @@ int cpuTemp();
 
 // ------------------------------------- GETLATESTEXCEPTION (8) -------------------------------------------------------------
 
-int getLatestException();
+typedef struct LastException{
+	int id;
+	int handled;
+	void * eip;
+} LastException;
+
+void getLastException(LastException *LastException);
