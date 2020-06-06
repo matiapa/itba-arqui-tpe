@@ -40,8 +40,6 @@ void printTime(void);
 
 static void printWarning(int num);
 
-
-
 /* --------------------------------------------------------------------------------------------------------------------------
                                         	WINDOW METHODS
 ------------------------------------------------------------------------------------------------------------------------- */
@@ -94,7 +92,7 @@ void window2(){
 	drawIndicator(indicatorColor);
 	
 	newLine();
-	char bufferw2[BUFFERW2];
+	char bufferw2[BUFFERW2+1];
 	int bw2Iter = 0;
 	command currentCommand = NOCOMMAND;
 
@@ -109,10 +107,11 @@ void window2(){
 			return;
 		}
 
-		if (bw2Iter == BUFFERW2 && c!=NEWLINE)
-			bw2Iter++;
-		else if(bw2Iter < BUFFERW2)
+		if(bw2Iter < BUFFERW2) {
 			bufferw2[bw2Iter++] = c;
+			if (bw2Iter==BUFFERW2)
+				bufferw2[bw2Iter++] = 0;
+		}
 
 		printChar(c);
 
@@ -122,6 +121,7 @@ void window2(){
 			if (bw2Iter > BUFFERW2)
 				currentCommand = NOCOMMAND;
 			else {
+				bufferw2[bw2Iter] = 0;
 				currentCommand = setCommand(bufferw2, bw2Iter, parameter);
 			}
 			
@@ -258,21 +258,19 @@ static void printWarning(int num) {
             printLine("Command not found");
             printLine("If you want to see the command manual type 'help'.");
         break;
-        case 1: 
-            print("Zero division is not allowed.");
-        break;
-        case 2: 
-            print("To calculate use only numbers or the following operators: ");
-            printLine("+ - * / ( ) , . =");
-        break;
         default: 
             print("Something went wong. ");
     }
     printf("Please, try again.\\n\\n",0);
 }
 
+/* --------------------------------------------------------------------------------------------------------------------------
+                                COMMAND-CHECK METHODS
+------------------------------------------------------------------------------------------------------------------------- */
+
 
 static int isCommandTemp(char * buffer, int length) {
+    //strncmp();
     return 1;
 }
 static int isCommandHelp(char * buffer, int length) {
@@ -291,7 +289,20 @@ static int isCommandTime(char * buffer, int length) {
     return 1;
 }
 
+
+static int isAllowedChar(char c) {
+    if (isAlpha(c) || isDigit(c) || isDecimalPoint(c) || isSpace(c))
+        return 1;
+    return 0;
+}
+
 command setCommand(char * buffer, int length, char * string) {
+
+    for (int i=0; i< length; i++) {
+        if (!isAllowedChar(buffer[i]))
+            return NOCOMMAND;
+        buffer[i] = toLower(buffer[i]);
+    }
 
     if (isCommandTemp(buffer, length))
         return CPUTEMP;

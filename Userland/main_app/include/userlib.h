@@ -2,9 +2,17 @@
 
 int isAlpha(char);
 
+int isDigit(char);
+
+int isDecimalPoint(char);
+
+int isSpace(char);
+
 int isLower(char);
 
 int isUpper(char);
+
+char toLower(char);
 
 void reverseStr(char str[], int length);
 
