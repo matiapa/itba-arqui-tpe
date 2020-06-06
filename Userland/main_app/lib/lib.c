@@ -36,6 +36,25 @@ int isAlpha(char c) {
     return 0;
 }
 
+int isDigit(char c) {
+    if (c>= '0' && c<= '9')
+        return 1;
+    return 0;
+}
+
+int isDecimalPoint(char c) {
+    if (c=='.' || c==',')
+        return 1;
+    return 0;
+}
+
+int isSpace(char c) {
+    if (c==' ' || c=='\t' || c=='\n' == c==13)
+        return 1;
+    return 0;
+}
+
+
 /* --------------------------------------------------------------------------- 
                             STRING FUNCTIONS
  --------------------------------------------------------------------------- */
@@ -203,7 +222,8 @@ void printf(char *format, int nargs, ...){
 
 }
 
-
+// If different, returns 0
+// If equal, returns 1
 int strcmp(char *str1, char *str2){
 
     for(int i=0; str1[i]!=0 || str2[i]!=0; i++){
@@ -213,4 +233,18 @@ int strcmp(char *str1, char *str2){
 
     return 1;
 
+}
+
+// If different, returns 0
+// If equal, returns 1
+int strncmp(char * s1, char * s2, int length) {
+
+    for (int i=0; i<length; i++) {
+        if (s1[i] != s2[i])
+            return 0;
+        if (s1[i]==0)
+            return 0;
+    }
+
+    return 1;
 }
