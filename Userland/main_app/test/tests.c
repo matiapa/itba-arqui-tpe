@@ -171,6 +171,15 @@ void testCPUTemp(){
 }
 
 
+void testGetRegBkp(){
+
+    RegBkp bkp;
+    getRegBkp(&bkp);
+    printf("RAX: %x - RBX: %x - RCX: %x, - RDX: %x - RIP: %x\\n", 5, bkp.rax, bkp.rbx, bkp.rcx, bkp.rdx, bkp.rip);
+    
+}
+
+
 void invalidOpcode();
 
 void testInvalidOpcode(){

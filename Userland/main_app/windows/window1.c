@@ -13,7 +13,7 @@
 
 void calculateString(char *s);
 
-static void printWarning(int num);
+// static void printWarning(int num);
 
 
 static Window w;
@@ -70,6 +70,10 @@ void window1(){
 
 	w.activeCursor = bodyCursor;
 
+	// RegBkp bkp;
+	// getRegBkp(&bkp);
+
+
 	while(1){
 
 		char c = getChar();
@@ -80,7 +84,7 @@ void window1(){
 		}
 
 		if(c==suprCode){
-			//clearScreen();
+			
 		}
 
 		printChar(c);
@@ -111,15 +115,15 @@ void calculateString(char * s) {
 }
 
 
-static void printWarning(int num) {
-    printf("\\n >> Error: ", 0);
-    switch(num) {
-        case 1: print("Zero division is not allowed.");
-        break;
-        case 2: print("To calculate use only numbers or the following operators: ");
-        printLine("+ - * / ( ) , .");
-        break;
-        default: print("Something went wong.");
-    }
-    printLine(" Please, try again.");
-}
+// static void printWarning(int num) {
+//     printf("\\n >> Error: ", 0);
+//     switch(num) {
+//         case 1: print("Zero division is not allowed.");
+//         break;
+//         case 2: print("To calculate use only numbers or the following operators: ");
+//         printLine("+ - * / ( ) , .");
+//         break;
+//         default: print("Something went wong.");
+//     }
+//     printLine(" Please, try again.");
+// }

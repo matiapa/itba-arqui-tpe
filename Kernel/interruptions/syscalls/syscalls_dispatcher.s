@@ -6,6 +6,7 @@
 .extern sysGetTime
 .extern sysCpuInfo
 .extern sysCPUTemp
+.extern sysGetRegBkp
 .extern getLastException
 .intel_syntax noprefix
 
@@ -35,6 +36,9 @@ _syscallDispatcher:
 
     cmp rax, 8
     je _getLastException
+
+    cmp rax, 9
+    je _getRegBkp
 
     iretq
 
@@ -68,4 +72,8 @@ _cpuTemp:
 
 _getLastException:
     call getLastException
+    iretq
+
+_getRegBkp:
+    call sysGetRegBkp
     iretq

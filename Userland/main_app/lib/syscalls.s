@@ -17,3 +17,4 @@ syscall getTime, 5
 syscall cpuInfo, 6
 syscall cpuTemp, 7
 syscall getLastException, 8
+syscall getRegBkp, 9

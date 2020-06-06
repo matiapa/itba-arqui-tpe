@@ -1,4 +1,5 @@
 .globl read
+.globl readi
 .intel_syntax noprefix
 
 .section .text
@@ -9,6 +10,12 @@ read:
     and al, 1
     cmp al, 1
     jne read
+
+    mov rax, 0
+    in al, 0x60
+    ret
+
+readi:
 
     mov rax, 0
     in al, 0x60

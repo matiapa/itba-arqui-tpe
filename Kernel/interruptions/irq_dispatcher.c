@@ -1,5 +1,6 @@
 #include <stdint.h>
 #include <screen_driver.h>
+#include <keyboard_driver.h>
 #include <lib.h>
 
 static void int_20();
@@ -27,7 +28,12 @@ void int_20() {
 }
 
 
+void storeState();
+
+int x=100;
+
 // Keyboard
 void int_21() {
+
 
 }

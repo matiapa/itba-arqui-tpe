@@ -1,1 +1,3 @@
 int read();
+
+int readi();

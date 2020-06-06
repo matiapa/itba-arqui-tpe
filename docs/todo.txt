@@ -35,6 +35,8 @@ Apps:
   - gettime
   - cpuinfo
   - cputemp
+  - divZeroException
+  - invalidOpcodeException
 
 
 - Fix RAX on regdump

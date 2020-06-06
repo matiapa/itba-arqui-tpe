@@ -49,7 +49,7 @@ int isDecimalPoint(char c) {
 }
 
 int isSpace(char c) {
-    if (c==' ' || c=='\t' || c=='\n' == c==13)
+    if (c==' ' || c=='\t' || c=='\n' || c==13)
         return 1;
     return 0;
 }

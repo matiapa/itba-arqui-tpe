@@ -63,6 +63,5 @@ getTemperature:
     and rax, 0xCF0000   # Get bytes 16-23
     shr rax, 16
 
-    add rdi, rax   # Add target+offset and return
-    mov rax, rdi
+    sub rax, rdi   # Substract target-offset and return
     ret
