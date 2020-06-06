@@ -1,5 +1,5 @@
-// Backspace: 14, Tab: 15, Enter: 28, Ctrl: 29, LShift: 42/170, RShift: 54/182, Alt: 56, Space: 57, F1-F10: 59-68
-// Cmd: 91, LA: 224/75, RA: 224/77
+// Backspace: 14, Tab: 15, Enter: 28, Ctrl: 29, LShift: 42/170, RShift: 54/182, Alt: 56, Space: 57, F1-F10: 59-68, Cmd: 91
+// These keys are preceded by a 224. LA: 75/203, RA: 77/205, DEL: 83/211
 
 char keyboard_map[64] = {
     0,27,'1','2','3','4','5','6','7','8','9','0','-','=',8,9,
@@ -24,6 +24,7 @@ int read();
 
 int shift=0;
 int caps=0;
+int specKey=0;
 
 
 char getChar(){
@@ -48,11 +49,21 @@ char getChar(){
         return 14;
     }
 
+    // Special key
+    if(keyCode == 224){
+        specKey = specKey ? 0 : 1;
+        return getChar();
+    }
+
+
     if(keyCode == 59)
         return f1Code;
 
     if(keyCode == 60)
         return f2Code;
+
+    if(specKey && keyCode == 83)
+        return suprCode;
 
 
     // Unused key, wait for another one

@@ -2,8 +2,6 @@
  KERNEL
 --------
 
-- Check rip and eflags registers on dump
-
 Syscalls:
 ✓ read
 ✓ draw
@@ -15,8 +13,8 @@ Syscalls:
 ✓ cputemp
 
 Exceptions:
-- Div zero
-- Invalid opcode
+✓ Div zero
+✓ Invalid opcode
 
 ------------
  USERSPACE
@@ -24,8 +22,8 @@ Exceptions:
 
 Stdlib:
 - putChar
-- printf
-- getChar
+✓ printf
+✓ getChar
 - scanf
 
 Apps:
@@ -37,3 +35,9 @@ Apps:
   - gettime
   - cpuinfo
   - cputemp
+
+
+- Fix RAX on regdump
+- Fix temperature
+- Improve documentation
+- Check weird cases

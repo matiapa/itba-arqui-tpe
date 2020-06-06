@@ -14,8 +14,6 @@ int main(){
 
 	if(lastException.handled == 1){
 
-		test();
-
 		initWindow1();
 		initWindow2();
 

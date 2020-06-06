@@ -97,6 +97,8 @@ void testRegDump(){
     regDumpTestSet();
     regDump(&dump);
 
+    printf("RAX: %x\\n", 1, dump.rax);
+
     if(dump.rbx==2 && dump.rcx==3 && dump.rdx==4)
         printf("- GPR passed\\n", 0);
     else

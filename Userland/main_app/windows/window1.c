@@ -79,6 +79,10 @@ void window1(){
 			return;
 		}
 
+		if(c==suprCode){
+			//clearScreen();
+		}
+
 		printChar(c);
 
 		if (c == '=') {
