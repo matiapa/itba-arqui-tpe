@@ -38,7 +38,7 @@ void test(){
     createWindow();
 	w.activeCursor = bodyCursor;
 
-    testDivByZero(0);
+    //testDivByZero(0);
     //testInvalidOpcode();
 
     testRegDump();

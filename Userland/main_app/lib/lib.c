@@ -187,7 +187,8 @@ void printf(char *format, int nargs, ...){
             }
 
             if(format[pos] == 'f'){
-                //print(dtoa(va_arg(valist, double)));
+                char str[20];
+                print(dtoa(va_arg(valist, double), str));
                 continue;
             }            
 
