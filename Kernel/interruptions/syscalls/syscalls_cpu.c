@@ -38,12 +38,10 @@ void sysCpuInfo(CPUInfo * info){
 
 // ---------------------------------------------------------------------------------------------------------------------------
 
-
-void sysRegDump(RegDump *dump){
-
-    getRegisters(dump);
-
-}
+/* 
+* Although this function performs a direct call to an ASM function, it has been wrapped into a C function for allowing easier
+* modification if a more complex behaviour wants to be added in a future
+*/
 
 
 int sysCPUTemp(){

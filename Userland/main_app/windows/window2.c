@@ -68,3 +68,22 @@ void window2(){
 	}
 
 }
+
+
+void cmdRegDump(){
+	RegDump * dump = malloc(sizeof(RegDump));
+    regDump(dump);
+
+	printf("RAX: %x\\n", 1, dump->rax);
+    printf("RBX: %x\\n", 1, dump->rbx);
+    printf("RCX: %x\\n", 1, dump->rcx);
+    printf("RDX: %x\\n\\n", 1, dump->rdx);
+
+    printf("RSI: %x\\n", 1, dump->rsi);
+    printf("RDI: %x\\n\\n", 1, dump->rdi);
+
+    printf("RSP: %x\\n", 1, dump->rsp);
+    printf("RBP: %x\\n\\n", 1, dump->rbp);
+
+    printf("RIP: %x\\n", 1, dump->rip);
+}

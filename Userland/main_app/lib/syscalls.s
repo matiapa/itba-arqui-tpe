@@ -1,4 +1,5 @@
 .intel_syntax noprefix
+.global valueSet
 
 .macro syscall name, code
 .global \name
@@ -11,8 +12,7 @@
 syscall draw, 1
 syscall read, 2
 syscall getRes, 3
-syscall regDump, 4
-syscall memDump, 5
-syscall getTime, 6
-syscall cpuInfo, 7
-syscall cpuTemp, 8
+syscall memDump, 4
+syscall getTime, 5
+syscall cpuInfo, 6
+syscall cpuTemp, 7

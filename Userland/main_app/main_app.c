@@ -6,9 +6,10 @@ void window1();
 void window2();
 void initWindow1();
 void initWindow2();
-void tests();
 
 int main(){
+
+	test();
 
 	initWindow1();
 	initWindow2();

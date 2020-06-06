@@ -1,11 +1,17 @@
 .global getBrandName
 .global getBrandIndex
-.global getRegisters
 .global getTemperature
 .intel_syntax noprefix
 
 .section .text
 
+
+# --------------------------------------------------
+#           getBrandName & getBrandIndex
+# --------------------------------------------------
+#
+# Brand name returns a string description
+# Brand index returns a number that can be matched to a string with more detials of processor
 
 .macro _getBrand part
     mov eax, 0x80000002+\part
@@ -36,29 +42,13 @@ getBrandIndex:
     ret
 
 
-getRegisters:
-    mov [rdi], rax
-    mov [rdi+8], rbx
-    mov [rdi+16], rcx
-    mov [rdi+24], rdx
-    mov [rdi+32], rsi
-    mov [rdi+40], rdi
-    mov [rdi+48], rbp
-    mov [rdi+56], rsp
-    #mov [rdi+64], rip
-    mov [rdi+72], r8
-    mov [rdi+80], r9
-    mov [rdi+88], r10
-    mov [rdi+96], r11
-    mov [rdi+104], r12
-    mov [rdi+112], r13
-    mov [rdi+120], r14
-    mov [rdi+128], r15
-    #mov [rdi+136], eflags
-    ret
-
+# --------------------------------------
+#           getTemperature
+# --------------------------------------
+#
 # MSR information taken from https://courses.cs.washington.edu/courses/cse451/18sp/readings/ia32-4.pdf, page 27 and 263
-# Based on Kaby Lake architecture
+# The structures of MSR vary from architecture, Kaby Lake was taken for this function
+# IA32_THERMAL_STATUS holds an offset from TCC activation temperature, which is holded by MSR_TEMPERATURE_TARGET
 
 getTemperature:
     mov rdx, 0
@@ -66,13 +56,13 @@ getTemperature:
     rdmsr
     and rax, 0xCF0000   # Get bytes 16-23
     shr rax, 16
-    mov rbx, rax
+    mov rdi, rax
 
     mov rcx, 0x1A2  # MSR_TEMPERATURE_TARGET
     rdmsr
     and rax, 0xCF0000   # Get bytes 16-23
     shr rax, 16
 
-    add rbx, rax   # Add target+offset and return
-    mov rax, rbx
+    add rdi, rax   # Add target+offset and return
+    mov rax, rdi
     ret

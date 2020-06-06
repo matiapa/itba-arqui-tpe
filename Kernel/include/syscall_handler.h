@@ -1,1 +1,1 @@
-void _syscallHandler();
+void _syscallDispatcher();

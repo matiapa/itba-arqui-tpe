@@ -1,17 +1,16 @@
-.globl _syscallHandler
+.globl _syscallDispatcher
 .extern sysDraw
 .extern sysRead
 .extern sysGetRes
 .extern sysMemDump
 .extern sysGetTime
 .extern sysCpuInfo
-.extern sysRegDump
 .extern sysCPUTemp
 .intel_syntax noprefix
 
 .section .text
 
-_syscallHandler:
+_syscallDispatcher:
     cmp rax, 1
     je _draw
 
@@ -22,18 +21,15 @@ _syscallHandler:
     je _getRes
 
     cmp rax, 4
-    je _regDump
-
-    cmp rax, 5
     je _memDump
 
-    cmp rax, 6
+    cmp rax, 5
     je _getTime
 
-    cmp rax, 7
+    cmp rax, 6
     je _cpuInfo
 
-    cmp rax, 8
+    cmp rax, 7
     je _cpuTemp
 
     iretq
@@ -60,10 +56,6 @@ _getTime:
 
 _cpuInfo:
     call sysCpuInfo
-    iretq
-
-_regDump:
-    call sysRegDump
     iretq
 
 _cpuTemp:

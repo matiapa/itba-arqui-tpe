@@ -4,16 +4,14 @@ NAME        RDI     RSI                RDX                      RCX             
 DRAW        1       uint8_t xcord      uint8_t ycord            uint8 rgb      Draws a pixel at (x,y) with rgb color (in hex), returns void.
 READ        2                                                                  Waits for a keystroke and returns its code.
 GETRES      3       ScreenRes * res                                            Load screen resolution into res, returns void.
-REGDUMP     4       RegDump * dump                                             Loads current value of registers into dump, returns void. It's size is 144 bytes.
-MEMDUMP     5       void * src         void * dest                             Loads 32 bytes of memory from src to dest, returns void.
-GETTIME     6       Time * time                                                Loads system time into time, returns void.
-CPUINFO     7       CpuInfo * name                                             Loads processor brand name, and description, with a max length of 50 and 70 bytes each.
-CPUTEMP     8                                                                  Returns the temperature of the CPU in Celsius.
+MEMDUMP     4       void * src         void * dest                             Loads 32 bytes of memory from src to dest, returns void.
+GETTIME     5       Time * time                                                Loads system time into time, returns void.
+CPUINFO     6       CpuInfo * name                                             Loads processor brand name, and description, with a max length of 50 and 70 bytes each.
+CPUTEMP     7                                                                  Returns the temperature of the CPU in Celsius.
 
 
 STRUCTURES:
 
 ScreenRes { int height, int width}
-RegDump { uint64_t rax, rbx, rcx, rdx, rsi, rdi, rbp, rsp, rip, r8, ..., r15, uint32_t eflags }
 Time { int hours, int minutes, int seconds }
 CpuInfo { char * brandName, char * brandDesc }

@@ -1,1 +1,1 @@
-void testMemDump();
+void test();
