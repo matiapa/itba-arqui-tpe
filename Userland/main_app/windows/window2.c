@@ -1,7 +1,15 @@
+/*---------------------------------------------------------------------------------------------------
+|   WINDOW_2.C    |                                                                             	|
+|----------------------                                                                             |
+| This windows will display the shell program.													|
+| Press ENTER to execute a command.															|
+| Press F1 to switch to calculator program.																|
+---------------------------------------------------------------------------------------------------*/
+
 #include <windows_lib.h>
 #include <keyboard_lib.h>
-#include <userlib.h>
-#include <windows.h>
+#include <std_lib.h>
+#include <asm_lib.h>
 #include <syscalls.h>
 
 
@@ -10,9 +18,9 @@
 ------------------------------------------------------------------------------------------------------------------------- */
 
 static Window w;
-#define cursor w2.cursors[w2.activeCursor]
-#define NEWLINE 13
 
+#define NEWLINE 13
+#define BUFFERW2 20
 
 /* --------------------------------------------------------------------------------------------------------------------------
                                         		SHELL DEFINITIONS
@@ -31,18 +39,23 @@ typedef enum{
 
 command setCommand(char * buffer, int length, char * string);
 
-void printCPUTemp(void);
-void help(void);
-void printMemDump(char *start);
-void printMPInfo(void);
-void printRegDump(void);
-void printTime(void);
+static void printCPUTemp(void);
+static void help(void);
+static void printMemDump(char *start);
+static void printMPInfo(void);
+static void printRegDump(void);
+static void printTime(void);
 
 static void printWarning(int num);
 
 /* --------------------------------------------------------------------------------------------------------------------------
                                         	WINDOW METHODS
 ------------------------------------------------------------------------------------------------------------------------- */
+
+/* -----------------------------------------------------------
+ Defines the position and size of the window (all right half)
+ and assings a color to title and body cursors
+-------------------------------------------------------------- */
 
 static void createWindow(){
 
@@ -61,6 +74,23 @@ static void createWindow(){
 }
 
 
+/* -----------------------------------------------------------
+ Draws a line below the title to indicate that this windows
+ is currently selected
+-------------------------------------------------------------- */
+
+static void drawIndicator(int color){
+
+	for(int x=indicatorX; x<indicatorWidth; x++)
+		drawPoint(x, indicatorY, indicatorHeight, color);
+
+}
+
+
+/* -----------------------------------------------------------
+ Creates the window, and draws the title
+-------------------------------------------------------------- */
+
 void initWindow2(){
 
 	createWindow();
@@ -78,13 +108,10 @@ void initWindow2(){
 }
 
 
-static void drawIndicator(int color){
-
-	for(int x=indicatorX; x<indicatorWidth; x++)
-		drawPoint(x, indicatorY, indicatorHeight, color);
-
-}
-
+/* -------------------------------------------------------------
+ Method that activates when this window becomes selected
+ it waits for a key press constantly and handles it appropiately
+---------------------------------------------------------------- */
 
 void window2(){
 
@@ -164,7 +191,7 @@ const int bufferText = 70;
 const int bufferMem = 33;
 
 
-void printMPInfo(void) {
+static void printMPInfo(void) {
     CPUInfo info;
 
 	char brandName[50], brandDesc[70];
@@ -178,13 +205,13 @@ void printMPInfo(void) {
 }
 
 
-void printCPUTemp(void) {
+static void printCPUTemp(void) {
     int temp = cpuTemp();
     printf("\\n Computer's Temperature in Celcius: %d\\n", 1, temp);
 }
 
 
-void printTime(void) {
+static void printTime(void) {
     Time t ;
     getTime(&t);
 
@@ -192,7 +219,7 @@ void printTime(void) {
 }
 
 
-void printRegDump(void) {
+static void printRegDump(void) {
     RegDump reg;
     regDump(&reg);
 
@@ -220,7 +247,7 @@ void printRegDump(void) {
 }
 
 
-void printMemDump(char * start) {   //TODO
+static void printMemDump(char * start) {   //TODO
 	char src[bufferMem];
     char dest[bufferMem];
 	
@@ -234,7 +261,7 @@ void printMemDump(char * start) {   //TODO
 }
 
 
-void help(void) {
+static void help(void) {
     newLine();
     printLine("On this Terminal you can try the following commands:");
     printLine(" --- --- --- --- --- --- --- --- --- --- --- --- ---");

@@ -1,5 +1,3 @@
-int read();
-
 char getChar();
 
 extern int f1Code;

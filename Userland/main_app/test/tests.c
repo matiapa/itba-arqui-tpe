@@ -1,10 +1,42 @@
-#include <windows_lib.h>
-#include <userlib.h>
-#include <syscalls.h>
+/*---------------------------------------------------------------------------------------------------
+|   TEST_WINDOW.C    |                                                                              |
+|----------------------                                                                             |
+| This windows will run tests on all the syscalls and some library functions. Some of the tests     |
+| will automatically indicate if they passed, and some others will display information useful for   |
+| evaluating the behaviour of the system.                                   				        |
+---------------------------------------------------------------------------------------------------*/
 
-#define bodyCursor 0
+#include <windows_lib.h>
+#include <std_lib.h>
+#include <syscalls.h>
+#include <asm_lib.h>
+
+/* --------------------------------------------------------------------------------------------------------------------------
+                                        		DEFINITIONS
+------------------------------------------------------------------------------------------------------------------------- */
+
+#define cursor 0
 
 static Window w;
+
+void regDumpTestSet();
+void invalidOpcode();
+
+static void testRegDump();
+static void testMemDump();
+static void testGetTime();
+static void testCPUTemp();
+static void testCPUInfo();
+static void testGetRegBkp();
+
+static void testInvalidOpcode();
+static int testDivByZero(int n);
+
+
+/* --------------------------------------------------------------------------------------------------------------------------
+                                        		METHODS
+------------------------------------------------------------------------------------------------------------------------- */
+
 
 static void createWindow(){
 
@@ -14,29 +46,18 @@ static void createWindow(){
 	w.xi = 0; w.xf = res.width;
     w.yi = 0; w.yf = res.height;
 
-	w.cursors[bodyCursor].x=0;	w.cursors[bodyCursor].y=0;
-	w.cursors[bodyCursor].fontColor=0xFFFFFF;	w.cursors[bodyCursor].fontSize=2;
+	w.cursors[cursor].x=0;	w.cursors[cursor].y=0;
+	w.cursors[cursor].fontColor=0xFFFFFF;	w.cursors[cursor].fontSize=2;
 
     setWindow(&w);
 
 }
 
 
-void testRegDump();
-void regDumpTestSet();
-void testMemDump();
-void testGetTime();
-void testCPUTemp();
-void testCPUInfo();
-
-void testInvalidOpcode();
-int testDivByZero(int n);
-
-
 void test(){
 
     createWindow();
-	w.activeCursor = bodyCursor;
+	w.activeCursor = cursor;
 
     //testDivByZero(0);
     //testInvalidOpcode();
@@ -46,17 +67,14 @@ void test(){
     testGetTime();
     testCPUTemp();
     testCPUInfo();
+    testGetRegBkp();
 
     while(1);
 
 }
 
 
-/* --------------------------------------------------------------------
-   Test that all registers are dumped correctly
--------------------------------------------------------------------- */
-
-void testRegDump(){
+static void testRegDump(){
 
     printf("RegDump test\\n", 0);
 
@@ -108,7 +126,7 @@ void testRegDump(){
 }
 
 
-void testMemDump(){
+static void testMemDump(){
 
     // Reserve 33 bytes and differ the last one
     char ptr[33], ptrDmp[33];
@@ -128,7 +146,7 @@ void testMemDump(){
 }
 
 
-void testGetTime(){
+static void testGetTime(){
 
     Time time;
 	getTime(&time);
@@ -141,7 +159,7 @@ void testGetTime(){
 }
 
 
-void testCPUInfo(){
+static void testCPUInfo(){
 
     CPUInfo info;
 
@@ -159,7 +177,7 @@ void testCPUInfo(){
 }
 
 
-void testCPUTemp(){
+static void testCPUTemp(){
     
     int temp = cpuTemp();
 
@@ -171,7 +189,7 @@ void testCPUTemp(){
 }
 
 
-void testGetRegBkp(){
+static void testGetRegBkp(){
 
     RegBkp bkp;
     getRegBkp(&bkp);
@@ -180,9 +198,7 @@ void testGetRegBkp(){
 }
 
 
-void invalidOpcode();
-
-void testInvalidOpcode(){
+static void testInvalidOpcode(){
 
     invalidOpcode();
 
@@ -191,7 +207,7 @@ void testInvalidOpcode(){
 
 // The argument n was placed to avoid compiler warning of div by zero
 
-int testDivByZero(int n){
+static int testDivByZero(int n){
 
     return 2/n;
 

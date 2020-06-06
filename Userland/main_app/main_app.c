@@ -1,11 +1,14 @@
+/*---------------------------------------------------------------------------------------------------
+|   MAIN_APP.C    |                                                                              	|
+|----------------------                                                                             |
+| This app will alternate between two windows, starting with the first one. Also, since it is the  	|
+| app start point, it will check if an exception was produced before, and if so, display the		|
+| exceptions screen.                                  				        						|
+---------------------------------------------------------------------------------------------------*/
+
 #include <syscalls.h>
 #include <tests.h>
-
-void window1();
-void window2();
-void initWindow1();
-void initWindow2();
-void exception(LastException LastException);
+#include <windows.h>
 
 int main(){
 

@@ -1,5 +1,16 @@
+/*---------------------------------------------------------------------------------------------------
+|   KEYBOARD_LIB.C    |                                                                             |
+|----------------------                                                                             |
+| This library wraps the READ syscall, and handles the keyboard layout and special key combinations |
+---------------------------------------------------------------------------------------------------*/
+
+#include <syscalls.h>
+
+
 // Backspace: 14, Tab: 15, Enter: 28, Ctrl: 29, LShift: 42/170, RShift: 54/182, Alt: 56, Space: 57, F1-F10: 59-68, Cmd: 91
 // These keys are preceded by a 224. LA: 75/203, RA: 77/205, DEL: 83/211
+
+// Keys represented with a 0 are not ASCII representable
 
 char keyboard_map[64] = {
     0,27,'1','2','3','4','5','6','7','8','9','0','-','=',8,9,
@@ -15,12 +26,11 @@ char shifted_keyboard_map[64] = {
     'c','v','b','n','m','<','>','?',0,0,0,' '
 };
 
+// These special codes have been defined for representing special key as ASCII characters that wouldn't be used in this app otherwise
 
 int f1Code = 1;
 int f2Code = 2;
 int suprCode = 3;
-
-int read();
 
 int shift=0;
 int caps=0;
@@ -49,7 +59,7 @@ char getChar(){
         return 14;
     }
 
-    // Special key
+    // Special key, has to get the next keyCode
     if(keyCode == 224){
         specKey = specKey ? 0 : 1;
         return getChar();

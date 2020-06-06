@@ -1,26 +1,27 @@
-#include <windows_lib.h>
-#include <userlib.h>
-#include <font.h>
+/*---------------------------------------------------------------------------------------------------
+|   WINDOWS_LIB.C    |                                                                              |
+|---------------------                                                                              |
+| This libary implements all the needed functions for a window to work, such as methods for drawing |
+  and writing on its own space. Also, it handles the work of managing which is the selected screen  |
+---------------------------------------------------------------------------------------------------*/
 
-const int HEIGHT = 1920;
-const int WIDTH = 780;
+#include <windows_lib.h>
+#include <std_lib.h>
+#include <font.h>
+#include <syscalls.h>
 
 
 /* --------------------------------------------------------------------------------------------------------------------------
                                             WINDOWS METHODS
 -------------------------------------------------------------------------------------------------------------------------- */
 
-Window *window;
+static Window *window;
 
 
 void setWindow(Window *currWindow){
     window=currWindow;
 }
 
-
-// Cursor * cursor(){
-//     return &(window->cursors[window->activeCursor]);
-// }
 
 #define cursor window->cursors[window->activeCursor]
 
@@ -32,8 +33,6 @@ void setWindow(Window *currWindow){
 /* --------------------------------------------------------------------------------------------------------------------------
                                             DRAW METHODS
 -------------------------------------------------------------------------------------------------------------------------- */
-
-void draw(int x, int y, int rgb);
 
 
 void drawPoint(int x, int y, int size, int rgb){
@@ -66,12 +65,9 @@ void drawChar(int x, int y, char c, int size, int rgb) {
 /* --------------------------------------------------------------------------------------------------------------------------
                                             TEXT METHODS
 -------------------------------------------------------------------------------------------------------------------------- */
-
-const int fontWidth = 8;
-const int fontHeight = 8;
  
-int charSpacing = 1;
-int lineSpacing = 1;
+#define charSpacing 1;
+#define lineSpacing 1;
 
 
 void clearScreen(){
@@ -85,7 +81,7 @@ void clearScreen(){
 }
 
 
-void nextChar(){
+static void nextChar(){
 
     cursor.x += cursor.fontSize*fontWidth+charSpacing;
 
@@ -102,7 +98,7 @@ void nextChar(){
 }
 
 
-void prevChar(){
+static void prevChar(){
 
     cursor.x -= cursor.fontSize*fontWidth+charSpacing;
 

@@ -1,16 +1,19 @@
+/*---------------------------------------------------------------------------------------------------
+|   STDLIB.C    |                                                                                      |
+|----------------                                                                            |
+| This libary implements a bare version of C stdlib, providing functions such as prinf, itoa, etc.  |
+---------------------------------------------------------------------------------------------------*/
+
 #include <keyboard_lib.h>
 #include <windows_lib.h>
 #include <stdarg.h>
-#include <userlib.h>
+#include <std_lib.h>
 #include <stdint.h>
 
 
-#define DTOA_FLOAT_MAX_LEN 4
-#define EPSILON 0.0001
-
-/* --------------------------------------------------------------------------- 
-                            CHAR FUNCTIONS
- --------------------------------------------------------------------------- */
+/* ------------------------------------------------------------------------------------------------------------------ 
+                                                CHAR FUNCTIONS
+ -------------------------------------------------------------------------------------------------------------------- */
 
 int isLower(char c) {
     if (c>='a' && c<='z')
@@ -55,9 +58,14 @@ int isSpace(char c) {
 }
 
 
-/* --------------------------------------------------------------------------- 
-                            STRING FUNCTIONS
- --------------------------------------------------------------------------- */
+/* ------------------------------------------------------------------------------------------------------------------ 
+                                            STRING FUNCTIONS
+ -------------------------------------------------------------------------------------------------------------------- */
+
+/* -----------------------------------------------------------
+ Function used in itoa and dtoa
+ Taken from https://www.geeksforgeeks.org/implement-itoa/
+----------------------------------------------------------- */
 
 void reverseStr(char * str, int length) { 
     int start = 0; 
@@ -71,13 +79,15 @@ void reverseStr(char * str, int length) {
     } 
 }
 
+
 /* -----------------------------------------------------------
+ Function to convert an integer to a string
  Taken from https://www.geeksforgeeks.org/implement-itoa/
 ----------------------------------------------------------- */
 
 char* itoa(int num, char* str, int base){     
     int i = 0;
-    int isNegative = 0; 
+    int isNegative = 0;
   
     if (num == 0){ 
         str[i++] = '0'; 
@@ -107,6 +117,13 @@ char* itoa(int num, char* str, int base){
     return str; 
 }
 
+
+/* -----------------------------------------------------------
+ Function to convert an double to a string
+----------------------------------------------------------- */
+
+#define DTOA_FLOAT_MAX_LEN 4
+#define EPSILON 0.0001
 
 char * dtoa(double num, char *str) {
 
@@ -151,8 +168,10 @@ char * dtoa(double num, char *str) {
 
 }
 
+
 /* -----------------------------------------------------------
-    Bare printf, only supports dec and hex nums as formats
+ Printf that supports integers, doubles, strings and hex
+ display as possible formats
 -------------------------------------------------------------- */
 
 void printf(char *format, int nargs, ...){
@@ -220,11 +239,14 @@ void printf(char *format, int nargs, ...){
 
     va_end(valist);
 
-
 }
 
-// If different, returns 0
-// If equal, returns 1
+
+/* -----------------------------------------------------------
+ Compares two strings until one of the two ends and returns 1
+ if they are equal or 0 otherwise
+----------------------------------------------------------- */
+
 int strcmp(char *str1, char *str2){
 
     for(int i=0; str1[i]!=0 || str2[i]!=0; i++){
@@ -236,8 +258,12 @@ int strcmp(char *str1, char *str2){
 
 }
 
-// If different, returns 0
-// If equal, returns 1
+
+/* --------------------------------------------------------------
+ Compares a certain amount of chars of two strings and returns 1
+ if they are equal or 0 otherwise
+-------------------------------------------------------------- */
+
 int strncmp(char * s1, char * s2, int length) {
 
     for (int i=0; i<length; i++) {

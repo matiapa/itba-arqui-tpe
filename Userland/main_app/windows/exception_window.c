@@ -1,10 +1,31 @@
+/*---------------------------------------------------------------------------------------------------
+|   EXCEPTION_WINDOW.C    |                                                                         |
+|----------------------                                                                             |
+| This windows display exception information when they are produced. This includes common registers |
+|  at the moment of the exception, and which was the exception produced.					        |
+---------------------------------------------------------------------------------------------------*/
+
 #include <windows_lib.h>
-#include <userlib.h>
+#include <std_lib.h>
 #include <syscalls.h>
 #include <keyboard_lib.h>
-#define bodyCursor 0
+
+
+/* --------------------------------------------------------------------------------------------------------------------------
+                                        		DEFINITIONS
+------------------------------------------------------------------------------------------------------------------------- */
+
+#define cursor 0
 
 static Window w;
+
+void main();
+
+
+/* --------------------------------------------------------------------------------------------------------------------------
+                                        		METHODS
+------------------------------------------------------------------------------------------------------------------------- */
+
 
 static void createWindow(){
 
@@ -14,19 +35,18 @@ static void createWindow(){
 	w.xi = 0; w.xf = res.width;
     w.yi = 0; w.yf = res.height;
 
-	w.cursors[bodyCursor].x=0;	w.cursors[bodyCursor].y=0;
-	w.cursors[bodyCursor].fontColor=0xFFFFFF;	w.cursors[bodyCursor].fontSize=2;
+	w.cursors[cursor].x=0;	w.cursors[cursor].y=0;
+	w.cursors[cursor].fontColor=0xFFFFFF;	w.cursors[cursor].fontSize=2;
 
     setWindow(&w);
 
 }
 
-void main();
 
 void exception(LastException lastException){
 
     createWindow();
-	w.activeCursor = bodyCursor;
+	w.activeCursor = cursor;
 
     for(int x=0; x<w.xf-w.xi; x++){
         for(int y=0; y<w.yf-w.yi; y++){

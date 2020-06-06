@@ -1,24 +1,39 @@
+/*---------------------------------------------------------------------------------------------------
+|   WINDOW_1.C    |                                                                             	|
+|----------------------                                                                             |
+| This windows will display the calculator program.													|
+| Press ENTER to calculate an expression.															|
+| Press DEL to drop the current expression.															|
+| Press F2 to switch to shell program.																|
+---------------------------------------------------------------------------------------------------*/
+
 #include <windows_lib.h>
 #include <keyboard_lib.h>
-#include <windows.h>
-#include <userlib.h>
+#include <std_lib.h>
 #include <syscalls.h>
 #include <stdint.h>
 
-#define NULL ((void *) 0)
-#define titleCursor 0
-#define bodyCursor 1
-
-#define cursor w1.cursors[w1.activeCursor]
-
-void calculateString(char *s);
-
-// static void printWarning(int num);
-
+/* --------------------------------------------------------------------------------------------------------------------------
+                                        		WINDOW DEFINITIONS
+------------------------------------------------------------------------------------------------------------------------- */
 
 static Window w;
 
-void createWindow(){
+
+/* --------------------------------------------------------------------------------------------------------------------------
+                                        		CALCULATOR DEFINITIONS
+------------------------------------------------------------------------------------------------------------------------- */
+
+
+static void calculateString(char *s);
+static void printWarning(int num);
+
+/* -----------------------------------------------------------
+ Defines the position and size of the window (all left half)
+ and assings a color to title and body cursors
+-------------------------------------------------------------- */
+
+static void createWindow(){
 
 	ScreenRes res;
 	getRes(&res);
@@ -35,6 +50,11 @@ void createWindow(){
 }
 
 
+/* -----------------------------------------------------------
+ Draws a line below the title to indicate that this windows
+ is currently selected
+-------------------------------------------------------------- */
+
 static void drawIndicator(int color){
 
 	for(int x=indicatorX; x<indicatorWidth; x++)
@@ -42,6 +62,11 @@ static void drawIndicator(int color){
 
 }
 
+
+/* -----------------------------------------------------------
+ Creates the window, draws the title, and a separator on the
+ right end of the window.
+-------------------------------------------------------------- */
 
 void initWindow1(){
 
@@ -62,6 +87,11 @@ void initWindow1(){
 
 }
 
+
+/* -------------------------------------------------------------
+ Method that activates when this window becomes selected
+ it waits for a key press constantly and handles it appropiately
+---------------------------------------------------------------- */
 
 void window1(){
 
@@ -111,15 +141,15 @@ void calculateString(char * s) {
 }
 
 
-// static void printWarning(int num) {
-//     printf("\\n >> Error: ", 0);
-//     switch(num) {
-//         case 1: print("Zero division is not allowed.");
-//         break;
-//         case 2: print("To calculate use only numbers or the following operators: ");
-//         printLine("+ - * / ( ) , .");
-//         break;
-//         default: print("Something went wong.");
-//     }
-//     printLine(" Please, try again.");
-// }
+static void printWarning(int num) {
+    printf("\\n >> Error: ", 0);
+    switch(num) {
+        case 1: print("Zero division is not allowed.");
+        break;
+        case 2: print("To calculate use only numbers or the following operators: ");
+        printLine("+ - * / ( ) , .");
+        break;
+        default: print("Something went wong.");
+    }
+    printLine(" Please, try again.");
+}
