@@ -25,21 +25,28 @@ static void createWindow(){
 }
 
 
+void testRegDump();
 void regDumpTestSet();
+void testMemDump();
+
 
 void test(){
 
     createWindow();
 	w->activeCursor = bodyCursor;
 
-
-    //valueSet();
-    testRegDump();
+    printf("Dest: %d", 9);
+    //testRegDump();
+    //testMemDump();
 
     while(1);
 
 }
 
+
+/* --------------------------------------------------------------------
+   Test that all registers are dumped correctly
+-------------------------------------------------------------------- */
 
 void testRegDump(){
 
@@ -94,23 +101,26 @@ void testRegDump(){
 }
 
 
-// void testMemDump(){
+void testMemDump(){
 
-//     // Reserve 33 bytes and differ the last one
-//     char *ptr = (char *) malloc(33);
-// 	char *ptrDmp = (char *) malloc(33);
-// 	ptrDmp[32] = ptr[32]+1;
+    // Reserve 33 bytes and differ the last one
+    char *ptr = (char *) malloc(33);
+	char *ptrDmp = (char *) malloc(33);
+	ptrDmp[32] = ptr[32]+1;
 
-//     // Do a dump of 32 bytes
-// 	memDump(ptr, ptrDmp);
+
+    // Do a dump of 32 bytes
+	int res = memDump(ptr, ptrDmp);
 	
-//     // Check that exactly 32 bytes are equal between addresses
-// 	int i;
-// 	for(i=0; ptr[i]==ptrDmp[i]; i++);
-//     if(i!=32)
-//         while(1);
+    // Check that exactly 32 bytes are equal between addresses
+	int i;
+	for(i=0; ptr[i]==ptrDmp[i]; i++);
+    if(i==32)
+        printf("\\nMemDump test passed\\n", 0);
+    else
+        printf("\\nMemDump test failed\\n", 0);
 
-// }
+}
 
 
 // void testGetTime(){
