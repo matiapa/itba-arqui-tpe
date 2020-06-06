@@ -1,5 +1,6 @@
 #include <screen_driver.h>
 #include <lib.h>
+#include <stdint.h>
 
 
 void sysDraw(int cx, int cy, int rgb){

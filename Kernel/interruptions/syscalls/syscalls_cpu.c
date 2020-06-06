@@ -1,7 +1,6 @@
 #include <cpu_info.h>
 #include <lib.h>
 
-
 char brandDescs[22][70] = {
     "This processor does not support the brand identification feature",
     "Intel(R) Celeron(R) processor",

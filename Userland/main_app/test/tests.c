@@ -28,16 +28,20 @@ static void createWindow(){
 void testRegDump();
 void regDumpTestSet();
 void testMemDump();
-
+void testGetTime();
+void testCPUTemp();
+void testCPUInfo();
 
 void test(){
 
     createWindow();
 	w->activeCursor = bodyCursor;
 
-    printf("Dest: %d", 9);
-    //testRegDump();
-    //testMemDump();
+    testRegDump();
+    testMemDump();
+    testGetTime();
+    testCPUTemp();
+    testCPUInfo();
 
     while(1);
 
@@ -66,9 +70,9 @@ void testRegDump(){
     
     int sizeOfRegDump = dump2->rip - dump->rip;
     if(dump3->rip - dump2->rip == sizeOfRegDump + 1)
-        printf("RIP passed\\n", 0);
+        printf("- RIP passed\\n", 0);
     else
-        printf("RIP failed\\n", 0);
+        printf("- RIP failed\\n", 0);
 
 
     // ------------ RBP/RSP -------------------
@@ -82,9 +86,9 @@ void testRegDump(){
     __asm("pop %rax");
 
     if(dump->rsp - dump2->rsp == 8 && dump->rbp == dump2->rbp)
-        printf("RSP/RBP passed\\n", 0);
+        printf("- RSP/RBP passed\\n", 0);
     else
-        printf("RSP/RBP failed\\n", 0);
+        printf("- RSP/RBP failed\\n", 0);
 
 
     // ------------- GPR ------------------
@@ -93,9 +97,9 @@ void testRegDump(){
     regDump(dump);
 
     if(dump->rbx==2 && dump->rcx==3 && dump->rdx==4)
-        printf("GPR passed\\n", 0);
+        printf("- GPR passed\\n", 0);
     else
-        printf("GPR failed\\n", 0);
+        printf("- GPR failed\\n", 0);
    
 
 }
@@ -108,9 +112,8 @@ void testMemDump(){
 	char *ptrDmp = (char *) malloc(33);
 	ptrDmp[32] = ptr[32]+1;
 
-
     // Do a dump of 32 bytes
-	int res = memDump(ptr, ptrDmp);
+	memDump(ptr, ptrDmp);
 	
     // Check that exactly 32 bytes are equal between addresses
 	int i;
@@ -123,41 +126,42 @@ void testMemDump(){
 }
 
 
-// void testGetTime(){
+void testGetTime(){
 
-//     Time * time = malloc(sizeof(Time));
-// 	getTime(time);
+    Time * time = malloc(sizeof(Time));
+	getTime(time);
 
-// 	printLine(itoa(time->hours));
-// 	printLine(itoa(time->minutes));
-// 	printLine(itoa(time->seconds));
+    if(time->hours>=0 && time->hours<=23 && time->minutes>=0 && time->minutes<=59 && time->seconds>=0 && time->seconds<=60)
+        printf("\\nGetTime test passed\\n", 0);
+    else
+        printf("\\nGetTime test failed\\n", 0);
 
-// }
-
-
-// void testCPUInfo(){
-
-//     CPUInfo *info = malloc(sizeof(CPUInfo));
-// 	info->brandName = malloc(50);
-// 	info->brandDesc = malloc(70);
-	
-// 	cpuInfo(info);
-// 	printLine(info->brandName);
-// 	printLine(info->brandDesc);
-
-// }
+}
 
 
-// void testRegDump(){
-//     // RegDump * dump = malloc(sizeof(RegDump));
-// 	// regDump(dump);
-	
-// 	// printLine(itoa(dump->rax));
-// 	// printLine(itoa(dump->rbx));
-// 	// printLine(itoa(dump->rcx));
-// }
+void testCPUInfo(){
+
+    CPUInfo *info = malloc(sizeof(CPUInfo));
+	info->brandName = malloc(50);
+	info->brandDesc = malloc(70);
+
+    cpuInfo(info);
+
+    if(strcmp(info->brandName, "QEMU Virtual CPU version 2.5+") == 1 && strcmp(info->brandDesc, "This processor does not support the brand identification feature") == 1)
+        printf("\\nCPUInfo test passed\\n", 0);
+    else
+        printf("\\nCPUInfo test failed\\n", 0);
+
+}
 
 
-// void testCPUTemp(){
-    // printLine(itoa(cpuTemp()));
-// }
+void testCPUTemp(){
+    
+    int temp = cpuTemp();
+
+    if(temp>24)
+        printf("\\nCPUTemp test passed\\n", 0);
+    else
+        printf("\\nCPUTemp test failed\\n", 0);
+
+}
