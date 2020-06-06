@@ -35,6 +35,7 @@ void load_idt() {
     _cli();
 
     setup_IDT_entry(0, (uint64_t) &_exception0Handler);
+    setup_IDT_entry(6, (uint64_t) &_exception6Handler);
 
     setup_IDT_entry(0x80, (uint64_t) &_syscallDispatcher);
     

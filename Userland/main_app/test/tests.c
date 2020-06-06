@@ -29,10 +29,17 @@ void testGetTime();
 void testCPUTemp();
 void testCPUInfo();
 
+void testInvalidOpcode();
+int testDivByZero(int n);
+
+
 void test(){
 
     createWindow();
 	w.activeCursor = bodyCursor;
+
+    testDivByZero(0);
+    //testInvalidOpcode();
 
     testRegDump();
     testMemDump();
@@ -158,5 +165,23 @@ void testCPUTemp(){
         printf("\\nCPUTemp test passed\\n", 0);
     else
         printf("\\nCPUTemp test failed\\n", 0);
+
+}
+
+
+void invalidOpcode();
+
+void testInvalidOpcode(){
+
+    invalidOpcode();
+
+}
+
+
+// The argument n was placed to avoid compiler warning of div by zero
+
+int testDivByZero(int n){
+
+    return 2/n;
 
 }

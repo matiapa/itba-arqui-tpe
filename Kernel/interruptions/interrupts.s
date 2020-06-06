@@ -13,6 +13,7 @@
 .global _irq05Handler
 
 .global _exception0Handler
+.global _exception6Handler
 
 .extern irqDispatcher
 .extern exceptionDispatcher
@@ -144,6 +145,10 @@ _irq05Handler:
 #Zero Division Exception
 _exception0Handler:
 	exceptionHandler 0
+
+#Invalid Opcode Exception
+_exception6Handler:
+	exceptionHandler 6
 
 haltcpu:
 	cli

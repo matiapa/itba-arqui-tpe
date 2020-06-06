@@ -34,13 +34,19 @@ void exception(LastException lastException){
         }
     }
 
-    if(lastException.id==0){
-            printf("Division by zero detected! Return to elementary school and press enter to continue\\n", 0);
+    switch(lastException.id){
+        case 0:
+            printf("Division by zero detected! Return to elementary school and press enter to restart the system\\n", 0);
+            break;
+        case 6:
+            printf("Invalid opcode detected! Trying to destroy the machine? Received an EMP attack? Press enter to restart the system\\n", 0);
+            break;
     }
 
     RegDump dump;
     regDump(&dump);
 
+    printf("\\nFeed this information to the poor developer's souls", 0);
     printf("\\nRAX: %x - RBX: %x - RCX: %x - RDX: %x", 4, dump.rax, dump.rbx, dump.rcx, dump.rcx);
     printf("\\nRSP: %x - RBP: %x - RSI: %x - RDI: %x", 4, dump.rsp, dump.rbp, dump.rsi, dump.rdi);
     printf("\\nRIP: %x", 1, lastException.eip);
