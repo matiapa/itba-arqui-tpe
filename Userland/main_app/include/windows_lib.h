@@ -1,3 +1,5 @@
+#define BUFFERW2 20
+
 typedef struct Cursor{
     int x, y;
 
@@ -12,7 +14,6 @@ typedef struct Window{
     int activeCursor;
     
 } Window;
-
 
 void setWindow(Window *window);
 

@@ -4,10 +4,22 @@
 #include <windows.h>
 #include <syscalls.h>
 
+
+/* --------------------------------------------------------------------------------------------------------------------------
+                                        		WINDOW DEFINITIONS
+------------------------------------------------------------------------------------------------------------------------- */
+
+static Window w;
 #define cursor w2.cursors[w2.activeCursor]
 #define NEWLINE 13
 
+
+/* --------------------------------------------------------------------------------------------------------------------------
+                                        		SHELL DEFINITIONS
+------------------------------------------------------------------------------------------------------------------------- */
+
 typedef enum{
+	NOCOMMAND,
 	CPUTEMP,
 	HELP,
 	MEMDUMP,
@@ -16,6 +28,9 @@ typedef enum{
 	TIME
 } command;
 
+
+command setCommand(char * buffer, int length, char * string);
+
 void printCPUTemp(void);
 void help(void);
 void printMemDump(char *start);
@@ -23,8 +38,13 @@ void printMPInfo(void);
 void printRegDump(void);
 void printTime(void);
 
+static void printWarning(int num);
 
-static Window w;
+
+
+/* --------------------------------------------------------------------------------------------------------------------------
+                                        	WINDOW METHODS
+------------------------------------------------------------------------------------------------------------------------- */
 
 static void createWindow(){
 
@@ -55,7 +75,7 @@ void initWindow2(){
     }
 
 	w.activeCursor = titleCursor;
-	printLine("Window 2");
+	printLine("Shell");
 
 }
 
@@ -72,46 +92,63 @@ void window2(){
 
 	setWindow(&w);
 	drawIndicator(indicatorColor);
+	
+	newLine();
+	char bufferw2[BUFFERW2];
+	int bw2Iter = 0;
+	command currentCommand = NOCOMMAND;
 
 	w.activeCursor = bodyCursor;
 
 	while(1){
 
 		char c = getChar();
-
+		
 		if(c==f1Code){
 			drawIndicator(0);
 			return;
 		}
 
+		if (bw2Iter == BUFFERW2 && c!=NEWLINE)
+			bw2Iter++;
+		else if(bw2Iter < BUFFERW2)
+			bufferw2[bw2Iter++] = c;
+
 		printChar(c);
 
 		if (c == NEWLINE) {
+			char parameter[BUFFERW2];
+
+			if (bw2Iter > BUFFERW2)
+				currentCommand = NOCOMMAND;
+			else {
+				currentCommand = setCommand(bufferw2, bw2Iter, parameter);
+			}
 			
-			char * start  = "8";
-			command currentCommand = MEMDUMP;
 			switch(currentCommand) {
 				case CPUTEMP:
 					printCPUTemp();
-				break;
+					break;
 				case HELP:
 					help();
-				break;
+					break;
 				case MEMDUMP:	//fix
-					printMemDump(start);
-				break;
+					printMemDump((char *) 8);
+					break;
 				case MPDATA:
 					printMPInfo();
-				break;
+					break;
 				case REGDUMP:
 					printRegDump();
-				break;
+					break;
 				case TIME:
 					printTime();
-				break;
+					break;
 				default:
-				;
+					printWarning(NOCOMMAND);
 			}
+
+			bw2Iter = 0;
 		}
 
 	}
@@ -122,6 +159,7 @@ void window2(){
 /* --------------------------------------------------------------------------------------------------------------------------
                                         SHELL METHODS
 ------------------------------------------------------------------------------------------------------------------------- */
+
 const int bufferText = 70;
 const int bufferMem = 33;
 
@@ -183,8 +221,9 @@ void printRegDump(void) {
 
 
 void printMemDump(char * start) {   //TODO
-    char src[bufferMem];
+	char src[bufferMem];
     char dest[bufferMem];
+	
     dest[bufferMem-1] = src[bufferMem-1]+1;
     memDump(src, dest);
 
@@ -209,4 +248,64 @@ void help(void) {
 
     printLine(" --- --- --- --- --- --- --- --- --- --- --- --- ---");
     newLine();
+}
+
+
+static void printWarning(int num) {
+    printf("\\n >> Error: ", 0);
+    switch(num) {
+        case 0:    
+            printLine("Command not found");
+            printLine("If you want to see the command manual type 'help'.");
+        break;
+        case 1: 
+            print("Zero division is not allowed.");
+        break;
+        case 2: 
+            print("To calculate use only numbers or the following operators: ");
+            printLine("+ - * / ( ) , . =");
+        break;
+        default: 
+            print("Something went wong. ");
+    }
+    printf("Please, try again.\\n\\n",0);
+}
+
+
+static int isCommandTemp(char * buffer, int length) {
+    return 1;
+}
+static int isCommandHelp(char * buffer, int length) {
+    return 1;
+}
+static int isCommandMemdump(char * buffer, int length, char * start) {
+    return 1;
+}
+static int isCommandProcdata(char * buffer, int length) {
+    return 1;
+}
+static int isCommandRegdata(char * buffer, int length) {
+    return 1;
+}
+static int isCommandTime(char * buffer, int length) {
+    return 1;
+}
+
+command setCommand(char * buffer, int length, char * string) {
+
+    if (isCommandTemp(buffer, length))
+        return CPUTEMP;
+    if (isCommandHelp(buffer, length))
+        return HELP;
+    if (isCommandMemdump(buffer, length, string))
+        return MEMDUMP;
+
+    if (isCommandProcdata(buffer, length))
+        return MPDATA;
+    if (isCommandRegdata(buffer, length))
+        return REGDUMP;
+    if (isCommandTime(buffer, length))
+        return TIME;
+    
+    return NOCOMMAND;
 }

@@ -12,7 +12,8 @@
 #define cursor w1.cursors[w1.activeCursor]
 
 void calculateString(char *s);
-void printWarning(int num);
+
+static void printWarning(int num);
 
 
 static Window w;
@@ -106,7 +107,7 @@ void calculateString(char * s) {
 }
 
 
-void printWarning(int num) {
+static void printWarning(int num) {
     printf("\\n >> Error: ", 0);
     switch(num) {
         case 1: print("Zero division is not allowed.");
