@@ -222,7 +222,8 @@ void printf(char *format, int nargs, ...){
 
 }
 
-
+// If different, returns 0
+// If equal, returns 1
 int strcmp(char *str1, char *str2){
 
     for(int i=0; str1[i]!=0 || str2[i]!=0; i++){
@@ -234,9 +235,14 @@ int strcmp(char *str1, char *str2){
 
 }
 
+// If different, returns 0
+// If equal, returns 1
 int strncmp(char * s1, char * s2, int length) {
+
     for (int i=0; i<length; i++) {
-        if (s1[i] != s2[i] || s1[i]==0 || s2[i]==0)
+        if (s1[i] != s2[i])
+            return 0;
+        if (s1[i]==0)
             return 0;
     }
 

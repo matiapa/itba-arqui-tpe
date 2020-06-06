@@ -300,7 +300,7 @@ command setCommand(char * buffer, int length, char * string) {
 
     for (int i=0; i< length; i++) {
         if (!isAllowedChar(buffer[i]))
-            return NOCOMMAND;
+            return TIME;
         buffer[i] = toLower(buffer[i]);
     }
 
