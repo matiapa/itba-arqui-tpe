@@ -9,7 +9,9 @@ int latestException = NO_EXCEPTION;
 
 
 int getLatestException(){
-	return latestException;
+	int aux = latestException;
+	latestException = NO_EXCEPTION;
+	return aux;
 }
 
 

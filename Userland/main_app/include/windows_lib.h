@@ -29,3 +29,5 @@ void printChar(char c);
 void print(char c[]);
 
 void printLine(char c[]);
+
+void newLine();

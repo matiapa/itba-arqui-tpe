@@ -5,22 +5,40 @@
 #include <syscalls.h>
 
 #define cursor w2.cursors[w2.activeCursor]
+#define NEWLINE 13
 
-Window w2;
+typedef enum{
+	CPUTEMP,
+	HELP,
+	MEMDUMP,
+	MPDATA,
+	REGDUMP,
+	TIME
+} command;
+
+void printCPUTemp(void);
+void help(void);
+void printMemDump(char *start);
+void printMPInfo(void);
+void printRegDump(void);
+void printTime(void);
+
+
+static Window w;
 
 static void createWindow(){
 
 	ScreenRes res;
 	getRes(&res);
 
-	w2.xi = res.width/2; w2.xf = res.width;
-    w2.yi = 0; w2.yf = res.height;
+	w.xi = res.width/2; w.xf = res.width;
+    w.yi = 0; w.yf = res.height;
 
-	w2.cursors[titleCursor].x=titleX;	w2.cursors[titleCursor].y=titleY;
-	w2.cursors[titleCursor].fontColor=titleColor;	w2.cursors[titleCursor].fontSize=titleSize;
+	w.cursors[titleCursor].x=titleX;	w.cursors[titleCursor].y=titleY;
+	w.cursors[titleCursor].fontColor=titleColor;	w.cursors[titleCursor].fontSize=titleSize;
 
-	w2.cursors[bodyCursor].x=0;	w2.cursors[bodyCursor].y=bodyY;
-	w2.cursors[bodyCursor].fontColor=bodyColor;	w2.cursors[bodyCursor].fontSize=bodySize;
+	w.cursors[bodyCursor].x=0;	w.cursors[bodyCursor].y=bodyY;
+	w.cursors[bodyCursor].fontColor=bodyColor;	w.cursors[bodyCursor].fontSize=bodySize;
 
 }
 
@@ -28,9 +46,15 @@ static void createWindow(){
 void initWindow2(){
 
 	createWindow();
-	setWindow(&w2);
+	setWindow(&w);
 
-	w2.activeCursor = titleCursor;
+	for(int x=w.xi; x<w.xf; x++){
+        for(int y=w.yi; y<w.yf; y++){
+            draw(x, y, 0x000000);
+        }
+    }
+
+	w.activeCursor = titleCursor;
 	printLine("Window 2");
 
 }
@@ -46,10 +70,10 @@ static void drawIndicator(int color){
 
 void window2(){
 
-	setWindow(&w2);
+	setWindow(&w);
 	drawIndicator(indicatorColor);
 
-	w2.activeCursor = bodyCursor;
+	w.activeCursor = bodyCursor;
 
 	while(1){
 
@@ -62,25 +86,127 @@ void window2(){
 
 		printChar(c);
 
+		if (c == NEWLINE) {
+			
+			char * start  = "8";
+			command currentCommand = MEMDUMP;
+			switch(currentCommand) {
+				case CPUTEMP:
+					printCPUTemp();
+				break;
+				case HELP:
+					help();
+				break;
+				case MEMDUMP:	//fix
+					printMemDump(start);
+				break;
+				case MPDATA:
+					printMPInfo();
+				break;
+				case REGDUMP:
+					printRegDump();
+				break;
+				case TIME:
+					printTime();
+				break;
+				default:
+				;
+			}
+		}
+
 	}
 
 }
 
 
-void cmdRegDump(){
-	RegDump dump;
-    regDump(&dump);
+/* --------------------------------------------------------------------------------------------------------------------------
+                                        SHELL METHODS
+------------------------------------------------------------------------------------------------------------------------- */
+const int bufferText = 70;
+const int bufferMem = 33;
 
-	printf("RAX: %x\\n", 1, dump.rax);
-    printf("RBX: %x\\n", 1, dump.rbx);
-    printf("RCX: %x\\n", 1, dump.rcx);
-    printf("RDX: %x\\n\\n", 1, dump.rdx);
 
-    printf("RSI: %x\\n", 1, dump.rsi);
-    printf("RDI: %x\\n\\n", 1, dump.rdi);
+void printMPInfo(void) {
+    CPUInfo info;
 
-    printf("RSP: %x\\n", 1, dump.rsp);
-    printf("RBP: %x\\n\\n", 1, dump.rbp);
+	char brandName[50], brandDesc[70];
+    info.brandName = (char *) &brandName;
+    info.brandDesc = (char *) &brandDesc;
 
-    printf("RIP: %x\\n", 1, dump.rip);
+    cpuInfo(&info);
+
+    printf("\\nBrand name: %s", 1, info.brandName);
+    printf("\\nBrand description: %s\\n", 1, info.brandDesc);
+}
+
+
+void printCPUTemp(void) {
+    int temp = cpuTemp();
+    printf("\\n Computer's Temperature in Celcius: %d\\n", 1, temp);
+}
+
+
+void printTime(void) {
+    Time t ;
+    getTime(&t);
+
+    printf("\\nTime now: %d:%d:%d\\n", 3, t.hours, t.minutes, t.seconds);
+}
+
+
+void printRegDump(void) {
+    RegDump reg;
+    regDump(&reg);
+
+    printLine("Register's values:");
+    printLine("--- --- --- --- --- --- --- --- --- --- --- --- ---");
+    printf("\\n - rax - %x", 1, reg.rax);
+    printf("\\n - rbx - %x", 1, reg.rbx);
+    printf("\\n - rcx - %x", 1, reg.rcx);
+    printf("\\n - rdx - %x", 1, reg.rdx);
+    printf("\\n - rsi - %x", 1, reg.rsi);
+    printf("\\n - rdi - %x", 1, reg.rdi);
+    printf("\\n - rbp - %x", 1, reg.rbp);
+    printf("\\n - rsp - %x\\n", 1, reg.rsp);
+
+    printf("\\n - r8 - %x", 1, reg.r8);
+    printf("\\n - r9 - %x", 1, reg.r9);
+    printf("\\n - r10 - %x", 1, reg.r10);
+    printf("\\n - r11 - %x", 1, reg.r11);
+    printf("\\n - r12 - %x", 1, reg.r12);
+    printf("\\n - r13 - %x", 1, reg.r13);
+    printf("\\n - r14 - %x", 1, reg.r14);
+    printf("\\n - r15 - %x\\n", 1, reg.r15);
+
+    printLine("--- --- --- --- --- --- --- --- --- --- --- --- ---");
+}
+
+
+void printMemDump(char * start) {   //TODO
+    char src[bufferMem];
+    char dest[bufferMem];
+    dest[bufferMem-1] = src[bufferMem-1]+1;
+    memDump(src, dest);
+
+    newLine();
+    for(int i=0; i<bufferMem; i++) {
+        printf(" - %x\\n",1,src[i]);
+    }
+}
+
+
+void help(void) {
+    newLine();
+    printLine("On this Terminal you can try the following commands:");
+    printLine(" --- --- --- --- --- --- --- --- --- --- --- --- ---");
+
+    printLine(" - cputemp    to get the Computer's Temperature");
+    printLine(" - help       to go to the Help Manual");
+    printLine(" - memdata n  to print Memory starting with address n");
+    printLine(" - mpdata     to get the Microprocessor's Brand Data");
+    printLine(" - regdata    to get the Register's Values");
+    printLine(" - time       to get the Time");
+
+    printLine(" --- --- --- --- --- --- --- --- --- --- --- --- ---");
+    newLine();
 }

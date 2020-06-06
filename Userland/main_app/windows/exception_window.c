@@ -1,6 +1,7 @@
 #include <windows_lib.h>
 #include <userlib.h>
 #include <syscalls.h>
+#include <keyboard_lib.h>
 #define bodyCursor 0
 
 static Window w;
@@ -20,6 +21,7 @@ static void createWindow(){
 
 }
 
+void main();
 
 void exception(int id){
 
@@ -33,7 +35,7 @@ void exception(int id){
     }
 
     if(id==0){
-            printf("Division by zero detected! Return to elementary school and press any key to continue\\n", 0);
+            printf("Division by zero detected! Return to elementary school and press enter to continue\\n", 0);
     }
 
     RegDump dump;
@@ -43,6 +45,10 @@ void exception(int id){
     printf("\\nRSP: %x - RBP: %x - RSI: %x - RDI: %x", 4, dump.rsp, dump.rbp, dump.rsi, dump.rdi);
     printf("\\nRIP: %x", 1, dump.rip);
 
-    while(1);
+    while(1){
+        if(getChar()==13){
+            main();
+        }
+    }
 
 }

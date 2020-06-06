@@ -1,8 +1,16 @@
 #include <stdint.h>
 
+int isAlpha(char);
+
+int isLower(char);
+
+int isUpper(char);
+
 void reverseStr(char str[], int length);
 
 char * itoa(int num, char * str, int base);
+
+char * dtoa(double num, char * str);
 
 void printKeyStrokes();
 
@@ -16,3 +24,4 @@ typedef struct RegDump{
 } RegDump;
 
 void regDump(RegDump *dump);
+
