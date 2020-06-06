@@ -169,7 +169,7 @@ void printf(char *format, int nargs, ...){
             }
 
             if(format[pos] == 'f'){
-                print(dtoa(va_arg(valist, uint64_t)));
+                //print(dtoa(va_arg(valist, double)));
                 continue;
             }            
 

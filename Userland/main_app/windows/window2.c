@@ -76,8 +76,9 @@ void window2(){
 		printChar(c);
 
 		if (c == NEWLINE) {
-			int start = 0;
-			command currentCommand = MPDATA;
+			
+			char * start  = "8";
+			command currentCommand = MEMDUMP;
 			switch(currentCommand) {
 				case CPUTEMP:
 					printCPUtemp();
@@ -88,7 +89,7 @@ void window2(){
 				case MEMDUMP:	//fix
 					printMemdump(start);
 				break;
-				case MPDATA:	//fix
+				case MPDATA:
 					printMPinfo();
 				break;
 				case REGDUMP:

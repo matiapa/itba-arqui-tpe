@@ -168,9 +168,13 @@ void printLine(char s[]){
 /* --------------------------------------------------------------------------------------------------------------------------
                                         SHELL METHODS
 ------------------------------------------------------------------------------------------------------------------------- */
+const int bufferText = 70;
+const int bufferMem = 33;
 
 void printMPinfo(void) {
     CPUInfo * info = malloc(sizeof(CPUInfo));
+    info->brandName = malloc(bufferText);
+    info->brandDesc = malloc(bufferText);
     cpuInfo(info);
 
     printf("\\nBrand name: %s", 1, info->brandName);
@@ -180,7 +184,6 @@ void printMPinfo(void) {
 void printCPUtemp(void) {
     int temp = cpuTemp();
     printf("\\n Computer's Temperature in Celcius: %d\\n", 1, temp);
-    printf("Hola %s", 1, "Hola");
 }
 
 void printTime(void) {
@@ -217,13 +220,16 @@ void printRegdump() {
     printLine("--- --- --- --- --- --- --- --- --- --- --- --- ---");
 }
 
-void printMemdump(int start) {
-
-    int * src = &start;
-    int aux = start + 32 * 8;
-    int * dest = &aux;
-
+void printMemdump(char * start) {   //TODO
+    char * src = (char *) malloc(bufferMem);
+    char * dest = (char *) malloc(bufferMem);
+    dest[bufferMem-1] = src[bufferMem-1]+1;
     memDump(src, dest);
+
+    newLine();
+    for(int i=0; i<bufferMem; i++) {
+        printf(" - %x\\n",1,src[i]);
+    }
 }
 
 void help(void) {
@@ -253,4 +259,17 @@ void calculateString(char * s) {
     print(" >> ");
     printLine(dtoa(result));
 
+}
+
+void printWarning(int num) {
+    printf("\\n >> Error: ", 0);
+    switch(num) {
+        case 1: print("Zero division is not allowed.");
+        break;
+        case 2: print("To calculate use only numbers or the following operators: ");
+        printLine("+ - * / ( ) , .");
+        break;
+        default: print("Something went wong.");
+    }
+    printLine(" Please, try again.");
 }

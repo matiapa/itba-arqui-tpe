@@ -39,7 +39,7 @@ void printTime();
 
 void printRegdump();
 
-void printMemdump(int);
+void printMemdump(char *);
 
 void help();
 

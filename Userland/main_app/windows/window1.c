@@ -74,6 +74,8 @@ void window1(){
 		printChar(c);
 
 		if (c == '=') {
+			newLine();
+			
 			char * aux = "9.8x3+2=";
 			calculateString(aux);
 		}
