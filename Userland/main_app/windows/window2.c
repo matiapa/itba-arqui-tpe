@@ -77,7 +77,7 @@ void window2(){
 
 		if (c == NEWLINE) {
 			int start = 0;
-			command currentCommand = REGDUMP;
+			command currentCommand = CPUTEMP;
 			switch(currentCommand) {
 				case CPUTEMP:
 					printCPUtemp();

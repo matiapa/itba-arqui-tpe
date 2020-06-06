@@ -169,89 +169,53 @@ void printLine(char s[]){
                                         SHELL METHODS
 ------------------------------------------------------------------------------------------------------------------------- */
 
-const int bufferNumber = 15;
-
 void printMPinfo(void) {
     CPUInfo * info = malloc(sizeof(CPUInfo));
     cpuInfo(info);
 
-    print("Brand name: ");
-    printLine(info->brandName);
-    print("Brand description: ");
-    printLine(info->brandDesc);
-
-    /*
-    printf("\nBrand name: %s", info->brandName);
-    printf("\nBrand description: %s\n", info->brandDesc);
-    */
-    newLine();
+    printf("\\nBrand name: %s", info->brandName);
+    printf("\\nBrand description: %s\\n", info->brandDesc);
 }
 
 void printCPUtemp(void) {
     int temp = cpuTemp();
-    char * stemp = malloc(bufferNumber);
-    stemp = itoa(temp,stemp,10);
-
-    newLine();
-    print("Computer's Temperature in Celcius: ");
-    printLine(stemp);
-
-    /*
-    printf("\nComputer's Temperature in Celcius: %d\n\n", temp);
-    */
+    printf("\\n Computer's Temperature in Celcius: %d\\n",temp);
+    double a = 32.2;
+    printf("Hola %f", a);
 }
 
 void printTime(void) {
     Time * t = malloc(sizeof(Time));
     getTime(t);
-    char * s = malloc(bufferNumber);
 
-    print("Time now: ");
-    print(itoa(t->hours,s,10));
-    print(":");
-    print(itoa(t->minutes,s,10));
-    print(":");
-    printLine(itoa(t->seconds,s,10));
-
-    /*
-    printf("\nTime now: %d:%d:%d\n", t->hours, t->minutes, t->seconds);
-    */
+    printf("\\nTime now: %d:%d:%d\\n", t->hours, t->minutes, t->seconds);
 }
 
 void printRegdump() {
     RegDump * reg = malloc(sizeof(RegDump));
     regDump(reg);
-    char * s = malloc(bufferNumber);
 
     printLine("Register's values:");
-    printLine(itoa(reg->rax,s,10));
-    printLine(itoa(reg->rbx,s,10));
+    printLine("--- --- --- --- --- --- --- --- --- --- --- --- ---");
+    printf("\\n - rax - %x", reg->rax);
+    printf("\\n - rbx - %x", reg->rbx);
+    printf("\\n - rcx - %x", reg->rcx);
+    printf("\\n - rdx - %x", reg->rdx);
+    printf("\\n - rsi - %x", reg->rsi);
+    printf("\\n - rdi - %x", reg->rdi);
+    printf("\\n - rbp - %x", reg->rbp);
+    printf("\\n - rsp - %x\\n", reg->rsp);
 
-    /*
-    printf("\nRegister's values:");
-    printf("\n --- --- --- --- --- --- --- --- --- --- --- --- ---");
-    printf("\n - rax - %d", reg->rax);
-    printf("\n - rbx - %d", reg->rbx);
-    printf("\n - rcx - %d", reg->rcx);
-    printf("\n - rdx - %d", reg->rdx);
-    printf("\n - rsi - %d", reg->rsi);
-    printf("\n - rdi - %d", reg->rdi);
-    printf("\n - rbp - %d", reg->rbp);
-    printf("\n - rsp - %d", reg->rsp);
+    printf("\\n - r8 - %x", reg->r8);
+    printf("\\n - r9 - %x", reg->r9);
+    printf("\\n - r10 - %x", reg->r10);
+    printf("\\n - r11 - %x", reg->r11);
+    printf("\\n - r12 - %x", reg->r12);
+    printf("\\n - r13 - %x", reg->r13);
+    printf("\\n - r14 - %x", reg->r14);
+    printf("\\n - r15 - %x\\n", reg->r15);
 
-    printf("\n --- --- --- --- --- --- --- --- --- --- --- --- ---");
-    printf("\n - r8 - %d", reg->r8);
-    printf("\n - r9 - %d", reg->r9);
-    printf("\n - r10 - %d", reg->r10);
-    printf("\n - r11 - %d", reg->r11);
-    printf("\n - r12 - %d", reg->r12);
-    printf("\n - r13 - %d", reg->r13);
-    printf("\n - r14 - %d", reg->r14);
-    printf("\n - r15 - %d", reg->r15);
-
-    printf("\n --- --- --- --- --- --- --- --- --- --- --- --- ---\n");
-    printf("\n - eflags - %d\n\n", reg->eflags);
-    */
+    printLine("--- --- --- --- --- --- --- --- --- --- --- --- ---");
 }
 
 void printMemdump(int start) {

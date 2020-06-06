@@ -166,6 +166,16 @@ void printf(char *format, int nargs, ...){
                 continue;
             }
 
+            if(format[pos] == 'f'){
+                char *str = malloc(20);
+                print(dtoa(va_arg(valist, double)));
+                continue;
+            }            
+
+            if(format[pos] == 's'){
+                print(va_arg(valist, char));
+                continue;
+            }
         }
 
         if(format[pos] == '\\'){
