@@ -173,22 +173,21 @@ void printMPinfo(void) {
     CPUInfo * info = malloc(sizeof(CPUInfo));
     cpuInfo(info);
 
-    printf("\\nBrand name: %s", info->brandName);
-    printf("\\nBrand description: %s\\n", info->brandDesc);
+    printf("\\nBrand name: %s", 1, info->brandName);
+    printf("\\nBrand description: %s\\n", 1, info->brandDesc);
 }
 
 void printCPUtemp(void) {
     int temp = cpuTemp();
-    printf("\\n Computer's Temperature in Celcius: %d\\n",temp);
-    double a = 32.2;
-    printf("Hola %f", a);
+    printf("\\n Computer's Temperature in Celcius: %d\\n", 1, temp);
+    printf("Hola %s", 1, "Hola");
 }
 
 void printTime(void) {
     Time * t = malloc(sizeof(Time));
     getTime(t);
 
-    printf("\\nTime now: %d:%d:%d\\n", t->hours, t->minutes, t->seconds);
+    printf("\\nTime now: %d:%d:%d\\n", 3, t->hours, t->minutes, t->seconds);
 }
 
 void printRegdump() {
@@ -197,23 +196,23 @@ void printRegdump() {
 
     printLine("Register's values:");
     printLine("--- --- --- --- --- --- --- --- --- --- --- --- ---");
-    printf("\\n - rax - %x", reg->rax);
-    printf("\\n - rbx - %x", reg->rbx);
-    printf("\\n - rcx - %x", reg->rcx);
-    printf("\\n - rdx - %x", reg->rdx);
-    printf("\\n - rsi - %x", reg->rsi);
-    printf("\\n - rdi - %x", reg->rdi);
-    printf("\\n - rbp - %x", reg->rbp);
-    printf("\\n - rsp - %x\\n", reg->rsp);
+    printf("\\n - rax - %x", 1, reg->rax);
+    printf("\\n - rbx - %x", 1, reg->rbx);
+    printf("\\n - rcx - %x", 1, reg->rcx);
+    printf("\\n - rdx - %x", 1, reg->rdx);
+    printf("\\n - rsi - %x", 1, reg->rsi);
+    printf("\\n - rdi - %x", 1, reg->rdi);
+    printf("\\n - rbp - %x", 1, reg->rbp);
+    printf("\\n - rsp - %x\\n", 1, reg->rsp);
 
-    printf("\\n - r8 - %x", reg->r8);
-    printf("\\n - r9 - %x", reg->r9);
-    printf("\\n - r10 - %x", reg->r10);
-    printf("\\n - r11 - %x", reg->r11);
-    printf("\\n - r12 - %x", reg->r12);
-    printf("\\n - r13 - %x", reg->r13);
-    printf("\\n - r14 - %x", reg->r14);
-    printf("\\n - r15 - %x\\n", reg->r15);
+    printf("\\n - r8 - %x", 1, reg->r8);
+    printf("\\n - r9 - %x", 1, reg->r9);
+    printf("\\n - r10 - %x", 1, reg->r10);
+    printf("\\n - r11 - %x", 1, reg->r11);
+    printf("\\n - r12 - %x", 1, reg->r12);
+    printf("\\n - r13 - %x", 1, reg->r13);
+    printf("\\n - r14 - %x", 1, reg->r14);
+    printf("\\n - r15 - %x\\n", 1, reg->r15);
 
     printLine("--- --- --- --- --- --- --- --- --- --- --- --- ---");
 }

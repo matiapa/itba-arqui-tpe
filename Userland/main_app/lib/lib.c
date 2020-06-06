@@ -3,6 +3,8 @@
 #include <malloc.h>
 #include <stdarg.h>
 #include <userlib.h>
+#include <stdint.h>
+
 
 #define ITOA_MAX_LEN 10
 #define DTOA_FLOAT_MAX_LEN 4
@@ -167,13 +169,12 @@ void printf(char *format, int nargs, ...){
             }
 
             if(format[pos] == 'f'){
-                char *str = malloc(20);
-                print(dtoa(va_arg(valist, double)));
+                print(dtoa(va_arg(valist, uint64_t)));
                 continue;
             }            
 
             if(format[pos] == 's'){
-                print(va_arg(valist, char));
+                print(va_arg(valist, char *));
                 continue;
             }
         }
