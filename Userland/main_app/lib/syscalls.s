@@ -16,3 +16,4 @@ syscall memDump, 4
 syscall getTime, 5
 syscall cpuInfo, 6
 syscall cpuTemp, 7
+syscall getLatestException, 8

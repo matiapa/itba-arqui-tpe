@@ -1,6 +1,5 @@
 #include <keyboard_lib.h>
 #include <windows_lib.h>
-#include <malloc.h>
 #include <stdarg.h>
 
 /* --------------------------------------------------------------------------- 
@@ -79,13 +78,13 @@ void printf(char *format, int nargs, ...){
             formatChar = 0;
 
             if(format[pos] == 'd'){
-                char *str = malloc(20);
+                char str[20];
                 print(itoa(va_arg(valist, int), str, 10));
                 continue;
             }
 
             if(format[pos] == 'x'){
-                char *str = malloc(20);
+                char str[20];
                 print("0x");
                 print(itoa(va_arg(valist, int), str, 16));
                 continue;
@@ -128,20 +127,4 @@ int strcmp(char *str1, char *str2){
 
     return 1;
 
-}
-
-
-/* --------------------------------------------------------------------------- 
-                            HELPER FUNCTIONS
- --------------------------------------------------------------------------- */
-
-void printKeyStrokes(){
-
-	int pos = read();
-	print("Got key: ");
-
-    char * str = (char *) malloc(20);
-	printLine(itoa(pos, str, 10));
-
-	printLine("");
 }

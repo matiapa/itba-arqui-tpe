@@ -1,6 +1,5 @@
 #include <windows_lib.h>
 #include <font.h>
-#include <malloc.h>
 
 const int HEIGHT = 1920;
 const int WIDTH = 780;

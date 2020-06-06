@@ -48,23 +48,6 @@ int main(){
 	load_idt();
 
 	((EntryPoint) mainAppAddress)();
-
-	for(int x=0; x<720; x++) draw(x, 100, 0xFF0000);
-
-	int * num1 = malloc(4);
-	*num1 = 4;
-
-	for(int x=0; x<720; x++) draw(x, 200, 0xFF0000);
-
-	int * num2 = malloc(4);
-	*num2 = 8;
-
-	for(int x=0; x<720; x++) draw(x, 300, 0xFF0000);
-
-	if(*num1 + *num2 == 12){
-		for(int x=0; x<720; x++)
-			draw(x, 400, 0xFF0000);
-	}
 		
 	return 0;
 }

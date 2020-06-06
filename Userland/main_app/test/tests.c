@@ -1,26 +1,23 @@
 #include <windows_lib.h>
-#include <malloc.h>
 #include <userlib.h>
 #include <syscalls.h>
 
 #define bodyCursor 0
 
-Window *w;
+static Window w;
 
 static void createWindow(){
 
-	w = (Window *) malloc(sizeof(Window));
+	ScreenRes res;
+	getRes(&res);
 
-	ScreenRes * res = (ScreenRes *) malloc(sizeof(ScreenRes));
-	getRes(res);
+	w.xi = 0; w.xf = res.width;
+    w.yi = 0; w.yf = res.height;
 
-	w->xi = 0; w->xf = res->width;
-    w->yi = 0; w->yf = res->height;
+	w.cursors[bodyCursor].x=0;	w.cursors[bodyCursor].y=0;
+	w.cursors[bodyCursor].fontColor=0xFFFFFF;	w.cursors[bodyCursor].fontSize=2;
 
-	w->cursors[bodyCursor].x=0;	w->cursors[bodyCursor].y=0;
-	w->cursors[bodyCursor].fontColor=0xFFFFFF;	w->cursors[bodyCursor].fontSize=2;
-
-    setWindow(w);
+    setWindow(&w);
 
 }
 
@@ -35,7 +32,7 @@ void testCPUInfo();
 void test(){
 
     createWindow();
-	w->activeCursor = bodyCursor;
+	w.activeCursor = bodyCursor;
 
     testRegDump();
     testMemDump();
@@ -59,17 +56,17 @@ void testRegDump(){
 
     // ------------ RIP -------------------
 
-    RegDump * dump = malloc(sizeof(RegDump));
-    RegDump * dump2 = malloc(sizeof(RegDump));
-    RegDump * dump3 = malloc(sizeof(RegDump));
+    RegDump dump;
+    RegDump dump2;
+    RegDump dump3;
 
-    regDump(dump);
-    regDump(dump2);
+    regDump(&dump);
+    regDump(&dump2);
     __asm("nop");
-    regDump(dump3);
+    regDump(&dump3);
     
-    int sizeOfRegDump = dump2->rip - dump->rip;
-    if(dump3->rip - dump2->rip == sizeOfRegDump + 1)
+    int sizeOfRegDump = dump2.rip - dump.rip;
+    if(dump3.rip - dump2.rip == sizeOfRegDump + 1)
         printf("- RIP passed\\n", 0);
     else
         printf("- RIP failed\\n", 0);
@@ -77,15 +74,12 @@ void testRegDump(){
 
     // ------------ RBP/RSP -------------------
 
-    dump = malloc(sizeof(RegDump));
-    dump2 = malloc(sizeof(RegDump));
-
-    regDump(dump);
+    regDump(&dump);
     __asm("push 1");
-    regDump(dump2);
+    regDump(&dump2);
     __asm("pop %rax");
 
-    if(dump->rsp - dump2->rsp == 8 && dump->rbp == dump2->rbp)
+    if(dump.rsp - dump2.rsp == 8 && dump.rbp == dump2.rbp)
         printf("- RSP/RBP passed\\n", 0);
     else
         printf("- RSP/RBP failed\\n", 0);
@@ -94,9 +88,9 @@ void testRegDump(){
     // ------------- GPR ------------------
     
     regDumpTestSet();
-    regDump(dump);
+    regDump(&dump);
 
-    if(dump->rbx==2 && dump->rcx==3 && dump->rdx==4)
+    if(dump.rbx==2 && dump.rcx==3 && dump.rdx==4)
         printf("- GPR passed\\n", 0);
     else
         printf("- GPR failed\\n", 0);
@@ -108,8 +102,7 @@ void testRegDump(){
 void testMemDump(){
 
     // Reserve 33 bytes and differ the last one
-    char *ptr = (char *) malloc(33);
-	char *ptrDmp = (char *) malloc(33);
+    char ptr[33], ptrDmp[33];
 	ptrDmp[32] = ptr[32]+1;
 
     // Do a dump of 32 bytes
@@ -128,10 +121,10 @@ void testMemDump(){
 
 void testGetTime(){
 
-    Time * time = malloc(sizeof(Time));
-	getTime(time);
+    Time time;
+	getTime(&time);
 
-    if(time->hours>=0 && time->hours<=23 && time->minutes>=0 && time->minutes<=59 && time->seconds>=0 && time->seconds<=60)
+    if(time.hours>=0 && time.hours<=23 && time.minutes>=0 && time.minutes<=59 && time.seconds>=0 && time.seconds<=60)
         printf("\\nGetTime test passed\\n", 0);
     else
         printf("\\nGetTime test failed\\n", 0);
@@ -141,13 +134,15 @@ void testGetTime(){
 
 void testCPUInfo(){
 
-    CPUInfo *info = malloc(sizeof(CPUInfo));
-	info->brandName = malloc(50);
-	info->brandDesc = malloc(70);
+    CPUInfo info;
 
-    cpuInfo(info);
+    char brandName[50], brandDesc[70];
+	info.brandName = (char *) &brandName;
+    info.brandDesc = (char *) &brandDesc;
 
-    if(strcmp(info->brandName, "QEMU Virtual CPU version 2.5+") == 1 && strcmp(info->brandDesc, "This processor does not support the brand identification feature") == 1)
+    cpuInfo(&info);
+
+    if(strcmp(info.brandName, "QEMU Virtual CPU version 2.5+") == 1 && strcmp(info.brandDesc, "This processor does not support the brand identification feature") == 1)
         printf("\\nCPUInfo test passed\\n", 0);
     else
         printf("\\nCPUInfo test failed\\n", 0);
