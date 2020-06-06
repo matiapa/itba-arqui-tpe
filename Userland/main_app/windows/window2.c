@@ -6,6 +6,16 @@
 #include <syscalls.h>
 
 #define cursor w2->cursors[w2->activeCursor]
+#define NEWLINE 13
+
+typedef enum{
+	CPUTEMP,
+	HELP,
+	MEMDUMP,
+	MPDATA,
+	REGDUMP,
+	TIME
+} command;
 
 Window *w2;
 
@@ -64,6 +74,32 @@ void window2(){
 		}
 
 		printChar(c);
+
+		if (c == NEWLINE) {
+			int start = 0;
+			switch(MPDATA) {
+				case CPUTEMP:
+					printCPUtemp();
+				break;
+				case HELP:
+					help();
+				break;
+				case MEMDUMP:
+					printMemdump(start);
+				break;
+				case MPDATA:
+					printMPinfo();
+				break;
+				case REGDUMP:
+					printRegdump();
+				break;
+				case TIME:
+					printTime();
+				break;
+				default:
+				;
+			}
+		}
 
 	}
 

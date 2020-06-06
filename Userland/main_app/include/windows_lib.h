@@ -29,3 +29,19 @@ void printChar(char c);
 void print(char c[]);
 
 void printLine(char c[]);
+
+
+void printMPinfo();
+
+void printCPUtemp();
+
+void printTime();
+
+void printRegdump();
+
+void printMemdump(int);
+
+void help();
+
+
+void calculateString(char *);

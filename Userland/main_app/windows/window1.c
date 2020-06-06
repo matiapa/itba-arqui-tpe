@@ -47,7 +47,7 @@ void initWindow1(){
 	setWindow(w1);
 
 	w1->activeCursor = titleCursor;
-	printLine("Window 1");
+	printLine("Calculator");
 
 	for(int y=0; y<w1->yf; y++)
 		drawPoint(w1->xf-10, y, 2, 0x00FF00);
@@ -72,6 +72,11 @@ void window1(){
 		}
 
 		printChar(c);
+
+		if (c == '=') {
+			char * aux = "9.8x3+2=";
+			calculateString(aux);
+		}
 
 	}
 
