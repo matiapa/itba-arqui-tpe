@@ -1,3 +1,5 @@
+#define BUFFERW2 20
+
 typedef struct Cursor{
     int x, y;
 
@@ -13,6 +15,15 @@ typedef struct Window{
     
 } Window;
 
+typedef enum{
+	NOCOMMAND,
+	CPUTEMP,
+	HELP,
+	MEMDUMP,
+	MPDATA,
+	REGDUMP,
+	TIME
+} command;
 
 void setWindow(Window *window);
 
@@ -42,6 +53,8 @@ void printRegdump();
 void printMemdump(char *);
 
 void help();
+
+command setCommand(char *, int, char *);
 
 
 void calculateString(char *);

@@ -4,7 +4,6 @@
 #include <malloc.h>
 #include <syscalls.h>
 
-
 const int HEIGHT = 1920;
 const int WIDTH = 780;
 
@@ -248,6 +247,43 @@ void help(void) {
     newLine();
 }
 
+static int isCommandTemp(char * buffer, int length) {
+    return 1;
+}
+static int isCommandHelp(char * buffer, int length) {
+    return 1;
+}
+static int isCommandMemdump(char * buffer, int length, char * start) {
+    return 1;
+}
+static int isCommandProcdata(char * buffer, int length) {
+    return 1;
+}
+static int isCommandRegdata(char * buffer, int length) {
+    return 1;
+}
+static int isCommandTime(char * buffer, int length) {
+    return 1;
+}
+
+command setCommand(char * buffer, int length, char * string) {
+
+    if (isCommandTemp(buffer, length))
+        return CPUTEMP;
+    if (isCommandHelp(buffer, length))
+        return HELP;
+    if (isCommandMemdump(buffer, length, string))
+        return MEMDUMP;
+
+    if (isCommandProcdata(buffer, length))
+        return MPDATA;
+    if (isCommandRegdata(buffer, length))
+        return REGDUMP;
+    if (isCommandTime(buffer, length))
+        return TIME;
+    
+    return NOCOMMAND;
+}
 /* --------------------------------------------------------------------------------------------------------------------------
                                         CALCULATOR METHODS
 ------------------------------------------------------------------------------------------------------------------------- */
@@ -261,15 +297,27 @@ void calculateString(char * s) {
 
 }
 
+/* --------------------------------------------------------------------------------------------------------------------------
+                                        WARNING MESSAGES
+------------------------------------------------------------------------------------------------------------------------- */
+
+
 void printWarning(int num) {
     printf("\\n >> Error: ", 0);
     switch(num) {
-        case 1: print("Zero division is not allowed.");
+        case 0:    
+            printLine("Command not found");
+            printLine("If you want to see the command manual type 'help'.");
         break;
-        case 2: print("To calculate use only numbers or the following operators: ");
-        printLine("+ - * / ( ) , .");
+        case 1: 
+            print("Zero division is not allowed.");
         break;
-        default: print("Something went wong.");
+        case 2: 
+            print("To calculate use only numbers or the following operators: ");
+            printLine("+ - * / ( ) , . =");
+        break;
+        default: 
+            print("Something went wong. ");
     }
-    printLine(" Please, try again.");
+    printf("Please, try again.\\n\\n",0);
 }

@@ -8,15 +8,6 @@
 #define cursor w2->cursors[w2->activeCursor]
 #define NEWLINE 13
 
-typedef enum{
-	CPUTEMP,
-	HELP,
-	MEMDUMP,
-	MPDATA,
-	REGDUMP,
-	TIME
-} command;
-
 Window *w2;
 
 static void createWindow(){
@@ -44,7 +35,7 @@ void initWindow2(){
 	setWindow(w2);
 
 	w2->activeCursor = titleCursor;
-	printLine("Window 2");
+	printLine("Shell");
 
 }
 
@@ -62,23 +53,37 @@ void window2(){
 	setWindow(w2);
 	drawIndicator(indicatorColor);
 	
+	newLine();
+	char bufferw2[BUFFERW2];
+	int bw2Iter = 0;
+	command currentCommand = NOCOMMAND;
 
 	w2->activeCursor = bodyCursor;
 	while(1){
 
 		char c = getChar();
-
+		
 		if(c==f1Code){
 			drawIndicator(0);
 			return;
 		}
 
+		if (bw2Iter == BUFFERW2 && c!=NEWLINE)
+			bw2Iter++;
+		else if(bw2Iter < BUFFERW2)
+			bufferw2[bw2Iter++] = c;
+
 		printChar(c);
 
 		if (c == NEWLINE) {
+			char parameter[BUFFERW2];
+
+			if (bw2Iter > BUFFERW2)
+				currentCommand = NOCOMMAND;
+			else {
+				currentCommand = setCommand(bufferw2, bw2Iter, parameter);
+			}
 			
-			char * start  = "8";
-			command currentCommand = MEMDUMP;
 			switch(currentCommand) {
 				case CPUTEMP:
 					printCPUtemp();
@@ -87,7 +92,7 @@ void window2(){
 					help();
 				break;
 				case MEMDUMP:	//fix
-					printMemdump(start);
+					printMemdump(parameter);
 				break;
 				case MPDATA:
 					printMPinfo();
@@ -99,8 +104,10 @@ void window2(){
 					printTime();
 				break;
 				default:
-				;
+					printWarning(NOCOMMAND);
 			}
+
+			bw2Iter = 0;
 		}
 
 	}
