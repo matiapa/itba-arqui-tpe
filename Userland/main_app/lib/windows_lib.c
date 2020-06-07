@@ -81,6 +81,17 @@ void clearScreen(){
 }
 
 
+void clearLine(){
+
+	for(int x=window->xi; x<(window->xf - fontHeight*cursor.fontSize - 4); x++){
+		drawPoint(x, cursor.y, fontHeight*cursor.fontSize, 0);
+	}
+
+    cursor.x = 0;
+
+}
+
+
 static void nextChar(){
 
     cursor.x += cursor.fontSize*fontWidth+charSpacing;

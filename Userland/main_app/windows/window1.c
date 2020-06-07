@@ -18,6 +18,7 @@
 ------------------------------------------------------------------------------------------------------------------------- */
 
 static Window w;
+#define W1_BUFFER_LEN 100
 
 
 /* --------------------------------------------------------------------------------------------------------------------------
@@ -98,6 +99,11 @@ void window1(){
 	setWindow(&w);
 	drawIndicator(indicatorColor);
 
+	//newLine();
+	char bufferw1[W1_BUFFER_LEN+1];
+	cleanBuffer(bufferw1,W1_BUFFER_LEN);
+	int bIter = 0;
+
 	w.activeCursor = bodyCursor;
 
 	while(1){
@@ -109,17 +115,32 @@ void window1(){
 			return;
 		}
 
-		if(c==escCode){
-			printf("ESC", 0);
+		if (c==escCode) {
+			clearLine();
+			cleanBuffer(bufferw1,W1_BUFFER_LEN);
+			bIter=0;
+		}
+		else if(c=='\b') {
+			if (bIter!=0) {
+				bIter--;
+				bufferw1[bIter] = 0;
+			}
+		}
+		else if(bIter < W1_BUFFER_LEN) {
+			bufferw1[bIter++] = c;
+			bufferw1[bIter] = 0;
+			if (bIter==W1_BUFFER_LEN)
+				bIter++;
 		}
 
 		printChar(c);
 
 		if (c == '=') {
 			newLine();
-			
-			char * aux = "9.8x3+2=";
-			calculateString(aux);
+			calculateString(bufferw1);
+
+			cleanBuffer(bufferw1,W1_BUFFER_LEN);
+			bIter = 0;
 		}
 
 	}

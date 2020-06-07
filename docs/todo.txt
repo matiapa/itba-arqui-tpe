@@ -45,6 +45,5 @@ Apps:
 - Fix temperature
 - Improve documentation
 - Check weird cases
-- Fix itoa hex representation
-- Fix hour representation
+- Fix middle line overlapping
 - Fix windows2 overlaping

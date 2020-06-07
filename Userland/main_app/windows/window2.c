@@ -19,7 +19,6 @@
 
 static Window w;
 
-#define NEWLINE 13
 #define W2_BUFFER_LEN 20
 
 /* --------------------------------------------------------------------------------------------------------------------------
@@ -131,12 +130,12 @@ void window2(){
 	setWindow(&w);
 	drawIndicator(indicatorColor);
 	
-	newLine();
+	//newLine();
 
 	char bufferw2[W2_BUFFER_LEN+1];
 	cleanBuffer(bufferw2, W2_BUFFER_LEN);
 
-	int bw2Iter = 0;
+	int bIter = 0;
 	command currentCommand = WRONG;
 
 	w.activeCursor = bodyCursor;
@@ -152,19 +151,28 @@ void window2(){
 			return;
 		}
 
-		printChar(c);
-
-
-		// Backspace, backward the buffer
 		if(c=='\b') {
-			if (bw2Iter!=0) {
-				bw2Iter--;
-				bufferw2[bw2Iter] = 0;
+
+			// Backspace pressed, backward the buffer
+
+			if (bIter!=0) {
+				bIter--;
+				bufferw2[bIter] = 0;
 			}
 
-			continue;
 		}
-		
+		else if(bIter < W2_BUFFER_LEN) {
+
+			// Put the char into buffer
+
+			bufferw2[bIter++] = c;
+			bufferw2[bIter] = 0;
+			if (bIter==W2_BUFFER_LEN)
+				bIter++;
+
+		}
+
+		printChar(c);
 
 		// Enter pressed, parse and execute command
 		if (c == '\r') {
@@ -172,10 +180,10 @@ void window2(){
 			// String for storing command parameter if present
 			char parameter[W2_BUFFER_LEN];
 
-			if (bw2Iter > W2_BUFFER_LEN)
+			if (bIter > W2_BUFFER_LEN)
 				currentCommand = WRONG;
 			else {
-				currentCommand = parseCommand(bufferw2, bw2Iter, parameter);
+				currentCommand = parseCommand(bufferw2, bIter, parameter);
 			}
 
 			switch(currentCommand) {
@@ -218,33 +226,17 @@ void window2(){
 				case CLEAR:
 					clearWindow();
 					break;
-				
 				case WRONG:
 					printWarning(WRONG);
-					
+					break;	
 				default:
 					printWarning(NOCOMMAND);
 			}
 
 			cleanBuffer(bufferw2, W2_BUFFER_LEN);
-
-			bw2Iter = 0;
-			
+			bIter = 0;
 			continue;
 		}
-
-
-		if(bw2Iter < W2_BUFFER_LEN) {
-
-			// Put the char into buffer
-
-			bufferw2[bw2Iter++] = c;
-			bufferw2[bw2Iter] = 0;
-			if (bw2Iter==W2_BUFFER_LEN)
-				bw2Iter++;
-
-		}
-
 
 	}
 
@@ -460,9 +452,9 @@ static void clearWindow(){
 		}
 	}
 
-	w.cursors[bodyCursor].x=0;	w.cursors[bodyCursor].y=bodyY;
+	w.cursors[bodyCursor].x=0;	
+	w.cursors[bodyCursor].y=bodyY;
 }
-
 
 /* --------------------------------------------------------------------------------------------------------------------------
                                 COMMAND-CHECK METHODS

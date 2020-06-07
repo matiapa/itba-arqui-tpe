@@ -27,6 +27,8 @@ void drawChar(int x, int y, char c, int size, int rgb);
 
 // Text definitions
 
+void clearLine();
+
 void clearScreen();
 
 void printChar(char c);
@@ -38,6 +40,10 @@ void printLine(char c[]);
 void newLine();
 
 void cleanBuffer(char *, int len);
+
+
+// Common UI definitions
+
 
 // -------------------------- SHORTCUTS ---------------------
 
