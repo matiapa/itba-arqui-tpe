@@ -72,6 +72,11 @@ void exception(LastException lastException){
 
     while(1){
         if(getChar()==13){
+            for(int x=w.xi; x<w.xf; x++){
+                for(int y=w.yi; y<w.yf; y++){
+                    draw(x, y, 0x000000);
+                }
+            }
             main();
         }
     }

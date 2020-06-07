@@ -73,13 +73,7 @@ void initWindow1(){
 
 	createWindow();	
 	setWindow(&w);
-
-	for(int x=w.xi; x<w.xf; x++){
-        for(int y=w.yi; y<w.yf; y++){
-            draw(x, y, 0x000000);
-        }
-    }
-
+	
 	w.activeCursor = titleCursor;
 	printLine("Calculator");
 
