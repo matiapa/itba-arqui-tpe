@@ -197,6 +197,7 @@ char *dtoa(double num, char *str)
     if (isNegative == 1)
         str[i++] = '-';
 
+    str[i] = '\0';
     reverseStr(str, i);
     str[i++] = '.';
 
@@ -207,7 +208,6 @@ char *dtoa(double num, char *str)
         str[i++] = aux % 10 + '0';
     }
 
-    str[i] = '\0';
     return str;
 }
 
