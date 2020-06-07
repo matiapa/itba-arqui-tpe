@@ -109,8 +109,8 @@ void window1(){
 			return;
 		}
 
-		if(c==suprCode){
-
+		if(c==escCode){
+			printf("ESC", 0);
 		}
 
 		printChar(c);

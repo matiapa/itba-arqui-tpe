@@ -1,9 +1,9 @@
 /*---------------------------------------------------------------------------------------------------
 |   WINDOW_2.C    |                                                                             	|
 |----------------------                                                                             |
-| This windows will display the shell program.													|
-| Press ENTER to execute a command.															|
-| Press F1 to switch to calculator program.																|
+| This windows will display the shell program.														|
+| Press ENTER to execute a command.																	|
+| Press F1 to switch to calculator program.															|
 ---------------------------------------------------------------------------------------------------*/
 
 #include <windows_lib.h>
@@ -140,6 +140,7 @@ void window2(){
 	command currentCommand = WRONG;
 
 	w.activeCursor = bodyCursor;
+
 
 	while(1){
 

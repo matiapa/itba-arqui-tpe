@@ -7,7 +7,7 @@
 #include <syscalls.h>
 
 
-// Backspace: 14, Tab: 15, Enter: 28, Ctrl: 29, LShift: 42/170, RShift: 54/182, Alt: 56, Space: 57, F1-F10: 59-68, Cmd: 91
+// Escape: 1, Backspace: 14, Tab: 15, Enter: 28, Ctrl: 29, LShift: 42/170, RShift: 54/182, Alt: 56, Space: 57, F1-F10: 59-68, Cmd: 91
 // These keys are preceded by a 224. LA: 75/203, RA: 77/205, DEL: 83/211
 
 // Keys represented with a 0 are not ASCII representable
@@ -30,12 +30,10 @@ char shifted_keyboard_map[64] = {
 
 int f1Code = 1;
 int f2Code = 2;
-int suprCode = 3;
+int escCode = 3;
 
 int shift=0;
 int caps=0;
-int specKey=0;
-
 
 char getChar(){
 
@@ -59,12 +57,6 @@ char getChar(){
         return 14;
     }
 
-    // Special key, has to get the next keyCode
-    if(keyCode == 224){
-        specKey = specKey ? 0 : 1;
-        return getChar();
-    }
-
     // TAB is used for storing the state of registers, so ask for a new char
     if(keyCode == 15)
         return getChar();
@@ -75,9 +67,8 @@ char getChar(){
     if(keyCode == 60)
         return f2Code;
 
-    if(specKey && keyCode == 83)
-        return suprCode;
-
+    if(keyCode == 1)
+        return escCode;
 
     // Unused key, wait for another one
     if(keyCode >= 129){
