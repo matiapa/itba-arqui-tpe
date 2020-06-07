@@ -19,7 +19,7 @@
 
 static Window w;
 
-#define W2_BUFFER_LEN 20
+#define W2_BUFFER_LEN 250
 
 /* --------------------------------------------------------------------------------------------------------------------------
                                         		SHELL DEFINITIONS
@@ -587,7 +587,6 @@ command parseCommand(char * buffer, int length, char * string) {
     for (int i=0; i<W2_BUFFER_LEN; i++) {
         if (!isAllowedChar(buffer[i]))
             return NOCOMMAND;
-        buffer[i] = toLower(buffer[i]);
     }
 
 	if (isCommandHelp(buffer, length)==1)

@@ -63,7 +63,26 @@ int isSpace(char c) {
     return 0;
 }
 
+int isOperator(char c) {
+    if (isSign(c) || c=='x' || c=='%' || isParenthesis(c)!=0)
+        return 1;
+    return 0;
+}
 
+int isSign(char c) {
+    if (c=='+' || c=='-')
+        return 1;
+    return 0;
+}
+
+int isParenthesis (char c) {
+    if (c=='p')
+        return 1;
+    if (c=='q')
+        return -1;
+
+    return 0;
+}
 /* ------------------------------------------------------------------------------------------------------------------ 
                                             STRING FUNCTIONS
  -------------------------------------------------------------------------------------------------------------------- */

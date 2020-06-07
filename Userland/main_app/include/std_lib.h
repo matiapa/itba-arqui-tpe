@@ -8,6 +8,12 @@ int isHexa(char);
 
 int isDecimalPoint(char);
 
+int isSign(char);
+
+int isOperator(char c);
+
+int isParenthesis (char c);
+
 int isSpace(char);
 
 int isLower(char);

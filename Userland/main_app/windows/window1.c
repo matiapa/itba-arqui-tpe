@@ -18,16 +18,27 @@
 ------------------------------------------------------------------------------------------------------------------------- */
 
 static Window w;
-#define W1_BUFFER_LEN 100
+#define W1_BUFFER_LEN 250
 
+typedef enum{
+	CORRECT,
+	DIVZERO,
+	WRONG_CALC_CHAR,
+	WRONG_DECIMAL,
+	WRONG_PARENTH,
+	WRONG
+} message;
 
 /* --------------------------------------------------------------------------------------------------------------------------
                                         		CALCULATOR DEFINITIONS
 ------------------------------------------------------------------------------------------------------------------------- */
 
 
-static void calculateString(char *s);
-static void printWarning(int num);
+static void calculateString(char *s, int length);
+static void printWarning(message num);
+static int isAllowedChar(char c);
+static int checkAllowedChars(char * s, int length);
+double calcExp(char *, int, message *);
 
 /* -----------------------------------------------------------
  Defines the position and size of the window (all left half)
@@ -93,7 +104,7 @@ void window1(){
 	setWindow(&w);
 	drawIndicator(indicatorColor);
 
-	//newLine();
+	newLine();
 	char bufferw1[W1_BUFFER_LEN+1];
 	cleanBuffer(bufferw1,W1_BUFFER_LEN);
 	int bIter = 0;
@@ -129,9 +140,13 @@ void window1(){
 
 		printChar(c);
 
-		if (c == '=') {
+		if (c == '=' || c=='\r') {
 			newLine();
-			calculateString(bufferw1);
+			if (bIter > W1_BUFFER_LEN)
+				printWarning(WRONG);
+			else {
+				calculateString(bufferw1,bIter-1);
+			}
 
 			cleanBuffer(bufferw1,W1_BUFFER_LEN);
 			bIter = 0;
@@ -146,25 +161,68 @@ void window1(){
                                         CALCULATOR METHODS
 ------------------------------------------------------------------------------------------------------------------------- */
 
-void calculateString(char * s) {
+void calculateString(char * s, int length) {
 
-    double result = 324.32;
-    
-    print(" >> ");
-    printf("%f", 1, result);
+	if (!checkAllowedChars(s,length)) {
+		printWarning(WRONG_CALC_CHAR);
+		return;
+	}
+
+	message outputMsg = CORRECT;
+	double result = calcExp(s, length, &outputMsg);
+
+	if(outputMsg!=CORRECT) {
+		printWarning(outputMsg);
+	}
+	else {
+		printf(" >> %f\\n", 1, result);
+	}
 
 }
 
+static int checkAllowedChars(char * s, int length) {
+	for(int i=0; i<length; i++) {
+		if(!isAllowedChar(s[i]))
+			return 0;
+	}
+	return 1;
+}
 
-static void printWarning(int num) {
+static int isAllowedChar(char c) {
+	if (isDigit(c) || isOperator(c) || isSpace(c) || isDecimalPoint(c))
+		return 1;
+
+	return 0;
+}
+
+double calcExp(char *str, int length, message * outputMsg) {
+	double result;
+
+	return result;
+}
+
+/* -------------------------------------------------------------
+						WARNING
+---------------------------------------------------------------- */
+
+static void printWarning(message msg) {
     printf("\\n >> Error: ", 0);
-    switch(num) {
-        case 1: print("Zero division is not allowed.");
+
+    switch(msg) {
+        case DIVZERO: 
+			print("Zero division is not allowed.");
         break;
-        case 2: print("To calculate use only numbers or the following operators: ");
-        printLine("+ - * / ( ) , .");
+        case WRONG_CALC_CHAR: 
+			print("To calculate use only numbers or the following operators: ");
+    	    printLine("+ - x % ( ) , .");
         break;
-        default: print("Something went wong.");
+		case WRONG_DECIMAL:
+			printLine("A number can have up to one decimal point.");
+		case WRONG_PARENTH:
+			printLine("Every opening parenthesis needs to find a closing one, in that order");
+		break;
+        default: print("Something went wrong.");
     }
+
     printLine(" Please, try again.");
 }
