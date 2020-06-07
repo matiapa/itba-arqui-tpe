@@ -20,6 +20,7 @@
 static Window w;
 
 #define NEWLINE 13
+#define W2_BUFFER_LEN 20
 
 /* --------------------------------------------------------------------------------------------------------------------------
                                         		SHELL DEFINITIONS
@@ -43,7 +44,7 @@ typedef enum{
 } command;
 
 
-command setCommand(char * buffer, int length, char * string);
+command parseCommand(char * buffer, int length, char * string);
 
 static void help(void);
 
@@ -131,8 +132,10 @@ void window2(){
 	drawIndicator(indicatorColor);
 	
 	newLine();
-	char bufferw2[BUFFERW2+1];
-	cleanBuffer(bufferw2);
+
+	char bufferw2[W2_BUFFER_LEN+1];
+	cleanBuffer(bufferw2, W2_BUFFER_LEN);
+
 	int bw2Iter = 0;
 	command currentCommand = WRONG;
 
@@ -142,33 +145,36 @@ void window2(){
 
 		char c = getChar();
 		
+		// Switch to Window 1
 		if(c==f1Code){
 			drawIndicator(0);
 			return;
 		}
 
+		printChar(c);
+
+
+		// Backspace, backward the buffer
 		if(c=='\b') {
 			if (bw2Iter!=0) {
 				bw2Iter--;
 				bufferw2[bw2Iter] = 0;
 			}
+
+			continue;
 		}
-		else if(bw2Iter < BUFFERW2) {
-			bufferw2[bw2Iter++] = c;
-			bufferw2[bw2Iter] = 0;
-			if (bw2Iter==BUFFERW2)
-				bw2Iter++;
-		}
+		
 
-		printChar(c);
+		// Enter pressed, parse and execute command
+		if (c == '\r') {
 
-		if (c == NEWLINE) {
-			char parameter[BUFFERW2];
+			// String for storing command parameter if present
+			char parameter[W2_BUFFER_LEN];
 
-			if (bw2Iter > BUFFERW2)
+			if (bw2Iter > W2_BUFFER_LEN)
 				currentCommand = WRONG;
 			else {
-				currentCommand = setCommand(bufferw2, bw2Iter, parameter);
+				currentCommand = parseCommand(bufferw2, bw2Iter, parameter);
 			}
 
 			switch(currentCommand) {
@@ -179,39 +185,65 @@ void window2(){
 				case TIME:
 					printTime();
 					break;
+
 				case INFOREG:
 					printInfoReg();
 					break;
+
 				case STOREDREG:
 					printStoredReg();
 					break;
+
 				case PRINTMEM:
 					printMemDump(parameter);
 					break;
+
 				case CPUTEMP:
 					printCPUTemp();
 					break;
+
 				case CPUINFO:
 					printCPUInfo();
 					break;
+
 				case DIVZERO:
 					divZeroException();
 					break;
+
 				case INVOPCODE:
 					invOpcodeException();
 					break;
+
 				case CLEAR:
 					clearWindow();
 					break;
 				
 				case WRONG:
 					printWarning(WRONG);
+					
 				default:
 					printWarning(NOCOMMAND);
 			}
-			cleanBuffer(bufferw2);	
+
+			cleanBuffer(bufferw2, W2_BUFFER_LEN);
+
 			bw2Iter = 0;
+			
+			continue;
 		}
+
+
+		if(bw2Iter < W2_BUFFER_LEN) {
+
+			// Put the char into buffer
+
+			bufferw2[bw2Iter++] = c;
+			bufferw2[bw2Iter] = 0;
+			if (bw2Iter==W2_BUFFER_LEN)
+				bw2Iter++;
+
+		}
+
 
 	}
 
@@ -221,9 +253,6 @@ void window2(){
 /* --------------------------------------------------------------------------------------------------------------------------
                                         SHELL METHODS
 ------------------------------------------------------------------------------------------------------------------------- */
-
-const int bufferText = 70;
-const int bufferMem = 33;
 
 /* -------------------------------------------------------------
 						HELP
@@ -331,23 +360,26 @@ static void printStoredReg(void) {
 						PRINTMEM
 ---------------------------------------------------------------- */
 
-void printMemDump(char * start) {
+const int bufferMem = 33;
 
-	int res = parseHexa(start);
-	if(res < 0) {
+void printMemDump(char * sourceStr) {
+
+	uint64_t sourceHex = parseHexa(sourceStr);
+	if(sourceHex < 0) {
 		printLine("Parameter not allowed");
 		return;
 	}
 
 	char * src = NULL;
-	src = (char *) res;
+	src = (char *) sourceHex;
 	char * dst = src+32;
 
     memDump((void *)src, (void*)dst);
 
     newLine();
-    for(int i=0; i<bufferMem; i++) {
-        printf(" - %x",1, src[i]);
+    for(int i=0; i<bufferMem; i+=8) {
+        printf("%x: %x %x %x %x %x %x %x %x\\n", 9, src+i, src[i], src[i+1], src[i+2], src[i+3],
+			src[i+4], src[i+5], src[i+6], src[i+7]);
     }
 	newLine();
 }
@@ -483,8 +515,7 @@ static int isCommandStoredReg(char * buffer, int length) {
 
 
 static int isCommandPrintmem(char * buffer, int length, char * start) {
-	char * aux1 = "printmem";
-	if (!strncmp(aux1,buffer,8))
+	if (!strncmp("printmem",buffer,8))
 		return 0;
 
 	start[0] = '0';
@@ -500,9 +531,9 @@ static int isCommandPrintmem(char * buffer, int length, char * start) {
 		return 0;
 	}
 
-	int aux3 = 10;
+	int aux3 = 11;
 	int i = 2;
-	while(isHexa(*(buffer+aux3)) && aux3<length && aux3<(10+16)) {
+	while(isHexa(*(buffer+aux3)) && aux3<length && aux3<(11+16)) {
 		start[i++]=buffer[aux3++];
 	}
 	start[i]=0;
@@ -564,14 +595,15 @@ static int isAllowedChar(char c) {
 }
 
 
-command setCommand(char * buffer, int length, char * string) {
-    for (int i=0; i< BUFFERW2; i++) {
+command parseCommand(char * buffer, int length, char * string) {
+
+    for (int i=0; i<W2_BUFFER_LEN; i++) {
         if (!isAllowedChar(buffer[i]))
             return NOCOMMAND;
         buffer[i] = toLower(buffer[i]);
     }
 
-	if (isCommandHelp(buffer, length))
+	if (isCommandHelp(buffer, length)==1)
         return HELP;
 
 	if (isCommandTime(buffer, length))

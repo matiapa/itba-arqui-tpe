@@ -158,8 +158,9 @@ void printLine(char s[]){
 
 }
 
-void cleanBuffer(char * buffer) {
 
-	for (int j=0; j<BUFFERW2; j++)
+void cleanBuffer(char * buffer, int len) {
+
+	for (int j=0; j<len; j++)
 		buffer[j] = 0;
 }

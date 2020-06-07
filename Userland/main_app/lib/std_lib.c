@@ -58,7 +58,7 @@ int isDecimalPoint(char c) {
 }
 
 int isSpace(char c) {
-    if (c==' ' || c=='\t' || c=='\n' || c==13 || c==0)
+    if (c==' ' || c=='\t' || c=='\n' || c=='\r' || c==0)
         return 1;
     return 0;
 }
@@ -276,7 +276,9 @@ int strncmp(char * str1, char * str2, int length) {
         if(str1[i]!=str2[i])
             return 0;
     }
+
     if (str1[i]!=0 && str2[i])
         return 0;
+        
     return 1;
 }
