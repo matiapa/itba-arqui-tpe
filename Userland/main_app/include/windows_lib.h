@@ -1,4 +1,4 @@
-#define BUFFERW2 20
+#define BUFFERW2 250
 
 typedef struct Cursor{
     int x, y;
@@ -32,3 +32,5 @@ void print(char c[]);
 void printLine(char c[]);
 
 void newLine();
+
+void cleanBuffer(char *);

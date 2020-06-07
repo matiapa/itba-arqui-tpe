@@ -4,6 +4,8 @@ int isAlpha(char);
 
 int isDigit(char);
 
+int isHexa(char);
+
 int isDecimalPoint(char);
 
 int isSpace(char);

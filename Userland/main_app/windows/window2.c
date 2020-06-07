@@ -25,7 +25,8 @@ typedef enum{
 	MEMDUMP,
 	MPDATA,
 	REGDUMP,
-	TIME
+	TIME,
+	WRONG
 } command;
 
 
@@ -39,6 +40,7 @@ void printRegDump(void);
 void printTime(void);
 
 static void printWarning(int num);
+static int parseHexa(char *);
 
 /* --------------------------------------------------------------------------------------------------------------------------
                                         	WINDOW METHODS
@@ -93,8 +95,9 @@ void window2(){
 	
 	newLine();
 	char bufferw2[BUFFERW2+1];
+	cleanBuffer(bufferw2);
 	int bw2Iter = 0;
-	command currentCommand = NOCOMMAND;
+	command currentCommand = WRONG;
 
 	w.activeCursor = bodyCursor;
 
@@ -107,10 +110,17 @@ void window2(){
 			return;
 		}
 
-		if(bw2Iter < BUFFERW2) {
+		if(c=='\b') {
+			if (bw2Iter!=0) {
+				bw2Iter--;
+				bufferw2[bw2Iter] = 0;
+			}
+		}
+		else if(bw2Iter < BUFFERW2) {
 			bufferw2[bw2Iter++] = c;
+			bufferw2[bw2Iter] = 0;
 			if (bw2Iter==BUFFERW2)
-				bufferw2[bw2Iter++] = 0;
+				bw2Iter++;
 		}
 
 		printChar(c);
@@ -119,12 +129,11 @@ void window2(){
 			char parameter[BUFFERW2];
 
 			if (bw2Iter > BUFFERW2)
-				currentCommand = NOCOMMAND;
+				currentCommand = WRONG;
 			else {
-				bufferw2[bw2Iter] = 0;
 				currentCommand = setCommand(bufferw2, bw2Iter, parameter);
 			}
-			
+
 			switch(currentCommand) {
 				case CPUTEMP:
 					printCPUTemp();
@@ -132,8 +141,8 @@ void window2(){
 				case HELP:
 					help();
 					break;
-				case MEMDUMP:	//fix
-					printMemDump((char *) 8);
+				case MEMDUMP:
+					printMemDump(parameter);
 					break;
 				case MPDATA:
 					printMPInfo();
@@ -144,10 +153,12 @@ void window2(){
 				case TIME:
 					printTime();
 					break;
+				case WRONG:
+					printWarning(WRONG);
 				default:
 					printWarning(NOCOMMAND);
 			}
-
+			cleanBuffer(bufferw2);	
 			bw2Iter = 0;
 		}
 
@@ -220,17 +231,25 @@ void printRegDump(void) {
 }
 
 
-void printMemDump(char * start) {   //TODO
-	char src[bufferMem];
-    char dest[bufferMem];
-	
-    dest[bufferMem-1] = src[bufferMem-1]+1;
-    memDump(src, dest);
+void printMemDump(char * start) {
+
+	int res = parseHexa(start);
+	if(res < 0) {
+		printLine("Parameter not allowed");
+		return;
+	}
+
+	char * src = NULL;
+	src = (char *) res;
+	char * dst = src+32;
+
+    memDump((void *)src, (void*)dst);
 
     newLine();
     for(int i=0; i<bufferMem; i++) {
-        printf(" - %x\\n",1,src[i]);
+        printf(" - %x",1, src[i]);
     }
+	newLine();
 }
 
 
@@ -259,7 +278,7 @@ static void printWarning(int num) {
             printLine("If you want to see the command manual type 'help'.");
         break;
         default: 
-            print("Something went wong. ");
+            print("Something went wrong. ");
     }
     printf("Please, try again.\\n\\n",0);
 }
@@ -268,39 +287,91 @@ static void printWarning(int num) {
                                 COMMAND-CHECK METHODS
 ------------------------------------------------------------------------------------------------------------------------- */
 
+static int checkEmptySpace(char * buffer, int start, int length) {
+
+	for (int i=start; i<=length && buffer[i]; i++) {
+		if (!isSpace(buffer[i]))
+			return 0;
+	}
+
+	return 1;
+}
 
 static int isCommandTemp(char * buffer, int length) {
-    //strncmp();
-    return 1;
+	char * str = "cputemp";
+
+    if (!strncmp(str,buffer,7))
+		return 0;
+
+    return checkEmptySpace(buffer,7,length);
 }
 static int isCommandHelp(char * buffer, int length) {
-    return 1;
+	char * str = "help";
+	if (!strncmp(str,buffer,4))
+		return 0;
+
+    return checkEmptySpace(buffer,4,length);
 }
 static int isCommandMemdump(char * buffer, int length, char * start) {
-    return 1;
+	char * aux1 = "memdata";
+	if (!strncmp(aux1,buffer,7))
+		return 0;
+
+	start[0] = '0';
+	start[1] = 'x';
+	if(checkEmptySpace(buffer,7,length)) {
+		start[2] = '0';
+		start[3] = 0;
+		return 1;
+	}
+
+	char * aux2 = " 0x";
+	if(!strncmp(aux2,buffer+7,3)) {
+		return 0;
+	}
+
+	int aux3 = 10;
+	int i = 2;
+	while(isHexa(*(buffer+aux3)) && aux3<length && aux3<(10+16)) {
+		start[i++]=buffer[aux3++];
+	}
+	start[i]=0;
+
+	return checkEmptySpace(buffer,aux3,length);
 }
 static int isCommandProcdata(char * buffer, int length) {
-    return 1;
+	char * str = "mpdata";
+	if (!strncmp(str,buffer,6))
+		return 0;
+
+    return checkEmptySpace(buffer,6,length);
 }
 static int isCommandRegdata(char * buffer, int length) {
-    return 1;
+	char * str = "regdata";
+	if (!strncmp(str,buffer,7))
+		return 0;
+
+    return checkEmptySpace(buffer,7,length);
 }
 static int isCommandTime(char * buffer, int length) {
-    return 1;
+	char * str = "time";
+	if (!strncmp(str,buffer,4))
+		return 0;
+
+    return checkEmptySpace(buffer,4,length);
 }
 
 
 static int isAllowedChar(char c) {
-    if (isAlpha(c) || isDigit(c) || isDecimalPoint(c) || isSpace(c))
+    if (isAlpha(c) || isDigit(c) || isSpace(c) || c==0)
         return 1;
     return 0;
 }
 
 command setCommand(char * buffer, int length, char * string) {
-
-    for (int i=0; i< length; i++) {
+    for (int i=0; i< BUFFERW2; i++) {
         if (!isAllowedChar(buffer[i]))
-            return TIME;
+            return NOCOMMAND;
         buffer[i] = toLower(buffer[i]);
     }
 
@@ -317,6 +388,27 @@ command setCommand(char * buffer, int length, char * string) {
         return REGDUMP;
     if (isCommandTime(buffer, length))
         return TIME;
-    
+
     return NOCOMMAND;
+}
+
+static int parseHexa(char * start) {
+	int res = 0;
+	if(start[0]!='0' || start[1]!='x') {
+		return -1;
+	}
+
+	for(int i=2; start[i]; i++) {
+		char c = '0';
+
+		if (isDigit(start[i]))
+			c='0';
+		else if(isLower(start[i]))
+			c = 'a';
+		else
+			c = 'A';
+		res = res*16 + start[i] - c;
+	}
+
+	return res;
 }
