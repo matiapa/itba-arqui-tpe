@@ -88,34 +88,35 @@ void reverseStr(char * str, int length) {
 
 /* -----------------------------------------------------------
  Function to convert an integer to a string
- Taken from https://www.geeksforgeeks.org/implement-itoa/
 ----------------------------------------------------------- */
 
-char* itoa(int num, char* str, int base){     
+char* itoa(int num, char* str, int base, int fixLen){     
     int i = 0;
     int isNegative = 0;
   
     if (num == 0){ 
         str[i++] = '0'; 
         str[i] = '\0'; 
-        return str; 
     } 
   
-    // In standard itoa(), negative numbers are handled only with base 10. Otherwise numbers are considered unsigned. 
-    if (num < 0 && base == 10){
-        isNegative = 1; 
+    if (num < 0){
+        isNegative = -1;
         num = -num;
-    } 
+    }
   
-    while (num != 0){
+    while (num != 0 && (i<fixLen || fixLen<0)){
         int rem = num % base; 
-        str[i++] = (rem > 9)? (rem-10) + 'A' : rem + '0'; 
+        str[i++] = (rem > 9) ? (rem-10) + 'A' : rem + '0'; 
         num = num/base; 
     } 
   
-    if (isNegative == 1) 
+    if (isNegative == 1 && base == 10) 
         str[i++] = '-'; 
   
+    while(i<fixLen){
+        str[i++] = '0';
+    }
+
     str[i] = '\0';
   
     reverseStr(str, i); 
@@ -186,7 +187,7 @@ void printf(char *format, int nargs, ...){
 
     va_start(valist, nargs);
 
-    int pos, formatChar=0, specialChar=0;
+    int pos, formatChar=0, specialChar=0, fixLen=-1;
     for(pos=0; format[pos]!=0; pos++){
 
         if(format[pos] == '%'){
@@ -196,29 +197,36 @@ void printf(char *format, int nargs, ...){
 
         if(formatChar == 1){
 
-            formatChar = 0;
+            if(isDigit(format[pos])){
+                fixLen = format[pos]-'0';
+                continue;
+            }
 
             if(format[pos] == 'd'){
                 char str[20];
-                print(itoa(va_arg(valist, int), str, 10));
+                print(itoa(va_arg(valist, int), str, 10, fixLen));
+                formatChar = 0;
                 continue;
             }
 
             if(format[pos] == 'x'){
                 char str[20];
                 print("0x");
-                print(itoa(va_arg(valist, int), str, 16));
+                print(itoa(va_arg(valist, int), str, 16, fixLen));
+                formatChar = 0;
                 continue;
             }
 
             if(format[pos] == 'f'){
                 char str[20];
                 print(dtoa(va_arg(valist, double), str));
+                formatChar = 0;
                 continue;
             }            
 
             if(format[pos] == 's'){
                 print(va_arg(valist, char *));
+                formatChar = 0;
                 continue;
             }
         }

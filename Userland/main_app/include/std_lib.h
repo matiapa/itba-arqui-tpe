@@ -21,7 +21,7 @@ char toLower(char);
 
 void reverseStr(char str[], int length);
 
-char * itoa(int num, char * str, int base);
+char * itoa(int num, char * str, int base, int fixLen);
 
 char * dtoa(double num, char * str);
 

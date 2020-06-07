@@ -289,7 +289,7 @@ static void printTime(void) {
     Time t ;
     getTime(&t);
 
-    printf("\\nTime now: %d:%d:%d\\n", 3, t.hours, t.minutes, t.seconds);
+    printf("\\nTime now: %2d:%2d:%2d\\n", 3, t.hours, t.minutes, t.seconds);
 }
 
 
@@ -378,7 +378,7 @@ void printMemDump(char * sourceStr) {
 
     newLine();
     for(int i=0; i<bufferMem; i+=8) {
-        printf("%x: %x %x %x %x %x %x %x %x\\n", 9, src+i, src[i], src[i+1], src[i+2], src[i+3],
+        printf("%2x: %2x %2x %2x %2x %2x %2x %2x %2x\\n", 9, src+i, src[i], src[i+1], src[i+2], src[i+3],
 			src[i+4], src[i+5], src[i+6], src[i+7]);
     }
 	newLine();
