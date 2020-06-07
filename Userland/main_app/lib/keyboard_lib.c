@@ -65,6 +65,9 @@ char getChar(){
         return getChar();
     }
 
+    // TAB is used for storing the state of registers, so ask for a new char
+    if(keyCode == 15)
+        return getChar();
 
     if(keyCode == 59)
         return f1Code;

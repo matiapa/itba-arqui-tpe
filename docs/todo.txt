@@ -30,14 +30,16 @@ Apps:
 ✓ Windows Manager
 - Calculator
 - Shell
-  - inforeg
-  - storedreg
+  ✓ help
+  ✓ time
+  ✓ inforeg
+  ✓ storedreg
   - printmem
-  - gettime
-  - cpuinfo
-  - cputemp
-  - divZeroException
-  - invalidOpcodeException
+  ✓ cputemp
+  ✓ cpuinfo
+  ✓ divZeroException
+  ✓ invalidOpcodeException
+  ✓ clear
 
 
 - Fix temperature

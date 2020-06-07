@@ -45,6 +45,12 @@ int isDigit(char c) {
     return 0;
 }
 
+int isHexa(char c) {
+    if (isDigit(c) || (c>='A' && c<='F') || (c>='a' && c<='f'))
+        return 1;
+    return 0;
+}
+
 int isDecimalPoint(char c) {
     if (c=='.' || c==',')
         return 1;
@@ -52,7 +58,7 @@ int isDecimalPoint(char c) {
 }
 
 int isSpace(char c) {
-    if (c==' ' || c=='\t' || c=='\n' || c==13)
+    if (c==' ' || c=='\t' || c=='\n' || c==13 || c==0)
         return 1;
     return 0;
 }
@@ -258,20 +264,19 @@ int strcmp(char *str1, char *str2){
 
 }
 
-
 /* --------------------------------------------------------------
  Compares a certain amount of chars of two strings and returns 1
  if they are equal or 0 otherwise
 -------------------------------------------------------------- */
 
-int strncmp(char * s1, char * s2, int length) {
+int strncmp(char * str1, char * str2, int length) {
+    int i;
 
-    for (int i=0; i<length; i++) {
-        if (s1[i] != s2[i])
-            return 0;
-        if (s1[i]==0)
+    for(i=0; i<length && str1[i] && str2[i]; i++){
+        if(str1[i]!=str2[i])
             return 0;
     }
-
+    if (str1[i]!=0 && str2[i])
+        return 0;
     return 1;
 }

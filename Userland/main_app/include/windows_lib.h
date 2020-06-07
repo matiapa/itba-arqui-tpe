@@ -37,8 +37,12 @@ void printLine(char c[]);
 
 void newLine();
 
+void cleanBuffer(char *);
+
 
 // Common UI definitions
+
+#define BUFFERW2 20
 
 // -------------------------- SHORTCUTS ---------------------
 
