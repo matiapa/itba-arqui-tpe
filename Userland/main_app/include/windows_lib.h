@@ -39,6 +39,12 @@ void newLine();
 
 void cleanBuffer(char *, int len);
 
+void clearLine(Window w);
+
+
+// Common UI definitions
+
+
 // -------------------------- SHORTCUTS ---------------------
 
 #define NULL ((void *) 0)

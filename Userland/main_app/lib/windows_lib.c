@@ -164,3 +164,12 @@ void cleanBuffer(char * buffer, int len) {
 	for (int j=0; j<len; j++)
 		buffer[j] = 0;
 }
+
+void clearLine(Window w){
+	int y = bodyY;
+	for(int x=w.xi; x<w.xf; x++){
+		draw(x, y, 0);
+	}
+
+	w.cursors[bodyCursor].x=0;
+}
