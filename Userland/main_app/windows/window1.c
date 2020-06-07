@@ -18,211 +18,454 @@
 ------------------------------------------------------------------------------------------------------------------------- */
 
 static Window w;
+
+char *token;
+
 #define W1_BUFFER_LEN 250
 
-typedef enum{
+typedef enum
+{
 	CORRECT,
+	BAD_EXPRESSION,
 	DIVZERO,
 	WRONG_CALC_CHAR,
-	WRONG_DECIMAL,
-	WRONG_PARENTH,
 	WRONG
 } message;
+
+message outputMsg;
 
 /* --------------------------------------------------------------------------------------------------------------------------
                                         		CALCULATOR DEFINITIONS
 ------------------------------------------------------------------------------------------------------------------------- */
 
-
 static void calculateString(char *s, int length);
 static void printWarning(message num);
 static int isAllowedChar(char c);
-static int checkAllowedChars(char * s, int length);
-double calcExp(char *, int, message *);
+static int checkAllowedChars(char *s, int length);
+
+static int checkCorrectMsg();
+void match(char expected);
+double exp();
+double term();
+double factor();
+double readNumber();
 
 /* -----------------------------------------------------------
  Defines the position and size of the window (all left half)
  and assings a color to title and body cursors
 -------------------------------------------------------------- */
 
-static void createWindow(){
+static void createWindow()
+{
 
 	ScreenRes res;
 	getRes(&res);
 
-	w.xi=0; w.xf=res.width/2;
-    w.yi=0; w.yf=res.height;
+	w.xi = 0;
+	w.xf = res.width / 2;
+	w.yi = 0;
+	w.yf = res.height;
 
-	w.cursors[titleCursor].x=titleX;	w.cursors[titleCursor].y=titleY;
-	w.cursors[titleCursor].fontColor=titleColor;	w.cursors[titleCursor].fontSize=titleSize;
+	w.cursors[titleCursor].x = titleX;
+	w.cursors[titleCursor].y = titleY;
+	w.cursors[titleCursor].fontColor = titleColor;
+	w.cursors[titleCursor].fontSize = titleSize;
 
-	w.cursors[bodyCursor].x=0;	w.cursors[bodyCursor].y=bodyY;
-	w.cursors[bodyCursor].fontColor=bodyColor;	w.cursors[bodyCursor].fontSize=bodySize;
-
+	w.cursors[bodyCursor].x = 0;
+	w.cursors[bodyCursor].y = bodyY;
+	w.cursors[bodyCursor].fontColor = bodyColor;
+	w.cursors[bodyCursor].fontSize = bodySize;
 }
-
 
 /* -----------------------------------------------------------
  Draws a line below the title to indicate that this windows
  is currently selected
 -------------------------------------------------------------- */
 
-static void drawIndicator(int color){
+static void drawIndicator(int color)
+{
 
-	for(int x=indicatorX; x<indicatorWidth; x++)
+	for (int x = indicatorX; x < indicatorWidth; x++)
 		drawPoint(x, indicatorY, indicatorHeight, color);
-
 }
-
 
 /* -----------------------------------------------------------
  Creates the window, draws the title, and a separator on the
  right end of the window.
 -------------------------------------------------------------- */
 
-void initWindow1(){
+void initWindow1()
+{
 
-	createWindow();	
+	createWindow();
 	setWindow(&w);
-	
+
 	w.activeCursor = titleCursor;
 	printLine("Calculator");
 
-	for(int y=0; y<w.yf; y++)
-		drawPoint(w.xf-10, y, 2, 0x00FF00);
-
+	for (int y = 0; y < w.yf; y++)
+		drawPoint(w.xf - 10, y, 2, 0x00FF00);
 }
-
 
 /* -------------------------------------------------------------
  Method that activates when this window becomes selected
  it waits for a key press constantly and handles it appropiately
 ---------------------------------------------------------------- */
 
-void window1(){
+void window1()
+{
 
 	setWindow(&w);
 	drawIndicator(indicatorColor);
 
 	newLine();
-	char bufferw1[W1_BUFFER_LEN+1];
-	cleanBuffer(bufferw1,W1_BUFFER_LEN);
+	char bufferw1[W1_BUFFER_LEN + 1];
+	cleanBuffer(bufferw1, W1_BUFFER_LEN);
 	int bIter = 0;
 
 	w.activeCursor = bodyCursor;
 
-	while(1){
+	while (1)
+	{
 
 		char c = getChar();
 
-		if(c==f2Code){
+		if (c == f2Code)
+		{
 			drawIndicator(0);
 			return;
 		}
 
-		if (c==escCode) {
+		if (c == escCode)
+		{
 			clearLine();
-			cleanBuffer(bufferw1,W1_BUFFER_LEN);
-			bIter=0;
+			cleanBuffer(bufferw1, W1_BUFFER_LEN);
+			bIter = 0;
 		}
-		else if(c=='\b') {
-			if (bIter!=0) {
+		else if (c == '\b')
+		{
+			if (bIter != 0)
+			{
 				bIter--;
 				bufferw1[bIter] = 0;
 			}
 		}
-		else if(bIter < W1_BUFFER_LEN) {
+		else if (bIter < W1_BUFFER_LEN)
+		{
 			bufferw1[bIter++] = c;
 			bufferw1[bIter] = 0;
-			if (bIter==W1_BUFFER_LEN)
+			if (bIter == W1_BUFFER_LEN)
 				bIter++;
 		}
 
 		printChar(c);
 
-		if (c == '=' || c=='\r') {
+		if (c == '=' || c == '\r')
+		{
 			newLine();
 			if (bIter > W1_BUFFER_LEN)
+			{
 				printWarning(WRONG);
-			else {
-				calculateString(bufferw1,bIter-1);
+			}
+			else
+			{
+				bufferw1[bIter - 1] = 0;
+				calculateString(bufferw1, bIter);
 			}
 
-			cleanBuffer(bufferw1,W1_BUFFER_LEN);
+			cleanBuffer(bufferw1, W1_BUFFER_LEN);
 			bIter = 0;
 		}
-
 	}
-
 }
-
 
 /* --------------------------------------------------------------------------------------------------------------------------
                                         CALCULATOR METHODS
 ------------------------------------------------------------------------------------------------------------------------- */
 
-void calculateString(char * s, int length) {
+void skipSpaces()
+{
+	while (isSpace(*token) && *token != 0)
+	{
+		token++;
+	}
+}
 
-	if (!checkAllowedChars(s,length)) {
+void calculateString(char *s, int length)
+{
+
+	if (!checkAllowedChars(s, length))
+	{
 		printWarning(WRONG_CALC_CHAR);
 		return;
 	}
 
-	message outputMsg = CORRECT;
-	double result = calcExp(s, length, &outputMsg);
+	token = s;
+	outputMsg = CORRECT;
+	double result = exp();
 
-	if(outputMsg!=CORRECT) {
+	skipSpaces();
+	if (*token != 0)
+	{
+		outputMsg = BAD_EXPRESSION;
+	}
+
+	if (outputMsg != CORRECT)
+	{
 		printWarning(outputMsg);
 	}
-	else {
+	else
+	{
 		printf(" >> %f\\n", 1, result);
 	}
-
 }
 
-static int checkAllowedChars(char * s, int length) {
-	for(int i=0; i<length; i++) {
-		if(!isAllowedChar(s[i]))
+static int checkAllowedChars(char *s, int length)
+{
+	for (int i = 0; i < length && s[i]; i++)
+	{
+		if (!isAllowedChar(s[i]))
 			return 0;
 	}
 	return 1;
 }
 
-static int isAllowedChar(char c) {
-	if (isDigit(c) || isOperator(c) || isSpace(c) || isDecimalPoint(c))
+static int isAllowedChar(char c)
+{
+	if (isDigit(c) || isOperator(c) || isSpace(c) || isDecimalPoint(c) || c == 0)
 		return 1;
 
 	return 0;
 }
 
-double calcExp(char *str, int length, message * outputMsg) {
-	double result;
+/*Calculator inspired by recursive descent simple calculator implemented by
+https://gist.github.com/mlabbe/81d667bac36aa60787fee60e3647a0a8
+*/
 
-	return result;
+static int checkCorrectMsg()
+{
+	if (outputMsg == CORRECT)
+		return 1;
+	return 0;
+}
+
+double exp()
+{
+
+	double value = term();
+	if (!checkCorrectMsg())
+		return 0;
+
+	skipSpaces();
+	while (*token == ADD || *token == SUBS)
+	{
+		if (*token == ADD)
+		{
+			match(ADD);
+			if (!checkCorrectMsg())
+				return 0;
+
+			value += term();
+			if (!checkCorrectMsg())
+				return 0;
+		}
+		else if (*token == SUBS)
+		{
+			match(SUBS);
+			if (!checkCorrectMsg())
+				return 0;
+
+			value -= term();
+			if (!checkCorrectMsg())
+				return 0;
+		}
+		else
+		{
+			outputMsg = BAD_EXPRESSION;
+			return 0;
+		}
+		skipSpaces();
+	}
+
+	return value;
+}
+
+// match expected and move ahead
+void match(char expected)
+{
+	if (*token == expected)
+	{
+		token++;
+	}
+	else
+		outputMsg = BAD_EXPRESSION;
+}
+
+double term()
+{
+	double value = factor();
+
+	skipSpaces();
+	while (*token == MULT || *token == DIV)
+	{
+
+		if (*token == MULT)
+		{
+
+			match(MULT);
+			if (!checkCorrectMsg())
+				return 0;
+
+			value *= factor();
+			if (!checkCorrectMsg())
+				return 0;
+		}
+		else if (*token == DIV)
+		{
+
+			match(DIV);
+			if (!checkCorrectMsg())
+				return 0;
+
+			double aux = factor();
+
+			if (!checkCorrectMsg())
+			{
+				return 0;
+			}
+			else if (aux < EPSILON && aux > -EPSILON)
+			{
+				outputMsg = DIVZERO;
+				return 0;
+			}
+			value /= aux;
+		}
+		else
+		{
+			outputMsg = BAD_EXPRESSION;
+			return 0;
+		}
+		skipSpaces();
+	}
+	return value;
+}
+
+double factor()
+{
+	double value = 0;
+
+	skipSpaces();
+	if (*token == PRTH_OP)
+	{
+		match(PRTH_OP);
+
+		if (!checkCorrectMsg())
+			return 0;
+
+		value = exp();
+
+		if (!checkCorrectMsg())
+		{
+			printLine("Ulala");
+			return 0;
+		}
+
+		skipSpaces();
+		match(PRTH_CL);
+
+		if (!checkCorrectMsg())
+			return 0;
+	}
+	else if (isDigit(*token) || isSign(*token))
+	{
+		// token--;
+
+		value = readNumber();
+		if (!checkCorrectMsg())
+			return 0;
+	}
+	else
+	{
+		outputMsg = BAD_EXPRESSION;
+		return 0;
+	}
+	return value;
+}
+
+double readNumber()
+{
+	double value = 0.0;
+	int isNegative = 0;
+
+	//Checks sign if it has one
+	if (isSign(*token))
+	{
+		if (*token == SUBS)
+			isNegative = 1;
+		token++;
+	}
+
+	//Checks it doesn't begin with point
+	if (isDecimalPoint(*token))
+	{
+		outputMsg = BAD_EXPRESSION;
+		return 0;
+	}
+
+	while (isDigit(*token))
+	{
+		value = value * 10 + *token - '0';
+		token++;
+	}
+	if (isDecimalPoint(*token))
+	{
+		token++;
+		double aux = 0.1;
+		while (isDigit(*token))
+		{
+			value += (*token - '0') * aux;
+			aux /= 10;
+			token++;
+		}
+	}
+
+	//Makes negative if flag activated
+	if (isNegative)
+		value = (-1) * value;
+	outputMsg = CORRECT;
+
+	return value;
 }
 
 /* -------------------------------------------------------------
 						WARNING
 ---------------------------------------------------------------- */
 
-static void printWarning(message msg) {
-    printf("\\n >> Error: ", 0);
+static void printWarning(message msg)
+{
+	printf("\\n >> Error: ", 0);
 
-    switch(msg) {
-        case DIVZERO: 
-			print("Zero division is not allowed.");
-        break;
-        case WRONG_CALC_CHAR: 
-			print("To calculate use only numbers or the following operators: ");
-    	    printLine("+ - x % ( ) , .");
-        break;
-		case WRONG_DECIMAL:
-			printLine("A number can have up to one decimal point.");
-		case WRONG_PARENTH:
-			printLine("Every opening parenthesis needs to find a closing one, in that order");
+	switch (msg)
+	{
+	case DIVZERO:
+		print("Zero division is not allowed.");
 		break;
-        default: print("Something went wrong.");
-    }
+	case WRONG_CALC_CHAR:
+		print("To calculate use only numbers or the following operators: ");
+		printLine("+ - x % ( ) , .");
+		break;
+	case BAD_EXPRESSION:
+		printLine("Bad expression.");
+		char msg[2] = "?";
+		msg[0] = (char)token[0];
+		printf("Unexpected '%s' in input.\\n", 1, msg);
+		break;
+	case WRONG:
+		print("Something went wrong.");
+		break;
+	default:
+		printf("Got a completely unexpected error code: %d", 1, msg);
+	}
 
-    printLine(" Please, try again.");
+	printLine(" Please, try again.");
 }

@@ -12,7 +12,7 @@ int isSign(char);
 
 int isOperator(char c);
 
-int isParenthesis (char c);
+int isParenthesis(char c);
 
 int isSpace(char);
 
@@ -22,17 +22,30 @@ int isUpper(char);
 
 char toLower(char);
 
+// CALCULATOR CONSTS
+
+#define ADD 'm'
+#define SUBS '-'
+#define MULT 'x'
+#define DIV 'd'
+#define PRTH_OP 'p'
+#define PRTH_CL 'q'
 
 // STRING METHODS
 
+#define DTOA_FLOAT_MAX_LEN 4
+#define EPSILON 0.0001
+
 void reverseStr(char str[], int length);
 
-char * itoa(int num, char * str, int base, int fixLen);
+char *itoa(int num, char *str, int base, int fixLen);
 
-char * dtoa(double num, char * str);
+char *dtoa(double num, char *str);
 
-void printf(char * format, int nargs, ...);
+void printf(char *format, int nargs, ...);
 
-int strcmp(char * str1, char * str2);
+int strcmp(char *str1, char *str2);
 
-int strncmp(char * s1, char * s2, int length);
+int strncmp(char *s1, char *s2, int length);
+
+void strcpy(char *src, char *dest);

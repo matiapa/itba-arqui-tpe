@@ -10,80 +10,90 @@
 #include <std_lib.h>
 #include <stdint.h>
 
-
-/* ------------------------------------------------------------------------------------------------------------------ 
+/* ------------------------------------------------------------------------------------------------------------------
                                                 CHAR FUNCTIONS
  -------------------------------------------------------------------------------------------------------------------- */
 
-int isLower(char c) {
-    if (c>='a' && c<='z')
+int isLower(char c)
+{
+    if (c >= 'a' && c <= 'z')
         return 1;
     return 0;
 }
 
-int isUpper(char c) {
-    if (c>='A' && c<='Z')
+int isUpper(char c)
+{
+    if (c >= 'A' && c <= 'Z')
         return 1;
     return 0;
 }
 
-char toLower(char c) {
+char toLower(char c)
+{
     if (isUpper(c))
         return c + 'a' - 'A';
     return c;
 }
 
-int isAlpha(char c) {
+int isAlpha(char c)
+{
     if (isLower(c) || isUpper(c))
         return 1;
     return 0;
 }
 
-int isDigit(char c) {
-    if (c>= '0' && c<= '9')
+int isDigit(char c)
+{
+    if (c >= '0' && c <= '9')
         return 1;
     return 0;
 }
 
-int isHexa(char c) {
-    if (isDigit(c) || (c>='A' && c<='F') || (c>='a' && c<='f'))
+int isHexa(char c)
+{
+    if (isDigit(c) || (c >= 'A' && c <= 'F') || (c >= 'a' && c <= 'f'))
         return 1;
     return 0;
 }
 
-int isDecimalPoint(char c) {
-    if (c=='.' || c==',')
+int isDecimalPoint(char c)
+{
+    if (c == '.' || c == ',')
         return 1;
     return 0;
 }
 
-int isSpace(char c) {
-    if (c==' ' || c=='\t' || c=='\n' || c=='\r' || c==0)
+int isSpace(char c)
+{
+    if (c == ' ' || c == '\t' || c == '\n' || c == '\r' || c == 0)
         return 1;
     return 0;
 }
 
-int isOperator(char c) {
-    if (isSign(c) || c=='x' || c=='%' || isParenthesis(c)!=0)
+int isOperator(char c)
+{
+    if (isSign(c) || c == MULT || c == DIV || isParenthesis(c) != 0)
         return 1;
     return 0;
 }
 
-int isSign(char c) {
-    if (c=='+' || c=='-')
+int isSign(char c)
+{
+    if (c == ADD || c == SUBS)
         return 1;
     return 0;
 }
 
-int isParenthesis (char c) {
-    if (c=='p')
+int isParenthesis(char c)
+{
+    if (c == PRTH_OP)
         return 1;
-    if (c=='q')
+    if (c == PRTH_CL)
         return -1;
 
     return 0;
 }
-/* ------------------------------------------------------------------------------------------------------------------ 
+/* ------------------------------------------------------------------------------------------------------------------
                                             STRING FUNCTIONS
  -------------------------------------------------------------------------------------------------------------------- */
 
@@ -92,143 +102,156 @@ int isParenthesis (char c) {
  Taken from https://www.geeksforgeeks.org/implement-itoa/
 ----------------------------------------------------------- */
 
-void reverseStr(char * str, int length) { 
-    int start = 0; 
-    int end = length -1; 
-    while (start < end) { 
+void reverseStr(char *str, int length)
+{
+    int start = 0;
+    int end = length - 1;
+    while (start < end)
+    {
         char aux = str[start];
         str[start] = str[end];
         str[end] = aux;
-        start++; 
-        end--; 
-    } 
+        start++;
+        end--;
+    }
 }
-
 
 /* -----------------------------------------------------------
  Function to convert an integer to a string
 ----------------------------------------------------------- */
 
-char* itoa(int num, char* str, int base, int fixLen){     
+char *itoa(int num, char *str, int base, int fixLen)
+{
     int i = 0;
     int isNegative = 0;
-  
-    if (num == 0){ 
-        str[i++] = '0'; 
-        str[i] = '\0'; 
-    } 
-  
-    if (num < 0){
+
+    if (num == 0)
+    {
+        str[i++] = '0';
+        str[i] = '\0';
+    }
+
+    if (num < 0)
+    {
         isNegative = -1;
         num = -num;
     }
-  
-    while (num != 0 && (i<fixLen || fixLen<0)){
-        int rem = num % base; 
-        str[i++] = (rem > 9) ? (rem-10) + 'A' : rem + '0'; 
-        num = num/base; 
-    } 
-  
-    if (isNegative == 1 && base == 10) 
-        str[i++] = '-'; 
-  
-    while(i<fixLen){
+
+    while (num != 0 && (i < fixLen || fixLen < 0))
+    {
+        int rem = num % base;
+        str[i++] = (rem > 9) ? (rem - 10) + 'A' : rem + '0';
+        num = num / base;
+    }
+
+    if (isNegative == 1 && base == 10)
+        str[i++] = '-';
+
+    while (i < fixLen)
+    {
         str[i++] = '0';
     }
 
     str[i] = '\0';
-  
-    reverseStr(str, i); 
-  
-    return str; 
+
+    reverseStr(str, i);
+
+    return str;
 }
 
-
 /* -----------------------------------------------------------
- Function to convert an double to a string
+ Function to convert a double to a string
 ----------------------------------------------------------- */
 
-#define DTOA_FLOAT_MAX_LEN 4
-#define EPSILON 0.0001
-
-char * dtoa(double num, char *str) {
+char *dtoa(double num, char *str)
+{
 
     int i = 0;
 
-    if (num < EPSILON && num > -EPSILON) { 
+    if (num < EPSILON && num > -EPSILON)
+    {
         str[i++] = '0';
         str[i++] = '.';
         str[i++] = '0';
 
-        str[i] = '\0'; 
-        return str; 
-    } 
-  
-    int auxNum = (int) num;
+        str[i] = '\0';
+        return str;
+    }
+
+    int auxNum = (int)num;
     // --- Building the int part ---
-    while (auxNum > EPSILON) { 
-        int rem = auxNum % 10; 
-        str[i++] = rem + '0'; 
-        auxNum = auxNum/10; 
-    } 
+    while (auxNum > EPSILON)
+    {
+        int rem = auxNum % 10;
+        str[i++] = rem + '0';
+        auxNum = auxNum / 10;
+    }
 
     int isNegative = 0;
-    if (num < 0){
-        isNegative = 1; 
+    if (num < 0)
+    {
+        isNegative = 1;
         num = -num;
-    } 
-    if (isNegative == 1) 
-        str[i++] = '-'; 
-  
-    reverseStr(str, i); 
-    str[i++] = '.'; 
-
-    for (int j=0; j<DTOA_FLOAT_MAX_LEN; j++) {
-        num = num*10;
-        int aux = (int) num;
-        str[i++] = aux%10 + '0';
     }
-   
+
+    if (isNegative == 1)
+        str[i++] = '-';
+
+    reverseStr(str, i);
+    str[i++] = '.';
+
+    for (int j = 0; j < DTOA_FLOAT_MAX_LEN; j++)
+    {
+        num = num * 10;
+        int aux = (int)num;
+        str[i++] = aux % 10 + '0';
+    }
+
     str[i] = '\0';
     return str;
-
 }
-
 
 /* -----------------------------------------------------------
  Printf that supports integers, doubles, strings and hex
  display as possible formats
 -------------------------------------------------------------- */
 
-void printf(char *format, int nargs, ...){
+void printf(char *format, int nargs, ...)
+{
 
     va_list valist;
 
     va_start(valist, nargs);
 
-    int pos, formatChar=0, specialChar=0, fixLen=-1;
-    for(pos=0; format[pos]!=0; pos++){
+    int pos, formatChar = 0, specialChar = 0, fixLen = -1;
+    for (pos = 0; format[pos] != 0; pos++)
+    {
 
-        if(format[pos] == '%'){
+        if (format[pos] == '%')
+        {
             formatChar = 1;
             continue;
         }
 
-        if(formatChar == 1){
+        if (formatChar == 1)
+        {
 
-            if(isDigit(format[pos])){
-                fixLen = format[pos]-'0';
+            if (isDigit(format[pos]))
+            {
+                fixLen = format[pos] - '0';
                 continue;
             }
 
-            if(format[pos] == 'd'){
+            if (format[pos] == 'd')
+            {
                 char str[20];
                 print(itoa(va_arg(valist, int), str, 10, fixLen));
                 formatChar = 0;
                 continue;
             }
 
-            if(format[pos] == 'x'){
+            if (format[pos] == 'x')
+            {
                 char str[20];
                 print("0x");
                 print(itoa(va_arg(valist, int), str, 16, fixLen));
@@ -236,59 +259,61 @@ void printf(char *format, int nargs, ...){
                 continue;
             }
 
-            if(format[pos] == 'f'){
+            if (format[pos] == 'f')
+            {
                 char str[20];
                 print(dtoa(va_arg(valist, double), str));
                 formatChar = 0;
                 continue;
-            }            
+            }
 
-            if(format[pos] == 's'){
+            if (format[pos] == 's')
+            {
                 print(va_arg(valist, char *));
                 formatChar = 0;
                 continue;
             }
         }
 
-        if(format[pos] == '\\'){
+        if (format[pos] == '\\')
+        {
             specialChar = 1;
             continue;
         }
 
-        if(specialChar == 1){
+        if (specialChar == 1)
+        {
 
             specialChar = 0;
 
-            if(format[pos] == 'n'){
+            if (format[pos] == 'n')
+            {
                 printLine("");
                 continue;
             }
-
         }
 
         printChar(format[pos]);
-
     }
 
     va_end(valist);
-
 }
-
 
 /* -----------------------------------------------------------
  Compares two strings until one of the two ends and returns 1
  if they are equal or 0 otherwise
 ----------------------------------------------------------- */
 
-int strcmp(char *str1, char *str2){
+int strcmp(char *str1, char *str2)
+{
 
-    for(int i=0; str1[i]!=0 || str2[i]!=0; i++){
-        if(str1[i]!=str2[i])
+    for (int i = 0; str1[i] != 0 || str2[i] != 0; i++)
+    {
+        if (str1[i] != str2[i])
             return 0;
     }
 
     return 1;
-
 }
 
 /* --------------------------------------------------------------
@@ -296,16 +321,26 @@ int strcmp(char *str1, char *str2){
  if they are equal or 0 otherwise
 -------------------------------------------------------------- */
 
-int strncmp(char * str1, char * str2, int length) {
+int strncmp(char *str1, char *str2, int length)
+{
     int i;
 
-    for(i=0; i<length && str1[i] && str2[i]; i++){
-        if(str1[i]!=str2[i])
+    for (i = 0; i < length && str1[i] && str2[i]; i++)
+    {
+        if (str1[i] != str2[i])
             return 0;
     }
 
-    if (str1[i]!=0 && str2[i])
+    if (str1[i] != 0 && str2[i])
         return 0;
-        
+
     return 1;
+}
+
+void strcpy(char *src, char *dest)
+{
+    int i;
+    for (i = 0; src[i] != 0; i++)
+        dest[i] = src[i];
+    dest[i] = 0;
 }
