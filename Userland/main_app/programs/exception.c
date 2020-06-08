@@ -5,6 +5,7 @@
 |  at the moment of the exception, and which was the exception produced.					        |
 ---------------------------------------------------------------------------------------------------*/
 
+#include <programs.h>
 #include <windows_lib.h>
 #include <std_lib.h>
 #include <syscalls.h>
@@ -18,8 +19,6 @@
 #define cursor 0
 
 static Window w;
-
-void main();
 
 
 /* --------------------------------------------------------------------------------------------------------------------------
@@ -43,7 +42,7 @@ static void createWindow(){
 }
 
 
-void exception(){
+int exception(){
 
     LastException lastException;
 	getLastException(&lastException);
@@ -84,4 +83,6 @@ void exception(){
         }
     }
 
+    return 1;
+    
 }

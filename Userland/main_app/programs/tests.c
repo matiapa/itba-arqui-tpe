@@ -6,6 +6,7 @@
 | evaluating the behaviour of the system.                                   				        |
 ---------------------------------------------------------------------------------------------------*/
 
+#include <programs.h>
 #include <windows_lib.h>
 #include <std_lib.h>
 #include <syscalls.h>
@@ -54,7 +55,7 @@ static void createWindow(){
 }
 
 
-void test(){
+int test(){
 
     createWindow();
 	w.activeCursor = cursor;
@@ -70,6 +71,8 @@ void test(){
     testGetRegBkp();
 
     while(1);
+
+    return 1;
 
 }
 
