@@ -93,6 +93,13 @@ int isParenthesis(char c)
 
     return 0;
 }
+
+// The extended ASCII is not supported by the used font, thus they are marked as not printable
+
+int isPrintableChar(char c){
+    return c >= 32 && c <= 127;
+}
+
 /* ------------------------------------------------------------------------------------------------------------------
                                             STRING FUNCTIONS
  -------------------------------------------------------------------------------------------------------------------- */
@@ -197,6 +204,7 @@ char *dtoa(double num, char *str)
     if (isNegative == 1)
         str[i++] = '-';
 
+    str[i] = '\0';
     str[i] = '\0';
     reverseStr(str, i);
     str[i++] = '.';

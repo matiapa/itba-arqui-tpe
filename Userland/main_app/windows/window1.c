@@ -150,10 +150,9 @@ void window1()
 				bufferw1[bIter] = 0;
 			}
 		}
-		else if (bIter < W1_BUFFER_LEN)
-		{
+		else if (isPrintableChar(c) && bIter < W1_BUFFER_LEN)
+		{	
 			bufferw1[bIter++] = c;
-			bufferw1[bIter] = 0;
 			if (bIter == W1_BUFFER_LEN)
 				bIter++;
 		}
@@ -169,7 +168,6 @@ void window1()
 			}
 			else
 			{
-				bufferw1[bIter - 1] = 0;
 				calculateString(bufferw1, bIter);
 			}
 
@@ -193,7 +191,6 @@ void skipSpaces()
 
 void calculateString(char *s, int length)
 {
-
 	if (!checkAllowedChars(s, length))
 	{
 		printWarning(WRONG_CALC_CHAR);
@@ -232,6 +229,7 @@ static int checkAllowedChars(char *s, int length)
 
 static int isAllowedChar(char c)
 {
+
 	if (isDigit(c) || isOperator(c) || isSpace(c) || isDecimalPoint(c) || c == 0)
 		return 1;
 

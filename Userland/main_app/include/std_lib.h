@@ -22,14 +22,16 @@ int isUpper(char);
 
 char toLower(char);
 
+int isPrintableChar(char c);
+
 // CALCULATOR CONSTS
 
-#define ADD 'm'
+#define ADD '+'
 #define SUBS '-'
 #define MULT 'x'
-#define DIV 'd'
-#define PRTH_OP 'p'
-#define PRTH_CL 'q'
+#define DIV '%'
+#define PRTH_OP '('
+#define PRTH_CL ')'
 
 // STRING METHODS
 

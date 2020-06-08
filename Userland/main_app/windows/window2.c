@@ -166,7 +166,6 @@ void window2()
 			// Put the char into buffer
 
 			bufferw2[bIter++] = c;
-			bufferw2[bIter] = 0;
 			if (bIter == W2_BUFFER_LEN)
 				bIter++;
 		}

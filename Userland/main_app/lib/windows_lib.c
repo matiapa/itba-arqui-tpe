@@ -131,14 +131,14 @@ void printChar(char c)
 {
 
     // Carriage return
-    if (c == 13)
+    if (c == '\r')
     {
         newLine();
         return;
     }
 
     // Backspace
-    if (c == 8)
+    if (c == '\b')
     {
         prevChar();
         drawPoint(cursor.x, cursor.y, cursor.fontSize * fontHeight, 0);
@@ -146,7 +146,7 @@ void printChar(char c)
     }
 
     // Not printable
-    if (c < 32 || c > 127)
+    if (! isPrintableChar(c))
         return;
 
     drawChar(cursor.x, cursor.y, c, cursor.fontSize, cursor.fontColor);
