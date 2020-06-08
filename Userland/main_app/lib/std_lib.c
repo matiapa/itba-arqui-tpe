@@ -173,6 +173,13 @@ char *itoa(int num, char *str, int base, int fixLen)
 char *dtoa(double num, char *str)
 {
 
+    int isNegative = 0;
+    if (num < 0)
+    {
+        isNegative = 1;
+        num = -num;
+    }
+
     int i = 0;
 
     if (num < EPSILON && num > -EPSILON)
@@ -194,13 +201,6 @@ char *dtoa(double num, char *str)
         auxNum = auxNum / 10;
     }
 
-    int isNegative = 0;
-    if (num < 0)
-    {
-        isNegative = 1;
-        num = -num;
-    }
-
     if (isNegative == 1)
         str[i++] = '-';
 
@@ -215,7 +215,6 @@ char *dtoa(double num, char *str)
         int aux = (int)num;
         str[i++] = aux % 10 + '0';
     }
-
     return str;
 }
 
