@@ -35,22 +35,11 @@ int escCode = 3;
 int shift=0;
 int caps=0;
 
-static int lastKeyCode=3;
-static int newKey=1;
-
-void keyboardListener(int newKeyCode){
-    lastKeyCode = newKeyCode;
-    newKey = 1;
-}
 
 char getChar(){
 
-    while(!newKey);
-
-    newKey=0;
-
-    int keyCode = lastKeyCode;
-    //int keyCode = read();
+    int keyCode;
+    while((keyCode=read()) == -1);
 
     // Shift in
     if(keyCode == 42 || keyCode == 54){

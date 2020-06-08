@@ -9,8 +9,6 @@ int read();
 
 char getChar();
 
-void keyboardListener(int keyCode);
-
 extern int f1Code;
 extern int f2Code;
 extern int escCode;

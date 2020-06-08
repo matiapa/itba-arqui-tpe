@@ -4,7 +4,7 @@
 
 int sysRead(char *str, int fd){
 
-    return read();
+    return getKey();
 
 }
 

@@ -35,8 +35,6 @@ int x=0;
 // Keyboard
 void int_21() {
 
-	((EntryPoint) mainApp)(IRQ_PRODUCED, 1, KEYBOARD_IRQ);
-
-	draw(x++, 500, 0xFFFFFF);
+	keyPressed();
 
 }

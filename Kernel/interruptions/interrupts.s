@@ -18,7 +18,7 @@
 .extern irqDispatcher
 .extern exceptionDispatcher
 
-.extern readi
+.extern read
 .extern storeState
 
 .intel_syntax noprefix
@@ -130,7 +130,7 @@ _irq00Handler:
 _irq01Handler:
 	pushState
 
-	call readi
+	call read
 	cmp rax, 15
 	jne _skip
 
