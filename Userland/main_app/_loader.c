@@ -25,8 +25,8 @@ int _start(int message, int nargs, ...) {
 		case EXCEPTION_PRODUCED:
 			return exception(valist);
 
-		case TIMER_TICK_INT:
-			return interruption(TIMER_TICK_INT);
+		case IRQ_PRODUCED:
+			return interruption(valist);
 
 		default:
 			return main();

@@ -181,8 +181,12 @@ void cleanBuffer(char *buffer, int len)
                                             LISTENERS
 -------------------------------------------------------------------------------------------------------------------------- */
 
-void winTimerTickListener(){
-    
-    //printChar('.');
+static int ticks=0;
 
+void winTimerTickListener(){
+    ticks++;
+}
+
+int getTicks(){
+    return ticks;
 }

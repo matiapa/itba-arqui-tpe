@@ -5,5 +5,8 @@
 ---------------------------------------------------------------------------------------------------*/
 
 #define START 0
-#define TIMER_TICK_INT 1
+#define IRQ_PRODUCED 1
 #define EXCEPTION_PRODUCED 2
+
+#define TIMER_TICK_IRQ 0
+#define KEYBOARD_IRQ 1

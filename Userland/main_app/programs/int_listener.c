@@ -1,17 +1,19 @@
 #include <programs.h>
 #include <windows_lib.h>
 #include <kernel_messages.h>
+#include <keyboard_lib.h>
 
-static int x = 0;
+int interruption(va_list valist){
 
-int interruption(int message){
+    int id = va_arg(valist, int);
 
-    draw(x, 100, 0xFF0000);
-
-    x += 1;
-
-    if(message == TIMER_TICK_INT){
+    if(id == TIMER_TICK_IRQ){
         winTimerTickListener();
+    }
+
+    if(id == KEYBOARD_IRQ){
+        int keyCode = va_arg(valist, int);
+        keyboardListener(keyCode);
     }
 
     return 1;

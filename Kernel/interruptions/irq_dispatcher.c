@@ -21,27 +21,22 @@ void irqDispatcher(uint64_t irq) {
 }
 
 
-static int ints = 0;
 
 // RTC
 void int_20() {
 
-	// ints += 1;
-
-	// if(ints>0 && ints%10 == 0)
-	// 	((EntryPoint) mainApp)(TIMER_TICK_INT);
-
-	// draw(ints, 100, 0xFF0000);
+	((EntryPoint) mainApp)(IRQ_PRODUCED, 1, TIMER_TICK_IRQ);
 
 }
 
 
-void storeState();
-
-int x=100;
+int x=0;
 
 // Keyboard
 void int_21() {
 
+	((EntryPoint) mainApp)(IRQ_PRODUCED, 1, KEYBOARD_IRQ);
+
+	draw(x++, 500, 0xFFFFFF);
 
 }

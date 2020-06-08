@@ -7,7 +7,6 @@
 #include <syscalls.h>
 #include <keyboard_lib.h>
 
-
 // Escape: 1, Backspace: 14, Tab: 15, Enter: 28, Ctrl: 29, LShift: 42/170, RShift: 54/182, Alt: 56, Space: 57, F1-F10: 59-68, Cmd: 91
 // These keys are preceded by a 224. LA: 75/203, RA: 77/205, DEL: 83/211
 
@@ -36,9 +35,22 @@ int escCode = 3;
 int shift=0;
 int caps=0;
 
+static int lastKeyCode=3;
+static int newKey=1;
+
+void keyboardListener(int newKeyCode){
+    lastKeyCode = newKeyCode;
+    newKey = 1;
+}
+
 char getChar(){
 
-    int keyCode = read();
+    while(!newKey);
+
+    newKey=0;
+
+    int keyCode = lastKeyCode;
+    //int keyCode = read();
 
     // Shift in
     if(keyCode == 42 || keyCode == 54){

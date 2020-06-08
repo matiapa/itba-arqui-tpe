@@ -6,4 +6,4 @@ int test();
 
 int exception(va_list args);
 
-int interruption();
+int interruption(va_list args);
