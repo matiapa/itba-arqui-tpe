@@ -45,5 +45,4 @@ Apps:
 - Fix temperature
 - Improve documentation
 - Check weird cases
-- Fix middle line overlapping
-- Fix windows2 overlaping
+- Fix window vertical overlapping

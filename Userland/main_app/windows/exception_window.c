@@ -9,7 +9,7 @@
 #include <std_lib.h>
 #include <syscalls.h>
 #include <keyboard_lib.h>
-
+#include <kernel_messages.h>
 
 /* --------------------------------------------------------------------------------------------------------------------------
                                         		DEFINITIONS
@@ -43,7 +43,10 @@ static void createWindow(){
 }
 
 
-void exception(LastException lastException){
+void exception(){
+
+    LastException lastException;
+	getLastException(&lastException);
 
     createWindow();
 	w.activeCursor = cursor;
@@ -77,7 +80,7 @@ void exception(LastException lastException){
                     draw(x, y, 0x000000);
                 }
             }
-            main();
+            main(START);
         }
     }
 

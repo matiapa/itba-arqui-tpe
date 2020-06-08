@@ -4,6 +4,7 @@
 #include <moduleLoader.h>
 #include <idt_loader.h>
 #include <screen_driver.h>
+#include <kernel_messages.h>
 
 extern uint8_t text;
 extern uint8_t rodata;
@@ -13,10 +14,6 @@ extern uint8_t endOfKernelBinary;
 extern uint8_t endOfKernel;
 
 static const uint64_t PageSize = 0x1000;
-
-static void * const mainAppAddress = (void*)0x400000;
-
-typedef int (*EntryPoint)();
 
 
 void clearBSS(void * bssAddress, uint64_t bssSize){
@@ -33,7 +30,7 @@ void * getStackBase(){
 
 void * initializeKernelBinary(){
 	void * moduleAddresses[] = {
-		mainAppAddress,
+		mainApp,
 	};
 
 	loadModules(&endOfKernelBinary, moduleAddresses);
@@ -47,7 +44,7 @@ int main(){
 
 	load_idt();
 
-	((EntryPoint) mainAppAddress)();
+	((EntryPoint) mainApp)(0);
 		
 	return 0;
 }

@@ -5,4 +5,4 @@ void initWindow2();
 void window2();
 
 void test();
-void exception(LastException LastException);
+void exception();

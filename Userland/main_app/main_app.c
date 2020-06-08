@@ -9,13 +9,11 @@
 #include <syscalls.h>
 #include <tests.h>
 #include <windows.h>
+#include <kernel_messages.h>
 
-int main(){
+int main(int message){
 
-	LastException lastException;
-	getLastException(&lastException);
-
-	if(lastException.handled == 1){
+	if(message == START){
 
 		initWindow1();
 		initWindow2();
@@ -25,9 +23,11 @@ int main(){
 			window2();
 		}
 
-	}else{
+	}
+	
+	if(message == EXCEPTION_PRODUCED){
 
-		exception(lastException);
+		exception();
 
 	}
 	
