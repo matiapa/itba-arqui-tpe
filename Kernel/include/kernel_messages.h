@@ -10,6 +10,7 @@
 #define EXCEPTION_PRODUCED 2
 
 #define TIMER_TICK_IRQ 0
+#define KEYBOARD_IRQ 1
 
 static void * const mainApp = (void*)0x400000;
 

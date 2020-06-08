@@ -15,9 +15,6 @@ int _start(int message, int nargs, ...) {
 	va_list valist;
     va_start(valist, nargs);
 
-	//Clean BSS
-	memset(&bss, 0, &endOfBinary - &bss);
-
 	switch(message){
 		case START:
 			return main();
@@ -32,15 +29,4 @@ int _start(int message, int nargs, ...) {
 			return main();
 	}
 
-}
-
-
-void * memset(void * destiation, int32_t c, uint64_t length) {
-	uint8_t chr = (uint8_t)c;
-	char * dst = (char*)destiation;
-
-	while(length--)
-		dst[length] = chr;
-
-	return destiation;
 }

@@ -5,9 +5,9 @@
 #define ENTER 28
 #define BACKSPACE 14
 
-int read();
-
 char getChar();
+
+void libKeyboardListener(int keyPos);
 
 extern int f1Code;
 extern int f2Code;

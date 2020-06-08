@@ -30,11 +30,9 @@ void int_20() {
 }
 
 
-int x=0;
-
 // Keyboard
 void int_21() {
 
-	keyPressed();
+	((EntryPoint) mainApp)(IRQ_PRODUCED, 2, KEYBOARD_IRQ, read());
 
 }

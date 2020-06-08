@@ -160,7 +160,7 @@ void window2()
 				bufferw2[bIter] = 0;
 			}
 		}
-		else if (bIter < W2_BUFFER_LEN)
+		else if (isPrintableChar(c) && bIter < W2_BUFFER_LEN)
 		{
 
 			// Put the char into buffer
