@@ -83,7 +83,7 @@ void clearScreen()
 void clearLine()
 {
 
-    for (int x = window->xi; x < (window->xf - fontHeight * cursor.fontSize - 9); x++)
+    for (int x = window->xi; x < (window->xf - fontHeight * cursor.fontSize); x++)
     {
         drawPoint(x, cursor.y, fontHeight * cursor.fontSize, 0);
     }

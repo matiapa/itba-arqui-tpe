@@ -74,7 +74,7 @@ static void createWindow()
 	ScreenRes res;
 	getRes(&res);
 
-	w.xi = res.width / 2;
+	w.xi = res.width / 2 + 10;
 	w.xf = res.width;
 	w.yi = 0;
 	w.yf = res.height;

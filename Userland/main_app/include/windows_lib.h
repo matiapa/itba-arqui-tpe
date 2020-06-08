@@ -68,5 +68,6 @@ void cleanBuffer(char *, int len);
 #define indicatorColor 0x00FF00
 
 #define bodyY 50
+#define bodyX 10
 #define bodySize 1
 #define bodyColor 0xFFFFFF

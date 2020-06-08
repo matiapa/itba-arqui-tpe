@@ -62,7 +62,7 @@ static void createWindow()
 	getRes(&res);
 
 	w.xi = 0;
-	w.xf = res.width / 2;
+	w.xf = res.width / 2 - 10;
 	w.yi = 0;
 	w.yf = res.height;
 
@@ -103,8 +103,11 @@ void initWindow1()
 	w.activeCursor = titleCursor;
 	printLine("Calculator");
 
+	ScreenRes res;
+	getRes(&res);
+
 	for (int y = 0; y < w.yf; y++)
-		drawPoint(w.xf - 10, y, 2, 0x00FF00);
+		drawPoint(res.width/2, y, 2, 0x00FF00);
 }
 
 /* -------------------------------------------------------------
