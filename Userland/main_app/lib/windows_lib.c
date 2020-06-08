@@ -50,14 +50,15 @@ void drawPoint(int x, int y, int size, int rgb)
 void drawChar(int x, int y, char c, int size, int rgb)
 {
 
-    for (int col = 0; col < 8; col++)
+    for (int col = 0; col < fontWidth; col++)
     {
-        for (int row = 0; row < 8; row++)
+        for (int row = 0; row < fontHeight; row++)
         {
-            if (font8x8_basic[(int)c][col] & 1 << row)
-            {
-                drawPoint(x + row * size, y + col * size, size, rgb);
-            }
+
+            int draw = font8x8_basic[(int)c][col] & 1 << row;
+
+            drawPoint(x + row * size, y + col * size, size, draw ? rgb : window->textBackground);
+
         }
     }
 }
@@ -128,31 +129,36 @@ void newLine()
     cursor.y += cursor.fontSize * fontWidth + lineSpacing;
 }
 
+int printing=0;
+
 void printChar(char c)
 {
 
-    // Carriage return
-    if (c == '\r')
-    {
-        newLine();
-        return;
-    }
+    printing=1;
 
-    // Backspace
-    if (c == '\b')
-    {
-        prevChar();
-        drawPoint(cursor.x, cursor.y, cursor.fontSize * fontHeight, 0);
-        return;
-    }
+    drawCursor(0);
 
-    // Not printable
-    if (! isPrintableChar(c))
-        return;
+    switch(c){
 
-    drawChar(cursor.x, cursor.y, c, cursor.fontSize, cursor.fontColor);
+        case '\r':
+            newLine();
+            break;
 
-    nextChar();
+        case '\b':
+            prevChar();
+            drawPoint(cursor.x, cursor.y, cursor.fontSize * fontHeight, 0);
+            break;
+
+        default:
+            if (isPrintableChar(c)){
+                drawChar(cursor.x, cursor.y, c, cursor.fontSize, cursor.fontColor);
+                nextChar();
+            }
+
+    }    
+
+    printing=0;
+
 }
 
 void print(char s[])
@@ -177,14 +183,36 @@ void cleanBuffer(char *buffer, int len)
 }
 
 
+void drawCursor(int color){
+
+    for (int y=0; y<fontHeight; y++){
+        drawPoint(cursor.x+2, cursor.y+y, 2, color);
+    }
+
+}
+
 /* --------------------------------------------------------------------------------------------------------------------------
                                             LISTENERS
 -------------------------------------------------------------------------------------------------------------------------- */
 
 static int ticks=0;
 
+int cursorActive = 1;
+
 void winTimerTickListener(){
     ticks++;
+
+    if(printing)
+        return;
+
+    if(! cursor.withIndicator)
+        return;
+
+    if((ticks%15) == 0 ){
+        drawCursor(cursorActive ? 0xFFFFFF : 0x000000);
+        cursorActive = cursorActive ? 0 : 1;
+    }
+
 }
 
 int getTicks(){

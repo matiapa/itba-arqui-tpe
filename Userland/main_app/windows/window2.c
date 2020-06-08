@@ -78,6 +78,8 @@ static void createWindow()
 	w.xf = res.width;
 	w.yi = 0;
 	w.yf = res.height;
+	
+	w.textBackground = 0;
 
 	w.cursors[titleCursor].x = titleX;
 	w.cursors[titleCursor].y = titleY;
@@ -88,6 +90,8 @@ static void createWindow()
 	w.cursors[bodyCursor].y = bodyY;
 	w.cursors[bodyCursor].fontColor = bodyColor;
 	w.cursors[bodyCursor].fontSize = bodySize;
+	w.cursors[bodyCursor].withIndicator = 1;
+
 }
 
 /* -----------------------------------------------------------

@@ -34,6 +34,8 @@ static void createWindow(){
 	w.xi = 0; w.xf = res.width;
     w.yi = 0; w.yf = res.height;
 
+    w.textBackground = 0x0000FF;
+
 	w.cursors[cursor].x=0;	w.cursors[cursor].y=0;
 	w.cursors[cursor].fontColor=0xFFFFFF;	w.cursors[cursor].fontSize=2;
 
@@ -68,7 +70,7 @@ int exception(va_list args){
     RegBkp bkp;
     getRegBkp(&bkp);
 
-    printf("\\nFeed this information to the poor developer's souls", 0);
+    printf("\\nFeed this information to the developers", 0);
     printf("\\nRAX: %x - RBX: %x - RCX: %x - RDX: %x", 4, bkp.rax, bkp.rbx, bkp.rcx, bkp.rcx);
     printf("\\nRIP: %x - RBP: %x - RSI: %x - RDI: %x", 4, eip, bkp.rbp, bkp.rsi, bkp.rdi);
 

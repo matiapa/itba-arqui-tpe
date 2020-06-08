@@ -4,11 +4,14 @@ typedef struct Cursor{
     int x, y;
 
     int fontSize, fontColor;
+
+    int withIndicator;
 } Cursor;
 
 
 typedef struct Window{
     int xi, xf, yi, yf;
+    int textBackground;
     
     Cursor cursors[3];
     int activeCursor;

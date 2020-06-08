@@ -71,10 +71,14 @@ static void createWindow()
 	w.cursors[titleCursor].fontColor = titleColor;
 	w.cursors[titleCursor].fontSize = titleSize;
 
+	w.textBackground = 0;
+
 	w.cursors[bodyCursor].x = 0;
 	w.cursors[bodyCursor].y = bodyY;
 	w.cursors[bodyCursor].fontColor = bodyColor;
 	w.cursors[bodyCursor].fontSize = bodySize;
+	w.cursors[bodyCursor].withIndicator = 1;
+
 }
 
 /* -----------------------------------------------------------
