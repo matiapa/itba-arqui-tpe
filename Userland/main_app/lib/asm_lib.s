@@ -5,6 +5,8 @@
 ---------------------------------------------------------------------------------------------------*/
 
 .global regDump
+.global halt
+.global sti
 .intel_syntax noprefix
 
 .section .text
@@ -34,4 +36,12 @@ regDump:
     mov [rdi+112], r13
     mov [rdi+120], r14
     mov [rdi+128], r15
+    ret
+
+halt:
+    hlt
+    ret
+
+sti:
+    sti
     ret

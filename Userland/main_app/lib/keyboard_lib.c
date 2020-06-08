@@ -6,6 +6,7 @@
 
 #include <syscalls.h>
 #include <keyboard_lib.h>
+#include <asm_lib.h>
 
 // Escape: 1, Backspace: 14, Tab: 15, Enter: 28, Ctrl: 29, LShift: 42/170, RShift: 54/182, Alt: 56, Space: 57, F1-F10: 59-68, Cmd: 91
 // These keys are preceded by a 224. LA: 75/203, RA: 77/205, DEL: 83/211
@@ -38,8 +39,10 @@ int caps=0;
 
 char getChar(){
 
-    int keyCode;
-    while((keyCode=read()) == -1);
+    sti();
+    halt();
+
+    int keyCode=read();
 
     // Shift in
     if(keyCode == 42 || keyCode == 54){
