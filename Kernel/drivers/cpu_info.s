@@ -52,14 +52,19 @@ getBrandIndex:
 
 getTemperature:
     mov rdx, 0
-    mov rcx, 0x19   # IA32_THERMAL_STATUS
-    rdmsr
+
+    #mov rcx, 0x19C   # IA32_THERMAL_STATUS
+    #rdmsr
+    mov rax, 0x83c2808    # Hardcoded value
+
     and rax, 0xCF0000   # Get bytes 16-23
     shr rax, 16
     mov rdi, rax
 
-    mov rcx, 0x1A2  # MSR_TEMPERATURE_TARGET
-    rdmsr
+    #mov rcx, 0x1A2  # MSR_TEMPERATURE_TARGET
+    #rdmsr
+    mov rax, 0x5640000    # Hardcoded value
+
     and rax, 0xCF0000   # Get bytes 16-23
     shr rax, 16
 

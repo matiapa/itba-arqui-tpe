@@ -129,6 +129,14 @@ void newLine()
     cursor.y += cursor.fontSize * fontWidth + lineSpacing;
 }
 
+void drawCursor(int color){
+
+    for (int y=0; y<fontHeight; y++){
+        drawPoint(cursor.x+2, cursor.y+y, 2, color);
+    }
+
+}
+
 int printing=0;
 
 void printChar(char c)
@@ -182,14 +190,6 @@ void cleanBuffer(char *buffer, int len)
         buffer[j] = 0;
 }
 
-
-void drawCursor(int color){
-
-    for (int y=0; y<fontHeight; y++){
-        drawPoint(cursor.x+2, cursor.y+y, 2, color);
-    }
-
-}
 
 /* --------------------------------------------------------------------------------------------------------------------------
                                             LISTENERS

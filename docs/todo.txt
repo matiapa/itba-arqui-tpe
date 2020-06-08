@@ -42,7 +42,6 @@ Apps:
   ✓ clear
 
 
-- Fix temperature
 - Improve documentation
 - Check weird cases
-- Fix window vertical overlapping
+- Implement scrolling

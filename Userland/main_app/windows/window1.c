@@ -125,7 +125,6 @@ void window1()
 	setWindow(&w);
 	drawIndicator(indicatorColor);
 
-	newLine();
 	char bufferw1[W1_BUFFER_LEN + 1];
 	cleanBuffer(bufferw1, W1_BUFFER_LEN);
 	int bIter = 0;
@@ -139,6 +138,7 @@ void window1()
 
 		if (c == f2Code)
 		{
+			drawCursor(0);
 			drawIndicator(0);
 			return;
 		}

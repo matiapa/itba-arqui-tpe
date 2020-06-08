@@ -34,6 +34,8 @@ void clearLine();
 
 void clearScreen();
 
+void drawCursor(int color);
+
 void printChar(char c);
 
 void print(char c[]);

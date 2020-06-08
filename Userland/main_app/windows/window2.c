@@ -150,6 +150,7 @@ void window2()
 		if (c == f1Code)
 		{
 			drawIndicator(0);
+			drawCursor(0);
 			return;
 		}
 
@@ -179,6 +180,10 @@ void window2()
 		// Enter pressed, parse and execute command
 		if (c == '\r')
 		{
+			if(bIter==0){
+				newLine();
+				continue;
+			}
 
 			// String for storing command parameter if present
 			char parameter[W2_BUFFER_LEN];
