@@ -49,23 +49,21 @@ getBrandIndex:
 # MSR information taken from https://courses.cs.washington.edu/courses/cse451/18sp/readings/ia32-4.pdf, page 27 and 263
 # The structures of MSR vary from architecture, Kaby Lake was taken for this function
 # IA32_THERMAL_STATUS holds an offset from TCC activation temperature, which is holded by MSR_TEMPERATURE_TARGET
+# The values of the registers have been hardcoded for testing purposes. Since QEMU emulates the CPU, it always gives a temperature of zero
+# rdmsr -a 418 and rdmsr -a 412 have been used for obtaining the hardcoded values
 
 getTemperature:
     mov rdx, 0
 
-    #mov rcx, 0x19C   # IA32_THERMAL_STATUS
-    #rdmsr
-    mov rax, 0x83c2808    # Hardcoded value
+    mov rax, 0x83c2808    # IA32_THERMAL_STATUS (0x19C, hardcoded)
 
-    and rax, 0xCF0000   # Get bytes 16-23
+    and rax, 0xDF0000   # Get bytes 16-23
     shr rax, 16
     mov rdi, rax
 
-    #mov rcx, 0x1A2  # MSR_TEMPERATURE_TARGET
-    #rdmsr
-    mov rax, 0x5640000    # Hardcoded value
+    mov rax, 0x5640000    # MSR_TEMPERATURE_TARGET (0x1A2, hardcoded)
 
-    and rax, 0xCF0000   # Get bytes 16-23
+    and rax, 0xDF0000   # Get bytes 16-23
     shr rax, 16
 
     sub rax, rdi   # Substract target-offset and return
