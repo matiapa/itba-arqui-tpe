@@ -41,18 +41,7 @@ void cpuInfo(CPUInfo * info);
 
 int cpuTemp();
 
-// ------------------------------------------- GETLATESTEXCEPTION (8) -------------------------------------------------------
-
-typedef struct LastException{
-	int id;
-	int handled;
-	void * eip;
-} LastException;
-
-void getLastException(LastException *LastException);
-
-
-// ------------------------------------------------ GETREGBKP (9) ----------------------------------------------------------
+// ------------------------------------------------ GETREGBKP (8) ----------------------------------------------------------
 
 typedef struct RegBkp{
     uint64_t rax, rbx, rcx, rdx, rsi, rdi, rbp, r8, r9, r10, r11, r12, r13, r14, r15;

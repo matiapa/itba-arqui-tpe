@@ -42,7 +42,9 @@ void newLine();
 void cleanBuffer(char *, int len);
 
 
-// Common UI definitions
+// -------------------------- LISTENERS ---------------------
+
+void winTimerTickListener();
 
 
 // -------------------------- SHORTCUTS ---------------------

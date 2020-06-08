@@ -44,7 +44,7 @@ int main(){
 
 	load_idt();
 
-	((EntryPoint) mainApp)(0);
+	((EntryPoint) mainApp)(0, 0);
 		
 	return 0;
 }

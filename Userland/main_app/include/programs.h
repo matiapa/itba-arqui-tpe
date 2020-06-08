@@ -1,7 +1,9 @@
+#include <stdarg.h>
+
 int main();
 
 int test();
 
-int exception();
+int exception(va_list args);
 
 int interruption();

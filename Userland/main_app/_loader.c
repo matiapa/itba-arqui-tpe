@@ -10,7 +10,11 @@ int main();
 
 void * memset(void * destiny, int32_t c, uint64_t length);
 
-int _start(int message) {
+int _start(int message, int nargs, ...) {
+
+	va_list valist;
+    va_start(valist, nargs);
+
 	//Clean BSS
 	memset(&bss, 0, &endOfBinary - &bss);
 
@@ -19,7 +23,7 @@ int _start(int message) {
 			return main();
 
 		case EXCEPTION_PRODUCED:
-			return exception();
+			return exception(valist);
 
 		case TIMER_TICK_INT:
 			return interruption(TIMER_TICK_INT);

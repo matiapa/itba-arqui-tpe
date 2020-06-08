@@ -42,10 +42,10 @@ static void createWindow(){
 }
 
 
-int exception(){
+int exception(va_list args){
 
-    LastException lastException;
-	getLastException(&lastException);
+    int id = va_arg(args, int);
+    void * eip = va_arg(args, void *);
 
     createWindow();
 	w.activeCursor = cursor;
@@ -56,7 +56,7 @@ int exception(){
         }
     }
 
-    switch(lastException.id){
+    switch(id){
         case 0:
             printf("Division by zero detected! Return to elementary school and press enter to restart the system\\n", 0);
             break;
@@ -70,7 +70,7 @@ int exception(){
 
     printf("\\nFeed this information to the poor developer's souls", 0);
     printf("\\nRAX: %x - RBX: %x - RCX: %x - RDX: %x", 4, bkp.rax, bkp.rbx, bkp.rcx, bkp.rcx);
-    printf("\\nRIP: %x - RBP: %x - RSI: %x - RDI: %x", 4, lastException.eip, bkp.rbp, bkp.rsi, bkp.rdi);
+    printf("\\nRIP: %x - RBP: %x - RSI: %x - RDI: %x", 4, eip, bkp.rbp, bkp.rsi, bkp.rdi);
 
     while(1){
         if(getChar()==13){
