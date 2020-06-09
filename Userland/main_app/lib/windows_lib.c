@@ -23,20 +23,26 @@ void setWindow(Window *currWindow)
 
 #define cursor window->cursors[window->activeCursor]
 
-#define height window->yf - window->yi
+#define wheight window->yf - window->yi
 
-#define width window->xf - window->xi
+#define wwidth window->xf - window->xi
 
 /* --------------------------------------------------------------------------------------------------------------------------
                                             DRAW METHODS
 -------------------------------------------------------------------------------------------------------------------------- */
 
+#define screenDataMax 1500
+
+// Holds the colors written on each position of the screen
+int screenData[screenDataMax][screenDataMax];
 
 void drawPoint(int x, int y, int size, int rgb)
 {
 
     int absx = window->xi + x;
     int absy = window->yi + y;
+
+    screenData[absx][absy] = rgb;
 
     for (int x = absx; x < absx + size; x++)
     {
@@ -70,6 +76,42 @@ void drawChar(int x, int y, char c, int size, int rgb)
 #define charSpacing 1;
 #define lineSpacing 1;
 
+void scrollUp(int dy){
+
+    ScreenRes res;
+    getRes(&res);
+
+    for(int y=bodyY; y<res.height-dy; y++){
+        for(int x=window->xi; x<window->xf; x++){
+            screenData[x][y] = screenData[x][y+dy];
+            draw(x, y, screenData[x][y]);
+        }
+    }
+
+    for(int y=res.height-dy; y<res.height; y++){
+        for(int x=window->xi; x<window->xf; x++){
+            screenData[x][y] = 0;
+            draw(x, y, 0);
+        }
+    }
+
+    cursor.y = cursor.y-dy >=bodyY ? cursor.y-dy : bodyY;
+
+}
+
+
+void scrollUntilFit(){
+    int charHeight = cursor.fontSize * fontHeight + lineSpacing;
+    int lowestY = cursor.y + charHeight;
+    int lowestAllowedY = wheight - 4*charHeight;
+
+    if (lowestY > lowestAllowedY)
+    {
+        scrollUp(lowestY - lowestAllowedY);
+    }
+}
+
+
 void clearScreen()
 {
 
@@ -82,6 +124,7 @@ void clearScreen()
     }
 }
 
+
 void clearLine()
 {
 
@@ -93,23 +136,22 @@ void clearLine()
     cursor.x = 0;
 }
 
+
 static void nextChar()
 {
 
     cursor.x += cursor.fontSize * fontWidth + charSpacing;
 
-    if (cursor.x > width)
+    if (cursor.x > wwidth)
     {
         cursor.x = 0;
         cursor.y += cursor.fontSize * fontHeight + lineSpacing;
     }
 
-    if (cursor.y > height)
-    {
-        cursor.y = 0;
-        clearScreen();
-    }
+    scrollUntilFit();
+
 }
+
 
 static void prevChar()
 {
@@ -122,12 +164,17 @@ static void prevChar()
     }
 }
 
+
 void newLine()
 {
 
     cursor.x = 0;
     cursor.y += cursor.fontSize * fontWidth + lineSpacing;
+
+    scrollUntilFit();
+
 }
+
 
 void drawCursor(int color){
 
@@ -136,6 +183,7 @@ void drawCursor(int color){
     }
 
 }
+
 
 int printing=0;
 
@@ -169,6 +217,7 @@ void printChar(char c)
 
 }
 
+
 void print(char s[])
 {
 
@@ -176,12 +225,14 @@ void print(char s[])
         printChar(s[i]);
 }
 
+
 void printLine(char s[])
 {
 
     print(s);
     newLine();
 }
+
 
 void cleanBuffer(char *buffer, int len)
 {

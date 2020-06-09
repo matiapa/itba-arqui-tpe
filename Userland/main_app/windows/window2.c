@@ -154,6 +154,11 @@ void window2()
 			return;
 		}
 
+		if(c == f3Code)
+		{
+			scrollUp(8);
+		}
+
 		if (c == '\b')
 		{
 

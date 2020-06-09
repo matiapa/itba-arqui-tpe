@@ -27,17 +27,8 @@ char shifted_keyboard_map[64] = {
     'c','v','b','n','m','<','>','?',0,0,0,' '
 };
 
-// These special codes have been defined for representing special key as ASCII characters that wouldn't be used in this app otherwise
-
-int f1Code = 1;
-int f2Code = 2;
-int escCode = 3;
-
 int shift=0;
 int caps=0;
-
-
-
 
 #define BUFFER_LEN 8
 
@@ -86,6 +77,9 @@ char getChar(){
 
     if(keyCode == 60)
         return f2Code;
+
+    if(keyCode == 61)
+        return f3Code;
 
     if(keyCode == 1)
         return escCode;

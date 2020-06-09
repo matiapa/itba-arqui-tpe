@@ -9,6 +9,10 @@ char getChar();
 
 void libKeyboardListener(int keyPos);
 
-extern int f1Code;
-extern int f2Code;
-extern int escCode;
+
+// These special codes have been defined for representing special key as ASCII characters that wouldn't be used in this app otherwise
+
+#define f1Code 1
+#define f2Code 2
+#define f3Code 3
+#define escCode 4

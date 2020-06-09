@@ -143,6 +143,11 @@ void window1()
 			return;
 		}
 
+		if(c == f3Code)
+		{
+			scrollUp(8);
+		}
+
 		if (c == escCode)
 		{
 			clearLine();
