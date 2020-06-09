@@ -1,5 +1,5 @@
 /*---------------------------------------------------------------------------------------------------
-|   IDT_LOADER.C    |                                                                               |
+|   STORE_STATE.S   |                                                                               |
 |--------------------                                                                               |
 | This file has the functions that handle the storage and recover of registers state. The state  	|
 | is backed up whenever either TAB is pressed, or an exception is produced.                         |

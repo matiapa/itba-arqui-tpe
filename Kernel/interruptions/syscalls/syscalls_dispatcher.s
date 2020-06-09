@@ -1,4 +1,11 @@
+/*---------------------------------------------------------------------------------------------------
+|   SYSCALLS_DISPATCHER.S    |                                                          			|
+|-------------------------------                                                          			|
+| This file provides exception handling interruption 0x80 attention routine.		                |
+---------------------------------------------------------------------------------------------------*/
+
 .globl _syscallDispatcher
+
 .extern sysDraw
 .extern sysRead
 .extern sysGetRes
@@ -7,6 +14,7 @@
 .extern sysCpuInfo
 .extern sysCPUTemp
 .extern sysGetRegBkp
+
 .intel_syntax noprefix
 
 .section .text
