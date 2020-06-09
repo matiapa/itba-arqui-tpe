@@ -1,3 +1,5 @@
+#include <stdint.h>
+
 // Windows definitions
 
 typedef struct Cursor{
@@ -45,6 +47,13 @@ void printLine(char c[]);
 void newLine();
 
 void cleanBuffer(char *, int len);
+
+void scrollUp(int dy);
+
+
+// Image definitions
+
+void drawImage(int xi, int yi, uint8_t *image, int height, int width);
 
 
 // -------------------------- LISTENERS ---------------------

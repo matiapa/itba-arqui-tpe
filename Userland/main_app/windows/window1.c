@@ -12,6 +12,7 @@
 #include <std_lib.h>
 #include <syscalls.h>
 #include <stdint.h>
+#include <image_lib.h>
 
 /* --------------------------------------------------------------------------------------------------------------------------
                                         		WINDOW DEFINITIONS

@@ -119,7 +119,7 @@ void clearScreen()
     {
         for (int y = window->yi; y < window->yf; y++)
         {
-            draw(x, y, 0);
+            drawPoint(x, y, 1, 0);
         }
     }
 }
@@ -240,6 +240,39 @@ void cleanBuffer(char *buffer, int len)
     for (int j = 0; j < len; j++)
         buffer[j] = 0;
 }
+
+
+/* --------------------------------------------------------------------------------------------------------------------------
+                                            IMAGE METHODS
+-------------------------------------------------------------------------------------------------------------------------- */
+
+void drawImage(int xi, int yi, uint8_t *image, int width, int height){
+
+    int scaleRed = 256/8;
+    int scaleGreen = 256/8;
+    int scaleBlue = 256/4;
+
+    for(int y=0; y<height; y++){
+        for(int x=0; x<width; x++){
+
+            int pos = (y*width)+x;
+            //printf("%d: %d\\n", 2, pos, image[pos]);
+
+            uint8_t r = ((image[pos] & 0xE0) >> 5) * scaleRed;
+            uint8_t g = ((image[pos] & 0x1C) >> 2) * scaleGreen;
+            uint8_t b = ((image[pos] & 0x03) >> 0) * scaleBlue;
+
+            //printf("%d - R: %d, G: %d, B: %d\\n", 4, pos, r, g, b);
+
+            uint32_t rgb = (r << 16) + (g << 8) + b;
+            
+            drawPoint(xi+x, yi+y, 1, rgb);
+
+        }
+    }
+
+}
+
 
 
 /* --------------------------------------------------------------------------------------------------------------------------

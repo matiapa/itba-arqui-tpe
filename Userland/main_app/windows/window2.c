@@ -11,6 +11,7 @@
 #include <std_lib.h>
 #include <asm_lib.h>
 #include <syscalls.h>
+#include <image_lib.h>
 
 /* --------------------------------------------------------------------------------------------------------------------------
                                         		WINDOW DEFINITIONS
@@ -38,7 +39,8 @@ typedef enum
 	DIVZERO,
 	INVOPCODE,
 	CLEAR,
-
+	DISPLAY_ANON,
+	DISPLAY_MATRIX,
 	WRONG
 } command;
 
@@ -241,12 +243,24 @@ void window2()
 			case CLEAR:
 				clearWindow();
 				break;
+
+			case DISPLAY_ANON:
+				displayImage(ANONYMOUS, 20, 200);
+				break;
+
+			case DISPLAY_MATRIX:
+				displayImage(MATRIX, 20, 200);
+				break;
+
 			case WRONG:
 				printWarning(WRONG);
 				break;
+
 			default:
 				printWarning(NOCOMMAND);
 			}
+
+			newLine();
 
 			cleanBuffer(bufferw2, W2_BUFFER_LEN);
 			bIter = 0;
@@ -266,22 +280,33 @@ void window2()
 static void help(void)
 {
 	newLine();
+	printLine("---------------------------------------------------");
 	printLine("On this Terminal you can try the following commands:");
-	printLine(" --- --- --- --- --- --- --- --- --- --- --- --- ---");
+	
+	newLine();
 
-	printLine(" - cputemp    to get the Computer's Temperature");
-	printLine(" - help       to go to the Help Manual");
-	printLine(" - printmem n  to print Memory starting with address n");
-	printLine(" - cpuinfo     to get the Microprocessor's Brand Data");
-	printLine(" - inforeg    to get the Register's Values");
-	printLine(" - storedreg    to get the stored Register's Values");
-	printLine(" - time       to get the Time");
-	printLine(" - divzero       to produce a div by zero exception");
-	printLine(" - invopcode       to produce an invalid opcode exception");
-	printLine(" - clear       to clear the screen");
+	printLine("- cputemp           to get the CPU Temp");
+	printLine("- help              to go to the Help Manual");
+	printLine("- printmem n        to print memory starting at n");
+	printLine("- cpuinfo           to get the CPU Brand Data");
+	printLine("- inforeg           to get the Register's Values");
+	printLine("- storedreg         to get the Stored Register's Values");
+	printLine("- time              to get the Time");
+	printLine("- divzero           to execute a Div by Zero");
+	printLine("- invopcode         to exectue an invalid opcode");
+	printLine("- display anon      to show an image of Anonymous");
+	printLine("- display matrix    to show an image of Matrix");
+	printLine("- clear             to clear the screen");
 
-	printLine(" To store registers value, press TAB");
-	printLine(" --- --- --- --- --- --- --- --- --- --- --- --- ---");
+	newLine();
+	
+	printLine("To go to calculator window, press F2");
+	printLine("To scroll the window up, press F3");
+	printLine("To store registers value, press TAB");
+	
+	newLine();
+	
+	printLine("---------------------------------------------------");
 	newLine();
 }
 
@@ -388,7 +413,7 @@ void printMemDump(char *sourceStr)
 		printf("%2x: %2x %2x %2x %2x %2x %2x %2x %2x\\n", 9, src + i, src[i], src[i + 1], src[i + 2], src[i + 3],
 			   src[i + 4], src[i + 5], src[i + 6], src[i + 7]);
 	}
-	newLine();
+	
 }
 
 /* -------------------------------------------------------------
@@ -456,16 +481,17 @@ static void printWarning(int num)
 	default:
 		print("Something went wrong. ");
 	}
-	printf("Please, try again.\\n\\n", 0);
+	printf("Please, try again.\\n", 0);
 }
 
 static void clearWindow()
 {
-	for (int x = w.xi; x < w.xf; x++)
+	for (int x = 0; x < w.xf; x++)
 	{
 		for (int y = bodyY; y < w.yf; y++)
 		{
-			draw(x, y, 0);
+			//draw(x, y, 0);
+			drawPoint(x, y, 1, 0);
 		}
 	}
 
@@ -584,6 +610,26 @@ static int isCommandDivZero(char *buffer, int length)
 	return checkEmptySpace(buffer, 7, length);
 }
 
+
+static int isCommandDisplayAnon(char *buffer, int length)
+{
+	char *str = "display anon";
+	if (!strncmp(str, buffer, 12))
+		return 0;
+
+	return checkEmptySpace(buffer, 12, length);
+}
+
+
+static int isCommandDisplayMatrix(char *buffer, int length)
+{
+	char *str = "display matrix";
+	if (!strncmp(str, buffer, 14))
+		return 0;
+
+	return checkEmptySpace(buffer, 14, length);
+}
+
 static int isCommandInvOpcode(char *buffer, int length)
 {
 	char *str = "invopcode";
@@ -641,6 +687,12 @@ command parseCommand(char *buffer, int length, char *string)
 
 	if (isCommandDivZero(buffer, length))
 		return DIVZERO;
+
+	if (isCommandDisplayAnon(buffer, length))
+		return DISPLAY_ANON;
+
+	if (isCommandDisplayMatrix(buffer, length))
+		return DISPLAY_MATRIX;
 
 	if (isCommandInvOpcode(buffer, length))
 		return INVOPCODE;
