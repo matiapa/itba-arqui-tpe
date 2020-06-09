@@ -1,3 +1,9 @@
+/*---------------------------------------------------------------------------------------------------
+|   RTC_DRIVER.C    |                                                                               |
+|--------------------                                                                               |
+| These functions provide an interface to get information of the Real Time Clock.          	        |
+---------------------------------------------------------------------------------------------------*/
+
 .global getSeconds
 .global getMinutes
 .global getHours

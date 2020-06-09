@@ -1,4 +1,10 @@
-/* _loader.c */
+/*---------------------------------------------------------------------------------------------------
+|   _LOADER.C    |	                                                                                |
+|-----------------    		                                                                        |
+| These functions handles messages received from the kernel, forwarding them to appropiate handlers.|
+| It supports messages for starting the main app, and being notified of an exception or IRQ.        |
+---------------------------------------------------------------------------------------------------*/
+
 #include <stdint.h>
 #include <kernel_messages.h>
 #include <programs.h>

@@ -1,3 +1,10 @@
+/*---------------------------------------------------------------------------------------------------
+|   CPU_INFO.C    |                                                                                 |
+|------------------                                                                                 |
+| These functions provide information about the CPU by using CPUID.        	                        |
+---------------------------------------------------------------------------------------------------*/
+
+
 .global getBrandName
 .global getBrandIndex
 .global getTemperature
@@ -9,7 +16,6 @@
 # --------------------------------------------------
 #           getBrandName & getBrandIndex
 # --------------------------------------------------
-#
 # Brand name returns a string description
 # Brand index returns a number that can be matched to a string with more detials of processor
 
@@ -45,7 +51,6 @@ getBrandIndex:
 # --------------------------------------
 #           getTemperature
 # --------------------------------------
-#
 # MSR information taken from https://courses.cs.washington.edu/courses/cse451/18sp/readings/ia32-4.pdf, page 27 and 263
 # The structures of MSR vary from architecture, Kaby Lake was taken for this function
 # IA32_THERMAL_STATUS holds an offset from TCC activation temperature, which is holded by MSR_TEMPERATURE_TARGET

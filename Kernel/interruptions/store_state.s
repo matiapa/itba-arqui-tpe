@@ -1,3 +1,10 @@
+/*---------------------------------------------------------------------------------------------------
+|   IDT_LOADER.C    |                                                                               |
+|--------------------                                                                               |
+| This file has the functions that handle the storage and recover of registers state. The state  	|
+| is backed up whenever either TAB is pressed, or an exception is produced.                         |
+---------------------------------------------------------------------------------------------------*/
+
 .global storeState
 .global dumpState
 .intel_syntax noprefix
@@ -5,8 +12,8 @@
 .section .text
 
 /*
-Stack at this point
---------------------
+Stack at this point:
+
 irqHandlerMaster EIP
 rax, rbx, rcx, rdx, rsi, rdi, rbp, r8, r9, r10, r11, r12, r13, r14, r15
 */

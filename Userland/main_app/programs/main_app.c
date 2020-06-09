@@ -1,9 +1,7 @@
 /*---------------------------------------------------------------------------------------------------
 |   MAIN_APP.C    |                                                                              	|
 |----------------------                                                                             |
-| This app will alternate between two windows, starting with the first one. Also, since it is the  	|
-| app start point, it will check if an exception was produced before, and if so, display the		|
-| exceptions screen.                                  				        						|
+| This app will alternate between two windows, starting with the first one.			  				|
 ---------------------------------------------------------------------------------------------------*/
 
 #include <programs.h>

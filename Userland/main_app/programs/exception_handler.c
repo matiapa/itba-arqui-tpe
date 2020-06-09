@@ -1,8 +1,8 @@
 /*---------------------------------------------------------------------------------------------------
-|   EXCEPTION_WINDOW.C    |                                                                         |
-|----------------------                                                                             |
+|   EXCEPTION_HANDLER.C    |                                                                        |
+|---------------------------                                                                        |
 | This windows display exception information when they are produced. This includes common registers |
-|  at the moment of the exception, and which was the exception produced.					        |
+| at the moment of the exception, and which was the exception produced.		    			        |
 ---------------------------------------------------------------------------------------------------*/
 
 #include <programs.h>

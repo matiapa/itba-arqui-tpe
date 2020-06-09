@@ -1,3 +1,15 @@
+/*---------------------------------------------------------------------------------------------------
+|   INTERRUPTS.C    |                                                                    			|
+|--------------------                                                                    			|
+| This file provides functions for setting up interruptions routines and flags. Also, has the    	|
+| functions that are directly loaded on to the IDT.													|
+---------------------------------------------------------------------------------------------------*/
+
+
+/* --------------------------------------------------------------------------------------------------------------------------------------------------
+															DECLARATIONS
+-------------------------------------------------------------------------------------------------------------------------------------------------- */
+
 .global _cli
 .global _sti
 .global picMasterMask
@@ -7,10 +19,6 @@
 
 .global _irq00Handler
 .global _irq01Handler
-.global _irq02Handler
-.global _irq03Handler
-.global _irq04Handler
-.global _irq05Handler
 
 .global _exception0Handler
 .global _exception6Handler
@@ -23,7 +31,14 @@
 
 .intel_syntax noprefix
 
+
+/* --------------------------------------------------------------------------------------------------------------------------------------------------
+															MACROS
+-------------------------------------------------------------------------------------------------------------------------------------------------- */
+
+
 .section .text
+
 
 .macro pushState
 	push r15
@@ -43,6 +58,7 @@
 	push rax
 .endm
 
+
 .macro popState
 	pop rax
 	pop rbx
@@ -61,14 +77,15 @@
 	pop r15
 .endm
 
-.macro irqHandlerMaster irq
+
+.macro irqHandlerMaster name irq
+\name:
 	pushState
 
-	mov rdi, \irq # pasaje de parametro
+	mov rdi, \irq
 	call irqDispatcher
 
-	# signal pic EOI (End of Interrupt)
-	mov al, 0x20
+	mov al, 0x20	# Signal pic EOI (End of Interrupt)
 	out 0x20, al
 
 	popState
@@ -76,33 +93,24 @@
 .endm
 
 
-
-.macro exceptionHandler exception
+.macro exceptionHandler name exception
+\name:
 	pushState
 	call storeState
 	popState
 
-	mov rdi, \exception # Exception code
-	mov rsi, [rsp]	# EIP at exception generation
+	mov rdi, \exception 	# Exception code
+	mov rsi, [rsp]		# EIP at exception generation
 	call exceptionDispatcher
 	
 	iretq
 .endm
 
 
-_hlt:
-	sti
-	hlt
-	ret
+/* --------------------------------------------------------------------------------------------------------------------------------------------------
+														PIC MASKS CONTROLLERS
+-------------------------------------------------------------------------------------------------------------------------------------------------- */
 
-_cli:
-	cli
-	ret
-
-
-_sti:
-	sti
-	ret
 
 picMasterMask:
 	push rbp
@@ -111,6 +119,7 @@ picMasterMask:
     out	0x21,al
     pop rbp
     ret
+
 
 picSlaveMask:
 	push    rbp
@@ -121,23 +130,33 @@ picSlaveMask:
     ret
 
 
-#8254 Timer (Timer Tick)
-_irq00Handler:
-	irqHandlerMaster 0
+/* --------------------------------------------------------------------------------------------------------------------------------------------------
+													EXCEPTIONS ATTENTION ROUTINES
+-------------------------------------------------------------------------------------------------------------------------------------------------- */
 
 
-#Keyboard
-_irq01Handler:
+exceptionHandler _exception0Handler 0		# Zero Division Exception
+
+exceptionHandler _exception6Handler 6		# Invalid Opcode Exception
+
+
+/* --------------------------------------------------------------------------------------------------------------------------------------------------
+													INTERRUPTIONS ATTENTION ROUTINES
+-------------------------------------------------------------------------------------------------------------------------------------------------- */
+
+
+irqHandlerMaster _irq00Handler 0		# RTC
+
+_irq01Handler:			# Keyboard
 	pushState
 
-	call read
-	cmp rax, 15
-	jne _skip
+	call read			# Before lending control to dispatcher, it checks if TAB key has been pressed
+	cmp rax, 15			# If so, it stores the state of the registers, this state can be accessed later through a syscall
+	jne _skipStore
 
 	call storeState
 
-	# signal pic EOI (End of Interrupt)
-	_skip: mov rdi, 1 # pasaje de parametro
+	_skipStore: mov rdi, 1
 	call irqDispatcher
 
 	mov al, 0x20
@@ -145,34 +164,18 @@ _irq01Handler:
 
 	popState
 	iretq
-	
-
-#Cascade pic never called
-_irq02Handler:
-	irqHandlerMaster 2
-
-#Serial Port 2 and 4
-_irq03Handler:
-	irqHandlerMaster 3
-
-#Serial Port 1 and 3
-_irq04Handler:
-	irqHandlerMaster 4
-
-#USB
-_irq05Handler:
-	irqHandlerMaster 5
 
 
-#Zero Division Exception
-_exception0Handler:
-	exceptionHandler 0
+/* --------------------------------------------------------------------------------------------------------------------------------------------------
+													INTERRUPT FLAG CONTROL FUNCTIONS
+-------------------------------------------------------------------------------------------------------------------------------------------------- */
 
-#Invalid Opcode Exception
-_exception6Handler:
-	exceptionHandler 6
 
-haltcpu:
+_cli:
 	cli
-	hlt
+	ret
+
+
+_sti:
+	sti
 	ret

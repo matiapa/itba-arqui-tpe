@@ -1,3 +1,9 @@
+/*---------------------------------------------------------------------------------------------------
+|   SCREEN_DRIVER.C    |                                                                            |
+|-----------------------                                                                            |
+| These functions provide an interface to operate the screen in video mode (VESA).        	        |
+---------------------------------------------------------------------------------------------------*/
+
 #include <stdint.h>
 
 /* --------------------------------------------------------------------------------------------------------------------------
@@ -42,11 +48,10 @@ struct vbe_mode_info_structure {
 	uint8_t reserved1[206];
 } __attribute__ ((packed));
 
-// sysvar.asm located at Bootloader/Pure64/src/sysvar.asm
 
 // Remember to enable cfg_vesa at sysvar.asm
-
-struct vbe_mode_info_structure * screenInfo = (struct vbe_mode_info_structure *) 0x5C00;      // Address taken from VBEModeInfoBlock at sysvar.asm
+// Screen info address taken from VBEModeInfoBlock at sysvar.asm
+struct vbe_mode_info_structure * screenInfo = (struct vbe_mode_info_structure *) 0x5C00;
 
 // Default resolution of VESA
 const uint16_t * WIDTH = (uint16_t *) 0x5084;
@@ -67,10 +72,16 @@ void draw(int x, int y, int rgb){
 
 }
 
+
 int getResWidth(){
+	
 	return *WIDTH;
+
 }
 
+
 int getResHeight(){
+
 	return *HEIGHT;
+
 }

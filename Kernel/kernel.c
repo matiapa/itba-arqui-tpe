@@ -1,14 +1,18 @@
+/*---------------------------------------------------------------------------------------------------
+|   KERNEL.C    |                                                                          			|
+|----------------                                                                             		|
+| The main file of the kernel, here the loading of IDT and modules happens.         				|
+| Also, the main app module is launched here.                 	    								|
+---------------------------------------------------------------------------------------------------*/
+
+
 #include <stdint.h>
-#include <string.h>
 #include <lib.h>
-#include <moduleLoader.h>
+#include <module_loader.h>
 #include <idt_loader.h>
 #include <screen_driver.h>
 #include <kernel_messages.h>
 
-extern uint8_t text;
-extern uint8_t rodata;
-extern uint8_t data;
 extern uint8_t bss;
 extern uint8_t endOfKernelBinary;
 extern uint8_t endOfKernel;
@@ -20,6 +24,7 @@ void clearBSS(void * bssAddress, uint64_t bssSize){
 	memset(bssAddress, 0, bssSize);
 }
 
+
 void * getStackBase(){
 	return (void*)(
 		(uint64_t)&endOfKernel
@@ -27,6 +32,7 @@ void * getStackBase(){
 		- sizeof(uint64_t)			//Begin at the top of the stack
 	);
 }
+
 
 void * initializeKernelBinary(){
 	void * moduleAddresses[] = {
@@ -40,11 +46,13 @@ void * initializeKernelBinary(){
 	return getStackBase();
 }
 
+
 int main(){
 
 	load_idt();
 
-	((EntryPoint) mainApp)(0, 0);
+	((EntryPoint) mainApp)(START, 0);
 		
 	return 0;
+
 }

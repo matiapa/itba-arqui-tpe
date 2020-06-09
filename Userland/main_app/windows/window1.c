@@ -3,7 +3,7 @@
 |----------------------                                                                             |
 | This windows will display the calculator program.													|
 | Press ENTER to calculate an expression.															|
-| Press DEL to drop the current expression.															|
+| Press ESC to drop the current expression.															|
 | Press F2 to switch to shell program.																|
 ---------------------------------------------------------------------------------------------------*/
 
