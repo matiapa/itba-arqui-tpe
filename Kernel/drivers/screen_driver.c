@@ -5,6 +5,7 @@
 ---------------------------------------------------------------------------------------------------*/
 
 #include <stdint.h>
+#include <screen_driver.h>
 
 /* --------------------------------------------------------------------------------------------------------------------------
                                             HARDWARE SETUP
@@ -62,13 +63,21 @@ const uint16_t * HEIGHT = (uint16_t *) 0x5086;
                                             DRAW METHODS
 -------------------------------------------------------------------------------------------------------------------------- */
 
-void draw(int x, int y, int rgb){
+int draw(int x, int y, int rgb){
+
+	if(x<0 || y<0 || x>*WIDTH || y>*HEIGHT)
+		return -1;
+
+	if(rgb<0)
+		return -2;
 
     char * pos = (char *) ((uint64_t) screenInfo->framebuffer + (x + y * *WIDTH)*3);
 
     pos[0] = (rgb & 0x0000FF);
     pos[1] = (rgb & 0x00FF00) >> 8;
     pos[2] = (rgb & 0xFF0000) >> 16;
+
+	return 0;
 
 }
 

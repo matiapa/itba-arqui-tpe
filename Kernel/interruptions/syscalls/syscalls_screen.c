@@ -10,9 +10,9 @@
                                                     DRAW
 --------------------------------------------------------------------------------------------------------------------------- */
 
-void sysDraw(int cx, int cy, int rgb){
+int sysDraw(int cx, int cy, int rgb){
 
-    draw(cx, cy, rgb);
+    return draw(cx, cy, rgb);
 
 }
 
@@ -26,9 +26,11 @@ typedef struct ScreenRes{
 } ScreenRes;
 
 
-void sysGetRes(ScreenRes * res){
+int sysGetRes(ScreenRes * res){
     
     res->height = getResHeight();
     res->width = getResWidth();
+
+    return 0;
 
 }

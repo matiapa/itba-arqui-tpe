@@ -15,11 +15,11 @@ typedef struct ScreenRes{
 } ScreenRes;
 
 
-void getRes(ScreenRes * res);
+int getRes(ScreenRes * res);
 
 // ------------------------------------------------ MEMDUMP (4) -------------------------------------------------------------
 
-void memDump(void *src, void *dest);
+int memDump(void *src, void *dest);
 
 // ------------------------------------------------ GETTIME (5) -------------------------------------------------------------
 
@@ -27,7 +27,7 @@ typedef struct Time{
     int hours, minutes, seconds;
 } Time;
 
-void getTime(Time * time);
+int getTime(Time * time);
 
 // ------------------------------------------------ CPUINFO (6) -------------------------------------------------------------
 
@@ -35,7 +35,7 @@ typedef struct CPUInfo{
     char *brandName, *brandDesc;
 } CPUInfo;
 
-void cpuInfo(CPUInfo * info);
+int cpuInfo(CPUInfo * info);
 
 // ------------------------------------------------ CPUTEMP (7) -------------------------------------------------------------
 
@@ -47,4 +47,4 @@ typedef struct RegBkp{
     uint64_t rax, rbx, rcx, rdx, rsi, rdi, rbp, r8, r9, r10, r11, r12, r13, r14, r15;
 } RegBkp;
 
-void getRegBkp(RegBkp * dest);
+int getRegBkp(RegBkp * dest);

@@ -36,11 +36,13 @@ char brandDescs[22][70] = {
                                                     CPUINFO
 --------------------------------------------------------------------------------------------------------------------------- */
 
-void sysCpuInfo(CPUInfo * info){
+int sysCpuInfo(CPUInfo * info){
 
     getBrandName(info->brandName);
     
     memcpy(info->brandDesc, brandDescs[getBrandIndex()], 70);
+
+    return 0;
 
 }
 

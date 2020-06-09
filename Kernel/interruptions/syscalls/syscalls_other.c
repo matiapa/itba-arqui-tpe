@@ -28,11 +28,13 @@ typedef struct Time{
 } Time;
 
 
-void sysGetTime(Time * time){
+int sysGetTime(Time * time){
 
     time->hours = getHours();
     time->minutes = getMinutes();
     time->seconds = getSeconds();
+
+    return 0;
 
 }
 
@@ -46,8 +48,10 @@ typedef struct RegBkp{
 
 void dumpState(RegBkp *dest);
 
-void sysGetRegBkp(RegBkp *dest){
+int sysGetRegBkp(RegBkp *dest){
 
     dumpState(dest);
+
+    return 0;
 
 }

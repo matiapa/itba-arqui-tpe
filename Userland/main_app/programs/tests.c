@@ -23,6 +23,7 @@ static Window w;
 void regDumpTestSet();
 void invalidOpcode();
 
+static void testDraw();
 static void testRegDump();
 static void testMemDump();
 static void testGetTime();
@@ -63,6 +64,7 @@ int test(){
     //testDivByZero(0);
     //testInvalidOpcode();
 
+    testDraw();
     testRegDump();
     testMemDump();
     testGetTime();
@@ -73,6 +75,16 @@ int test(){
     while(1);
 
     return 1;
+
+}
+
+
+static void testDraw(){
+
+    if(draw(0, 0, 0)==0 && draw(-1, 0, 0)==-1)
+        printf("Draw validation passed\\n", 0);
+    else
+        printf("Draw validation failed\\n", 0);
 
 }
 

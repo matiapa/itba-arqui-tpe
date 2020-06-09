@@ -10,8 +10,10 @@
                                                     MEMDUMP
 --------------------------------------------------------------------------------------------------------------------------- */
 
-void sysMemDump(void *src, void *dest){
+int sysMemDump(void *src, void *dest){
 
     memcpy(dest, src, 32);
+
+    return 0;
 
 }
