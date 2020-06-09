@@ -300,7 +300,7 @@ static void help(void)
 
 	newLine();
 	
-	printLine("To go to calculator window, press F2");
+	printLine("To go to calculator window, press F1");
 	printLine("To scroll the window up, press F3");
 	printLine("To store registers value, press TAB");
 	
@@ -340,7 +340,7 @@ static void printInfoReg(void)
 	printf("\\n - rsi - %x", 1, reg.rsi);
 	printf("\\n - rdi - %x", 1, reg.rdi);
 	printf("\\n - rbp - %x", 1, reg.rbp);
-	printf("\\n - rsp - %x\\n", 1, reg.rsp);
+	printf("\\n - rsp - %x", 1, reg.rsp);
 
 	printf("\\n - r8 - %x", 1, reg.r8);
 	printf("\\n - r9 - %x", 1, reg.r9);
