@@ -16,10 +16,9 @@
 .endm
 
 syscall draw, 1
-syscall read, 2
-syscall getRes, 3
-syscall memDump, 4
-syscall getTime, 5
-syscall cpuInfo, 6
-syscall cpuTemp, 7
-syscall getRegBkp, 8
+syscall getRes, 2
+syscall memDump, 3
+syscall getTime, 4
+syscall cpuInfo, 5
+syscall cpuTemp, 6
+syscall getRegBkp, 7

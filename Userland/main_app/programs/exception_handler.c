@@ -59,20 +59,26 @@ int exception(va_list args){
     }
 
     switch(id){
-        case 0:
-            printf("Division by zero detected! Return to elementary school and press enter to restart the system\\n", 0);
+        case DIV_ZERO_EXCEPTION:
+            printf("Division by zero detected!\\n", 0);
+            printf("Possible causes: \\n", 0);
+            printf(" - You didn't finish elementary school\\n", 0);
             break;
-        case 6:
-            printf("Invalid opcode detected! Trying to destroy the machine? Received an EMP attack? Press enter to restart the system\\n", 0);
+        case INV_OPCODE_EXCEPTION:
+            printf("Invalid opcode detected!\\n", 0);
+            printf("Possible causes: \\n", 0);
+            printf(" - You received an EMP attack\\n", 0);
+            printf(" - You tried to destroy the machine\\n", 0);
             break;
     }
 
     RegBkp bkp;
     getRegBkp(&bkp);
 
-    printf("\\nFeed this information to the developers", 0);
+    printf("\\nFeed this information to the developers:", 0);
     printf("\\nRAX: %x - RBX: %x - RCX: %x - RDX: %x", 4, bkp.rax, bkp.rbx, bkp.rcx, bkp.rcx);
     printf("\\nRIP: %x - RBP: %x - RSI: %x - RDI: %x", 4, eip, bkp.rbp, bkp.rsi, bkp.rdi);
+    printf("\\n\\nPress enter to restart the system", 0);
 
     while(1){
         if(getChar()==13){

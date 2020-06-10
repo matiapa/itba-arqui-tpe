@@ -10,3 +10,6 @@
 
 #define TIMER_TICK_IRQ 0
 #define KEYBOARD_IRQ 1
+
+#define DIV_ZERO_EXCEPTION 0
+#define INV_OPCODE_EXCEPTION 6

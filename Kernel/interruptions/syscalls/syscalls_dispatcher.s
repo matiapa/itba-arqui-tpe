@@ -7,7 +7,6 @@
 .globl _syscallDispatcher
 
 .extern sysDraw
-.extern sysRead
 .extern sysGetRes
 .extern sysMemDump
 .extern sysGetTime
@@ -24,24 +23,21 @@ _syscallDispatcher:
     je _draw
 
     cmp rax, 2
-    je _read
-
-    cmp rax, 3
     je _getRes
 
-    cmp rax, 4
+    cmp rax, 3
     je _memDump
 
-    cmp rax, 5
+    cmp rax, 4
     je _getTime
 
-    cmp rax, 6
+    cmp rax, 5
     je _cpuInfo
 
-    cmp rax, 7
+    cmp rax, 6
     je _cpuTemp
 
-    cmp rax, 8
+    cmp rax, 7
     je _getRegBkp
 
     iretq
@@ -49,11 +45,7 @@ _syscallDispatcher:
 _draw:
     call sysDraw
     iretq
-
-_read:
-    call sysRead
-    iretq
-
+    
 _getRes:
     call sysGetRes
     iretq
