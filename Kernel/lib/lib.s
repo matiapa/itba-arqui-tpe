@@ -6,6 +6,8 @@
 
 .global _cli
 .global _sti
+.global _in
+.global _out
 
 .intel_syntax noprefix
 
@@ -23,4 +25,19 @@ _cli:
 
 _sti:
 	sti
+	ret
+
+_in:
+	push rdx
+	mov rdx, rdi
+	in eax, dx
+	pop rdx
+	ret
+
+_out:
+	push rdx
+	mov rdx, rdi
+	mov rax, rsi
+	out dx, eax
+	pop rdx
 	ret

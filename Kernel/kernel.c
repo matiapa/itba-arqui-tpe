@@ -47,9 +47,30 @@ void * initializeKernelBinary(){
 }
 
 
+ static void play_sound(uint32_t nFrequence) {
+ 	uint32_t Div;
+ 	uint8_t tmp;
+ 
+        //Set the PIT to the desired frequency
+ 	Div = 1193180 / nFrequence;
+ 	_out(0x43, 0xb6);
+ 	_out(0x42, (uint8_t) (Div) );
+ 	_out(0x42, (uint8_t) (Div >> 8));
+ 
+        //And play the sound using the PC speaker
+ 	tmp = _in(0x61);
+  	if (tmp != (tmp | 3)) {
+ 		_out(0x61, tmp | 3);
+ 	}
+ }
+
 int main(){
 
 	load_idt();
+
+	play_sound(1000);
+
+	while(1);
 
 	((EntryPoint) mainApp)(START, 0);
 		
